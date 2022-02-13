@@ -10,7 +10,6 @@ import {
 import {Link} from 'react-router-dom'
 
 class LeftNavbar extends Component {
-
   render() {
       return (
         <div className={style.navcontainer}>
