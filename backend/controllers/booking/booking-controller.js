@@ -5,6 +5,8 @@ const BaseController = require("../../core/base-controller");
 
 
 class BookingController extends BaseController {
+    
+
 
     constructor() {
         super();

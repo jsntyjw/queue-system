@@ -11,7 +11,7 @@
     "strict": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "moduleResolution": "node",
     "lib": [
       "dom",
@@ -26,7 +26,6 @@
         "name": "typescript-plugin-css-modules"
       }
     ],
-    // "baseUrl": "./appContent",
     "resolveJsonModule": true
   },
   "include": [
