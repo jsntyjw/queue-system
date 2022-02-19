@@ -3,9 +3,9 @@ import Booking from '../models/booking';
 
 // import { Input, Button,  } from '../common/components/form';
 
-import { Text, Form, Color, Button, Layout } from 'react-lifesg-design-system'
-import { ThemeProvider, } from "styled-components";
-import { Container, useTheme } from '@material-ui/core';
+import { Text, Form, Button, Layout } from 'react-lifesg-design-system';
+import { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 
 interface Props {
     booking: Booking;
@@ -13,104 +13,107 @@ interface Props {
     onSave: () => void;
 }
 
+const ModifiedText = styled(Text.H6)`
+    color: #1C76D5;
+`;
+
+const StyledContainer = styled(Layout.GridContainer)`
+    grid-template-rows: 1fr 1fr 2fr 0fr;
+    grid-template-columns: 12fr;
+    grid-template-areas:
+        "row1 row1"
+        "row2 row2"
+        "row3 row3";
+    grid-gap: 0.25rem;
+    padding: 25px;
+`;
+
+
+const Row1 = styled.div`
+  grid-area: row1;
+  padding: 0.25rem;
+`;
+const Row2 = styled.div`
+  grid-area: row2;
+  padding: 0.25rem;
+`;
+const Row3 = styled.div`
+  color: white;
+  grid-area: row3;
+  padding: 0.25rem;
+`;
+
+
 export const BookingForm: React.FunctionComponent<Props> = (props) => {
     return (
+        <>
+        <Layout.Section>
+            <StyledContainer>
+                <Text.H3>Add Appointment</Text.H3>
+                <ModifiedText>Citizen Information</ModifiedText>
+                <Row1>
+                        <Form.Select
+                            label="Salutation"
+                            placeholder="Select"
+                            options={[
+                                { value: "Mr", label: "Mr" },
+                                { value: "Mrs", label: "Mrs" },
+                                { value: "Miss", label: "Miss" },
+                            ]}
+                            valueExtractor={(item) => item.value}
+                            listExtractor={(item) => item.label}
+                            displayValueExtractor={(item) => item.label}
+                        />
+                
+
+                        <Form.Field
+                            label="Name"
+                        />
+                        </Row1>
+          <Row2>
+                        <Form.Field
+                            label="Citizen NRIC / FIN number"
+                        />
+              
+
+                        <Form.Field
+                            label="Citizen phone number"
+                        />
+            </Row2>
+                        <Row3>
+                        <Form.Field
+                            label="Email Address"
+                        />
+                </Row3>
 
 
-        <div>
+                
+            </StyledContainer>
 
-
-        <Container>
-
-
-
-            <h1>Create booking</h1>
-            <h4 style={{ color: "#1C76D5" }}>Citizen Information</h4>
-            <div className="float-container">
-                <div className="float-child">
-                    <Form.Select
-                        label="Salutation"
-                        placeholder="Select"
-
-                        options={[
-                            { value: "Mr", label: "Mr" },
-                            { value: "Mrs", label: "Mrs" },
-                            { value: "Miss", label: "Miss" },
-                        ]}
-                        valueExtractor={(item) => item.value}
-                        listExtractor={(item) => item.label}
-                        displayValueExtractor={(item) => item.label}
-
-                    />
-                </div>
-
-
-
-                <div className="float-child">
-
-                    <Form.Field
-                        label="Name"
-                    />
-
-                </div>
-
-            </div>
-
-            <div className="float-container">
-
-                <div className="float-child">
-
-
-                    <Form.Field
-                        label="Citizen NRIC / FIN number"
-                    />
-
-                </div>
-
-
-                <div className="float-child">
-
-                    <Form.Field
-                        label="Citizen phone number"
-                    />
-
-                </div>
-
-            </div>
-
-
-            <div className="float-container">
-                <div className="float-child">
-
-                    <Form.Field
-                        label="Email Address"
-                    />
-
-                </div>
-
-                <div className="float-container">
-                    <div className="float-child">
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            </Container>
-
-
-    
-            <h4 style={{ color: "#1C76D5" }}>Service Provider Information  </h4>
-
-
-            <div className="float-container">
-                <div className="float-child">
+            
+            <StyledContainer>
+            <ModifiedText>Service Provider Information</ModifiedText>
+               
+                        <Form.Select
+                            label="Service Name"
+                            placeholder="Select"
+                            options={[
+                                { value: "Idk1", label: "Idk1" },
+                                { value: "Idk2", label: "Idk2" },
+                                { value: "Idk3", label: "Idk3" },
+                            ]}
+                            valueExtractor={(item) => item.value}
+                            listExtractor={(item) => item.label}
+                            displayValueExtractor={(item) => item.label}
+                        />
+                        <Form.Field
+                            label="Service Provider Phone Number"
+                            placeholder='Type here...'
+                        />
 
                     <Form.Select
-                        label="Service Name"
+                        label="Service Provider"
                         placeholder="Select"
-
                         options={[
                             { value: "Idk1", label: "Idk1" },
                             { value: "Idk2", label: "Idk2" },
@@ -119,59 +122,22 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         valueExtractor={(item) => item.value}
                         listExtractor={(item) => item.label}
                         displayValueExtractor={(item) => item.label}
-
                     />
 
-                </div>
-                <div className="float-child">
 
                     <Form.Field
-                        label="Service Provider Phone Number"
+                        label="Service Provider Email Address"
                         placeholder='Type here...'
                     />
 
-                </div>
+                <Button.Default
+                    onClick={props.onSave}
+                >Add</Button.Default>
+            </StyledContainer>
 
-            </div>
+        </Layout.Section>
 
-            <div className="float-container">
-
-                <Form.Select
-                    label="Service Provider"
-                    placeholder="Select"
-
-                    options={[
-                        { value: "Idk1", label: "Idk1" },
-                        { value: "Idk2", label: "Idk2" },
-                        { value: "Idk3", label: "Idk3" },
-                    ]}
-                    valueExtractor={(item) => item.value}
-                    listExtractor={(item) => item.label}
-                    displayValueExtractor={(item) => item.label}
-
-                />
-
-            </div>
-
-
-            <div className="float-container">
-
-                <Form.Field
-                    label="Service Provider Email Address"
-                    placeholder='Type here...'
-                />
-
-            </div>
-
-            <Button.Default
-                onClick={props.onSave}
-            >Add</Button.Default>
-
-
-    
-</div>
-
-
+        </>
 
 
 

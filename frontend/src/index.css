@@ -62,3 +62,7 @@
   float: left;
   padding: 20px;
 }  
+
+.btn_right {
+  float: right;
+}

@@ -3,15 +3,14 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import './App.css';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'toastr/build/toastr.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'toastr/build/toastr.min.css';
 import Index from './components/index.component';
 import Edit from './components/edit.component';
 import Create from './components/create.component';
 import Home from './components/home.component';
-import AppContent from './components/AppContent';
-
-
+import Appointments from './components/appointments.component';
+import Dashboard from './components/dashboard.component';
 /** App.tsx **/
 
 
@@ -34,8 +33,7 @@ const items: INavbarItems<CustomType> = {
         {
             id: "home",
             children: "Home",
-            href: "http://localhost:3000/Home",
-            target: "_blank",
+            href: "http://localhost:3000/Home"
         },
         {
             id: "appointments",
@@ -48,7 +46,7 @@ const items: INavbarItems<CustomType> = {
         {
             id: "dashboard",
             children: "Dashboard",
-            href: "http://localhost:3000/Dashboard",
+            href: "http://localhost:3000/Dashboard"
         },
 
 
@@ -57,11 +55,10 @@ const items: INavbarItems<CustomType> = {
 
 const App = () => {
     return (
+        <div>
             <div>
-                <div>
-                <Navbar items={items} />
-
-                </div>
+              <Navbar items={items} />
+            </div>
 
           
             <Breadcrumb links={[{ title: 'Home', url: 'https://www.google.com' }, { title: 'Breadcrumb without url' }, { title: 'Normal breadcrumb', url: 'https://www.google.com' }, {
@@ -82,8 +79,8 @@ const App = () => {
                     <Route path='/edit/:id' component={Edit} />
                     <Route path='/index' component={Index} />
                     <Route path='/Home' component={Home} />
-                    {/* <Route path='/Appointments' component={ Appointments } />
-                  <Route path='/Dashboard' component={ Dashboard } /> */}
+                    <Route path='/Appointments' component={ Appointments } />
+                    <Route path='/Dashboard' component={ Dashboard } />
                 </Switch>
             </Router>
 
@@ -130,7 +127,7 @@ const App = () => {
                   </div>
             
 
-            </div>
+        </div>
         
     );
 };
