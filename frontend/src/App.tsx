@@ -57,12 +57,13 @@ const items: INavbarItems<CustomType> = {
 
 const App = () => {
     return (
-        <ThemeProvider theme={BaseTheme}>
             <div>
-            <Navbar items={items} />
+                <div>
+                <Navbar items={items} />
 
-            </div>
-            <div >
+                </div>
+
+          
             <Breadcrumb links={[{ title: 'Home', url: 'https://www.google.com' }, { title: 'Breadcrumb without url' }, { title: 'Normal breadcrumb', url: 'https://www.google.com' }, {
                 onClick: () => { },
                 title: 'Breadcrumb with a callback function',
@@ -74,7 +75,6 @@ const App = () => {
             }
             ]}
             />  
-            </div>
             
             <Router>
                 <Switch>
@@ -87,7 +87,8 @@ const App = () => {
                 </Switch>
             </Router>
 
-            <Footer
+                  <div>
+                  <Footer
                 lastUpdated={new Date()}
                 addon="download"
                 links={[
@@ -126,7 +127,11 @@ const App = () => {
                     ],
                 ]}
             />
-        </ThemeProvider>
+                  </div>
+            
+
+            </div>
+        
     );
 };
 
