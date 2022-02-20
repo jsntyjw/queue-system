@@ -18,15 +18,24 @@ interface Props {
 }
 
 const StyledContainer = styled(Layout.GridContainer)`
-    grid-template-rows: 1fr 1fr 4fr 0fr;
+    grid-template-rows: 1fr;
     grid-template-columns: 12fr;
     grid-template-areas:
-        "title title title title"
-        "button button button button"
-        "queue queue queue queue";
+        "title"
+        "button "
+        "queue";
     grid-gap: 0.25rem;
     padding: 25px;
+`;
 
+const StyledContainer1 = styled(Layout.GridContainer)`
+    grid-template-rows: 1fr;
+    grid-template-columns: 12fr;
+    grid-template-areas:
+        "title"
+        "queue";
+    grid-gap: 0.25rem;
+    padding: 25px;
 `;
 
 const StyledSection = styled(Layout.Section)`
@@ -39,7 +48,7 @@ const Title = styled.div`
   grid-area: title;
   padding: 0.25rem;
 `;
-const NavBar = styled.div`
+const Buttons = styled.div`
   grid-area: button;
   padding: 0.25rem;
 `;
@@ -50,15 +59,16 @@ const Main = styled.main`
 `;
 
 
-const dashboard: React.FunctionComponent<Props> = (props) => {
+const Dashboard: React.FunctionComponent<Props> = (props) => {
   return (
       <>
         <StyledSection>
+        <Layout.Container>
         <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/' }, { title: 'Dashboard' } ]} />
         
             <StyledContainer>
                 <Title><Text.H3>Currently Serving</Text.H3></Title>
-                <NavBar>
+                <Buttons>
                     <Button.Default styleType="secondary"
                         onClick={props.onSave}
                     >Recall</Button.Default>
@@ -67,7 +77,7 @@ const dashboard: React.FunctionComponent<Props> = (props) => {
                         onClick={props.onSave}
                     >Next Number</Button.Default>
                     </div>
-                </NavBar>
+                </Buttons>
                 <Main>
                     <LinkList items={[{
                     title: "First queue",
@@ -95,18 +105,9 @@ const dashboard: React.FunctionComponent<Props> = (props) => {
             </StyledContainer>
       
 
-            <StyledContainer>
+            <StyledContainer1>
                 <Title><Text.H3>Previous Queue</Text.H3></Title>
-                <NavBar>
-                    <Button.Default styleType="secondary"
-                        onClick={props.onSave}
-                    >Recall</Button.Default>
-                    <div className='btn_right'>
-                    <Button.Default
-                        onClick={props.onSave}
-                    >Next Number</Button.Default>
-                    </div>
-                </NavBar>
+                
                 <Main>
                     <LinkList items={[{
                     title: "First queue",
@@ -131,17 +132,17 @@ const dashboard: React.FunctionComponent<Props> = (props) => {
                 </Main>
              
                 
-            </StyledContainer>
+            </StyledContainer1>
 
             <StyledContainer>
                 <Title><Text.H3>Missed Queue</Text.H3></Title>
-                <NavBar>
+                <Buttons>
                     <div className='btn_right'>
                     <Button.Default
                         onClick={props.onSave}
                     >Transfer</Button.Default>
                     </div>
-                </NavBar>
+                </Buttons>
                 <Main>
                     <LinkList items={[{
                     title: "First queue",
@@ -167,9 +168,11 @@ const dashboard: React.FunctionComponent<Props> = (props) => {
              
                 
             </StyledContainer>
+            
+            </Layout.Container>
         </StyledSection>
     </>
   )
 }
 
-export default dashboard;
+export default Dashboard;
