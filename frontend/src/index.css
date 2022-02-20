@@ -51,18 +51,20 @@
   padding-left: 0.25rem;
 }
 
-
-.float-container {
-  border: 3px solid #fff;
-  padding: 20px;
-}
-
-.float-child {
-  width: 50%;
-  float: left;
-  padding: 20px;
-}  
-
 .btn_right {
   float: right;
+}
+
+.container {
+  padding: 20%;
+  margin-top: -22%;
+}
+
+.form_btn {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.breadcrumb {
+  margin-bottom: 100px;
 }

@@ -54,7 +54,7 @@ const dashboard: React.FunctionComponent<Props> = (props) => {
   return (
       <>
         <StyledSection>
-        <Breadcrumb links={[ { title: 'Home' , url: 'https://www.google.com' }, { title: 'Dashboard' } ]} />
+        <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/' }, { title: 'Dashboard' } ]} />
         
             <StyledContainer>
                 <Title><Text.H3>Currently Serving</Text.H3></Title>
