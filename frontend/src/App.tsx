@@ -11,6 +11,7 @@ import Create from './components/CreateNewBooking';
 // import Home from './components/Appointments';
 import Home from './components/Home'
 import Appointments from './components/Home'
+import ServiceCounter  from './components/ServiceCounter';
 import Dashboard from './components/dashboard.component';
 /** App.tsx **/
 
@@ -49,7 +50,11 @@ const items: INavbarItems<CustomType> = {
             children: "Dashboard",
             href: "http://localhost:3000/Dashboard"
         },
-
+        {
+            id: "servicecounter",
+            children: "ServiceCounter",
+            href: "http://localhost:3000/ServiceCounter"
+        },
 
     ],
 };
@@ -82,6 +87,8 @@ const App = () => {
                     <Route path='/Home' component={Home} />
                     <Route path='/Appointments' component={ Appointments } />
                     <Route path='/Dashboard' component={ Dashboard } />
+                    <Route path='/ServiceCounter' component={ ServiceCounter } />
+
                 </Switch>
             </Router>
 
