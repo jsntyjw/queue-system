@@ -17,17 +17,8 @@ const StyledContainer = styled(Layout.GridContainer)`
         "button "
         "queue";
     grid-gap: 0.25rem;
+    grid-row-gap: 16px;
     padding: 0 25px;
-`;
-
-const StyledContainer1 = styled(Layout.GridContainer)`
-    grid-template-rows: 1fr;
-    grid-template-columns: 12fr;
-    grid-template-areas:
-        "title"
-        "queue";
-    grid-gap: 0.25rem;
-    padding: 25px;
 `;
 
 const StyledSection = styled(Layout.Section)`
@@ -47,7 +38,7 @@ const Appointment: React.FunctionComponent<Props> = (props) => {
       <>
         <StyledSection>
         <Layout.Container>
-            <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/' }, { title: 'Appointments' } ]} />
+            <Breadcrumb links={[ { title: 'Home', url: '/Home' }, { title: 'Appointments' } ]} />
         
             <StyledContainer>
                 <div className="inlinecontent" style={{justifyItems: "start",}}>
@@ -57,7 +48,7 @@ const Appointment: React.FunctionComponent<Props> = (props) => {
                         }} placeholder="Search..." />
                     <Button.Default>Search</Button.Default>
                 </div>
-                <div className="spacer3"></div>
+                <div className="spacer2"></div>
                 <BoxContainer title="Citizen Information" collapsible={false} className="textleft">
                     <div style={{padding: "2rem", minWidth: "1080px"}}>
                         <Layout.GridContainer className="column4">
@@ -77,20 +68,18 @@ const Appointment: React.FunctionComponent<Props> = (props) => {
             <StyledContainer>
                 <Text.H3>Appointments</Text.H3>
                 <Text.Body>Government services appointments</Text.Body>
-                <div className="spacer1"></div>
                 <Main>
-                    <LinkList items={[{
-                    title: "Upcoming Appointments",
-                    description: "There is currently one appointments.",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Missed Appointments",
-                    description: "There is no missed appointments.",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }
-                ]} style="small" maxShown={2} />
+                    <LinkList items={[
+                        {
+                            title: "Upcoming Appointments",
+                            description: "There is currently one appointments.",
+                            href: "/UpcomingAppointments",
+                        }, {
+                            title: "Missed Appointments",
+                            description: "There is no missed appointments.",
+                            href: "https://www.google.com",
+                        }
+                    ]} style="small" maxShown={2} />
                 </Main>
             
                 <div className="spacer3"></div>

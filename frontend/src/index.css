@@ -123,6 +123,15 @@
   text-align: left !important;
 }
 
+.textright {
+  text-align: right !important;
+}
+
+.column2 {
+  grid-template-columns: auto auto !important;
+  column-gap: 7rem !important;
+}
+
 .column4 {
   grid-template-columns: auto auto auto auto !important;
   column-gap: 7rem !important;

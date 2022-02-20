@@ -11,6 +11,7 @@ import Create from './components/CreateNewBooking';
 // import Home from './components/Appointments';
 import Home from './components/Home'
 import Appointments from './components/Appointments'
+import UpcomingAppointments from './components/UpcomingAppointments'
 import ServiceCounter  from './components/ServiceCounter'
 import Dashboard from './components/Dashboard';
 import ScanIC from './components/scanic.component'
@@ -88,6 +89,7 @@ const App = () => {
                     <Route path='/index' component={Index} />
                     <Route path='/Home' component={Home} />
                     <Route path='/Appointments' component={ Appointments } />
+                    <Route path='/UpcomingAppointments' component={ UpcomingAppointments } />
                     <Route path='/Dashboard' component={ Dashboard } />
                     <Route path='/ServiceCounter' component={ ServiceCounter } />
                     <Route path='/ScanIC' component={ ScanIC } />
