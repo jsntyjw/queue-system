@@ -3,7 +3,7 @@ import Booking from '../models/booking';
 
 // import { Input, Button,  } from '../common/components/form';
 
-import { Text, Form, Button, Layout, Breadcrumb } from 'react-lifesg-design-system';
+import { Text, Form, Button, Layout, Breadcrumb, AlertBox } from 'react-lifesg-design-system';
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
 import '../App.css';
