@@ -13,6 +13,8 @@ import Home from './components/Home'
 import Appointments from './components/Home'
 import ServiceCounter  from './components/ServiceCounter'
 import Dashboard from './components/Dashboard';
+import ScanIC from './components/scanic.component'
+import BookingFound from './components/bookingfound.component';
 /** App.tsx **/
 
 
@@ -88,6 +90,8 @@ const App = () => {
                     <Route path='/Appointments' component={ Appointments } />
                     <Route path='/Dashboard' component={ Dashboard } />
                     <Route path='/ServiceCounter' component={ ServiceCounter } />
+                    <Route path='/ScanIC' component={ ScanIC } />
+                    <Route path='/BookingFound' component={ BookingFound } />
 
                 </Switch>
             </Router>

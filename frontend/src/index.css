@@ -60,3 +60,78 @@
   margin: 50px auto;
 }
 
+.center {
+  padding: 12rem 0 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.inlinecontent {
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 20px;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+}
+
+.content {
+  display: grid;
+  grid-auto-flow: row;
+  grid-row-gap: 20px;
+  justify-items: center;
+  align-items: center;
+  text-align: center;
+}
+
+.spacer1 {
+  padding-top: 1em;
+}
+
+.spacer2 {
+  padding-top: 2em;
+}
+
+.spacer3 {
+  padding-top: 3em;
+}
+
+.spacer4 {
+  padding-top: 4em;
+}
+
+.spacer5 {
+  padding-top: 5em;
+}
+
+.animatedicon {
+  width: 120px;
+  height: auto;
+}
+
+.buttonsuccess {
+  background-color: #4FC029 !important;
+}
+
+.buttonerror {
+  background-color: #C60000 !important;
+}
+
+.textleft {
+  text-align: left !important;
+}
+
+.column4 {
+  grid-template-columns: auto auto auto auto !important;
+  column-gap: 7rem !important;
+}
+
+.checkicon {
+  color: rgb(79, 192, 41);
+  font-size: 4rem;
+  padding: 2rem 0.5rem;
+  border: 2px solid rgb(79, 192, 41);
+  border-radius: 100%;
+}
