@@ -3,7 +3,7 @@ import Booking from '../models/booking';
 
 // import { Input, Button,  } from '../common/components/form';
 
-import { Text, Form, Button, Layout, Breadcrumb } from 'react-lifesg-design-system';
+import { Text, Form, Button, Layout, Breadcrumb, AlertBox } from 'react-lifesg-design-system';
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
 import '../App.css';
@@ -52,9 +52,19 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
             
 
             <div className='container'>
-            <div className='breadcrumb'>
+
+            
+            {/* <div className='breadcrumb'> */}
                 <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/' }, { title: 'Appointments' , url: 'http://localhost:3000/Appointments' }, { title: 'Add Appointment' } ]} />
+            {/* </div> */}
+            <AlertBox.Base type="success">
+                Your new booking has been submitted successfully!
+            </AlertBox.Base>
+
+            <div>
+                <br />
             </div>
+            
                 <Text.H1>Add Appointment</Text.H1>
                 <ModifiedText>Citizen Information</ModifiedText>
             
