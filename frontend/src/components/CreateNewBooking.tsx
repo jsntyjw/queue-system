@@ -2,8 +2,8 @@ import React from 'react';
 import * as toastr from 'toastr';
 import Booking from '../models/booking';
 import BaseService from '../service/base.service';
-import { History } from 'history';
-import { BookingPage } from './page.form'; 
+import { BookingPage } from './displayBookingForm';
+ 
 
 
 interface IProps { 
@@ -23,44 +23,33 @@ interface IState {
 }
 
 
-export default class Edit extends React.Component<IProps, IState> {
-
-    constructor(props: IProps) {
-
+export default class Create extends  React.Component<IProps, IState> {
+    constructor(props:IProps) {
         super(props);
-
+         
         this.state = {
             booking: {
-  
                 Nric : '',
                 CitizenName : '',
                 CitizenSalutation : '',
                 CitizenEmail : '',
                 CitizenNumber : '',
-
                 ServiceName : '',
                 ServiceProviderName : '',
                 ServiceProviderEmail : '',
                 ServiceProviderPhone : '',
                 ServiceStartDateTime : '',
                 ServiceEndDateTime : '',
-
                 BookingCreationDate : '',
                 BookingLocation : '',
                 BookingDescription : '',
                 BookingReference : '',
                 BookingStatus : '',
-
                 DynamicFields : '',
-                Id: ''
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
-
     }
-
-
-
 
     private onFieldValueChange(fieldName: string, value: string) { 
         const nextState = {
@@ -73,52 +62,36 @@ export default class Edit extends React.Component<IProps, IState> {
 
         this.setState(nextState);
     }
-
-    public componentDidMount() { 
-        BaseService.get<Booking>('/booking/edit/', this.props.match.params.id).then(
+    private onSave = () => { 
+        BaseService.create<Booking>("/booking/create", this.state.booking).then(
             (rp) => {
                 if (rp.Status) {
-                    const booking = rp.Data;
-                    this.setState({ booking: new Booking(
-                        booking._id, 
-                        booking.nric,
-                        booking.citizenName, 
-                        booking.citizenSalutation, 
-                        booking.citizenEmail,
-                        booking.citizenNumber,
-
-                        booking.serviceName, 
-                        booking.serviceProviderName, 
-                        booking.serviceProviderEmail,
-                        booking.ServiceProviderPhone,
-                        booking.serviceStartDateTime, 
-                        booking.serviceEndDateTime, 
-
-                        booking.bookingCreationDate,
-                        booking.bookingLocation, 
-                        booking.bookingDescription, 
-                        booking.bookingReference, 
-                        booking.bookingStatus, 
-                        booking.dynamicFields )});
-                } else {
-                    toastr.error(rp.Messages);
-                    console.log("Messages: " + rp.Messages);
-                    console.log("Exception: " + rp.Exception);
-                }
-            }
-
-        );
-    }
+                    toastr.success('Booking saved.'); 
 
 
-    private onSave = () => {
-
-        console.log(this.state.booking);
-        BaseService.update<Booking>("/booking/update/", this.props.match.params.id,this.state.booking).then(
-            (rp) => {
-                if (rp.Status) {
-                    toastr.success('Booking saved.');
-                    this.props.history.back();
+                    this.setState({
+                        booking: {
+                            Nric : '',
+                            CitizenName : '',
+                            CitizenSalutation : '',
+                            CitizenEmail : '',
+                            CitizenNumber : '',
+                            ServiceName : '',
+                            ServiceProviderName : '',
+                            ServiceProviderEmail : '',
+                            ServiceProviderPhone : '',
+                            ServiceStartDateTime : '',
+                            ServiceEndDateTime : '',
+                            BookingCreationDate : '',
+                            BookingLocation : '',
+                            BookingDescription : '',
+                            BookingReference : '',
+                            BookingStatus : '',
+                            DynamicFields : '',
+                            Id: '',
+                        }
+                    });
+                     
                 } else {
                     toastr.error(rp.Messages);
                     console.log("Messages: " + rp.Messages);
@@ -127,8 +100,8 @@ export default class Edit extends React.Component<IProps, IState> {
             }
         );
 
-    }
- 
+    } 
+     
     render() {
         return (
             <BookingPage
@@ -137,5 +110,6 @@ export default class Edit extends React.Component<IProps, IState> {
                 onSave={this.onSave}
             />
         );
-    }
+    }     
+     
 }

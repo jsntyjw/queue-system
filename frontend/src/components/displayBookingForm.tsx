@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Booking from '../models/booking';
-import { BookingForm } from './bookingsForm';
+import { BookingForm } from './BookingsForm';
 
 interface IProps {
     booking: Booking;

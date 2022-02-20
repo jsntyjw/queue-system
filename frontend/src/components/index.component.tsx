@@ -1,5 +1,5 @@
 import * as React from "react";
-import TableRow from "./TableRow";
+import TableRow from "./ViewAllBookings";
 import Booking from "../models/booking";
 import BaseService from "../service/base.service";
 import * as toastr from "toastr";

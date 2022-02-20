@@ -11,7 +11,7 @@ interface IState {
 
 
 
-class Home extends React.Component<IProps, IState> {
+class Appointments extends React.Component<IProps, IState> {
 
 
     public componentDidMount() {
@@ -60,4 +60,4 @@ class Home extends React.Component<IProps, IState> {
         );
     }
 }
-export default Home;
+export default Appointments;

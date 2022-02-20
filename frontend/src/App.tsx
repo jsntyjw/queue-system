@@ -6,10 +6,11 @@ import './index.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'toastr/build/toastr.min.css';
 import Index from './components/index.component';
-import Edit from './components/edit.component';
-import Create from './components/create.component';
-import Home from './components/home.component';
-import Appointments from './components/appointments.component';
+import Edit from './components/UpdateBooking';
+import Create from './components/CreateNewBooking';
+// import Home from './components/Appointments';
+import Home from './components/Home'
+import Appointments from './components/Appointments'
 import Dashboard from './components/dashboard.component';
 /** App.tsx **/
 
