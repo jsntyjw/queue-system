@@ -42,7 +42,7 @@ const UpcomingAppointments: React.FunctionComponent<Props> = (props) => {
             <StyledContainer>
                 <Layout.GridContainer className="column2">
                 <div>
-                    <Text.H3>Appointments</Text.H3>
+                    <Text.H3>Upcoming Appointments</Text.H3>
                     <div className='spacer1'></div>
                     <Text.Body>Government services appointments</Text.Body>
                 </div>
