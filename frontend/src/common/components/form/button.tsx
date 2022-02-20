@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {Button} from 'react-lifesg-design-system'
 
 interface Props {
   label: string;
@@ -6,14 +7,14 @@ interface Props {
   onClick: () => void;
 }
 
-export const Button: React.FunctionComponent<Props> = (props) => {
+export const ButtonSave: React.FunctionComponent<Props> = (props) => {
 
   return (
-    <button type="button"
+    <Button.Default type="button"
       className={props.className}
       onClick={props.onClick}
     >
       {props.label}
-    </button>
+    </Button.Default>
   );
 };

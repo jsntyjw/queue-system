@@ -1,13 +1,12 @@
 import * as React from 'react';
 import Booking from '../models/booking';
 
-// import { Input, Button,  } from '../common/components/form';
-
-import { Text, Form, Button, Layout, Breadcrumb, AlertBox } from 'react-lifesg-design-system';
-import { ThemeProvider } from "styled-components";
+import { Input, Dropdown, DateInput, ButtonSave } from '../common/components/form';
+import { Text, Form, Layout, Breadcrumb, AlertBox } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import '../App.css';
 import '../index.css';
+
 
 interface Props {
     booking: Booking;
@@ -20,117 +19,132 @@ const ModifiedText = styled(Text.H4)`
     margin: 50px auto 20px auto;
 `;
 
-// const StyledContainer = styled(Layout.GridContainer)`
-//     /* grid-template-rows: 1fr 1fr 1fr 1fr; */
-//     grid-template-columns: 1fr;
-//     grid-template-areas: 
-//         "row1 row1"
-//         "row2 row2"
-//         "row3 row3"
-//         "row4 row5"
-//         "row5 row5"
-//         "row6 row6"
-//         "row7 row7"
-//         "row8 row8"
-//         "row9 row9"
-//         "row10 row10"
-//         "row11 row11";
-//     grid-gap: 0.25rem;
-//     padding: 25px;
-// `;
-
 const StyledSection = styled(Layout.Section)`
     margin-top: 8%;
     min-height: 600px;
 `;
 
-
 export const BookingForm: React.FunctionComponent<Props> = (props) => {
     return (
-        <>
+
         <StyledSection>
             <Layout.Container>
-                <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/' }, { title: 'Appointments' , url: 'http://localhost:3000/Appointments' }, { title: 'Add Appointment' } ]} />
-               
+                <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/' }, { title: 'Appointments', url: 'http://localhost:3000/Appointments' }, { title: 'Add Appointment' }]} />
+
                 <Text.H1>Add Appointment</Text.H1>
                 <ModifiedText>Citizen Information</ModifiedText>
-            
-                <Form.Select
-                    label="Salutation"
-                    placeholder="Select"
-                    options={[
-                        { value: "Mr", label: "Mr" },
-                        { value: "Mrs", label: "Mrs" },
-                        { value: "Miss", label: "Miss" },
-                    ]}
-                    valueExtractor={(item) => item.value}
-                    listExtractor={(item) => item.label}
-                    displayValueExtractor={(item) => item.label}
-                />
-                <Form.Field
-                    label="Name"
-                />
-             
-                <Form.Field
-                    label="Citizen NRIC / FIN number"
-                />
-          
-                <Form.Field
-                    label="Citizen phone number"
-                />
-          
-                <Form.Field
-                    label="Email Address"
-                />
-      
-                <ModifiedText>Service Provider Information</ModifiedText>
-          
-                <Form.Select
-                    label="Service Name"
-                    placeholder="Select"
-                    options={[
-                        { value: "Idk1", label: "Idk1" },
-                        { value: "Idk2", label: "Idk2" },
-                        { value: "Idk3", label: "Idk3" },
-                    ]}
-                    valueExtractor={(item) => item.value}
-                    listExtractor={(item) => item.label}
-                    displayValueExtractor={(item) => item.label}
-                />
-                
-                
-                <Form.Field
-                    label="Service Provider Phone Number"
-                    placeholder='Type here...'
-                />
-        
-                <Form.Select
-                    label="Service Provider"
-                    placeholder="Select"
-                    options={[
-                        { value: "Idk1", label: "Idk1" },
-                        { value: "Idk2", label: "Idk2" },
-                        { value: "Idk3", label: "Idk3" },
-                    ]}
-                    valueExtractor={(item) => item.value}
-                    listExtractor={(item) => item.label}
-                    displayValueExtractor={(item) => item.label}
-                />
-                
-                <Form.Field
-                    label="Service Provider Email Address"
-                    placeholder='Type here...'
-                />
+                <form>
 
-                <div className='form_btn'>
-                    <Button.Default
-                        onClick={props.onSave}
-                    >Submit</Button.Default>
-                </div>
-            
+                   <Input
+                        name="Nric"
+                        label="Nric"
+                        defaultValue=''
+                        value={props.booking.Nric}
+                        onChange={props.onChange}
+                    />
+
+                    <Input
+                        name="CitizenName"
+                        label="CitizenName"
+                        defaultValue=''
+
+                        value={props.booking.CitizenName}
+                        onChange={props.onChange}
+                    />
+
+                    <Dropdown
+                        name="CitizenSalutation"
+                        label="CitizenSalutation"
+                        value={props.booking.CitizenSalutation}
+                        onChange={props.onChange} options={["Mr", "Mrs", "Miss"]} />
+
+
+
+                    <Input
+                        name="CitizenEmail"
+                        label="CitizenEmail"
+                        defaultValue=''
+
+                        value={props.booking.CitizenEmail}
+                        onChange={props.onChange}
+                    />
+
+                    <Input
+                        name="CitizenNumber"
+                        defaultValue=''
+                        label="CitizenNumber"
+                        value={props.booking.CitizenNumber}
+                        onChange={props.onChange}
+                    />
+
+                    <ModifiedText>Service Provider Information</ModifiedText>
+
+
+                    <Dropdown
+                        name="ServiceName"
+                        label="ServiceName"
+                        options={["Psychology", "Ophthalmologist"]}
+                        value={props.booking.ServiceName}
+                        onChange={props.onChange}
+                    />
+
+                    <Dropdown
+                        name="ServiceProviderName"
+                        label="ServiceProviderName"
+                        options={["National Polyclinic"]}
+                        value={props.booking.ServiceProviderName}
+                        onChange={props.onChange}
+                    />
+
+                    <Input
+                        name="ServiceProviderEmail"
+                        label="ServiceProviderEmail"
+                        defaultValue="nationalPolyclinic@gov.sg.com"
+                        value={props.booking.ServiceProviderEmail}
+                        onChange={props.onChange}
+                    />
+
+                    <Input
+                        name="ServiceProviderPhone"
+                        defaultValue=''
+                        label="ServiceProviderPhone"
+                        value={props.booking.ServiceProviderPhone}
+                        onChange={props.onChange}
+                    />
+
+                    <DateInput
+                        name="ServiceStartDateTime"
+                        label="ServiceStartDateTime"
+                        value={props.booking.ServiceStartDateTime
+
+                        }
+                    />
+
+
+
+                    <Input
+                        name="BookingStatus"
+                        defaultValue='New'
+                        disabled
+                        placeholder='New'
+                        label="BookingStatus"
+                        value={props.booking.BookingStatus}
+                        onChange={props.onChange}
+                    />
+
+
+
+                    <ButtonSave
+                        className="btn btn-success mt-2"
+                        onClick={props.onSave} label={'Save'}                   
+                        
+                        ></ButtonSave>
+                </form>
+
             </Layout.Container>
         </StyledSection>
 
-        </>
+
     );
 };
+

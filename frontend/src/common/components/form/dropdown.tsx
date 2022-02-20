@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form } from "react-lifesg-design-system";
+import {Form} from 'react-lifesg-design-system'
 
 interface Props {
   name: string;
@@ -8,24 +8,20 @@ interface Props {
   value: string;
   onChange: (fieldName: string, value: string) => void;
   error?: string;
-  defaultValue : string;
-  disabled? :boolean
-  
+  options: string[]
 }
 
-export const Input: React.FunctionComponent<Props> = (props) => {
+export const Dropdown: React.FunctionComponent<Props> = (props) => {
   return (
     <div className={formatWrapperClass(props)}>
       <label htmlFor={props.name}>{props.label}</label>
       <div className="field">
-        <Form.Field type="text"
-        defaultValue={props.defaultValue}
+        <Form.Select 
           name={props.name}
           className="form-control"
           placeholder={props.placeholder}
-          value={props.value}
-          disabled={props.disabled}
-          
+          options={props.options}
+          selectedOption={props.value}
           onChange={onChangeInput(props)}
         />
       </div>
