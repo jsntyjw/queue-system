@@ -49,27 +49,24 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
     return (
         <>
         <StyledSection>
-            
-
-            <div className='container'>
-            <div className='breadcrumb'>
+            <Layout.Container>
                 <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/' }, { title: 'Appointments' , url: 'http://localhost:3000/Appointments' }, { title: 'Add Appointment' } ]} />
-            </div>
+               
                 <Text.H1>Add Appointment</Text.H1>
                 <ModifiedText>Citizen Information</ModifiedText>
             
-                    <Form.Select
-                        label="Salutation"
-                        placeholder="Select"
-                        options={[
-                            { value: "Mr", label: "Mr" },
-                            { value: "Mrs", label: "Mrs" },
-                            { value: "Miss", label: "Miss" },
-                        ]}
-                        valueExtractor={(item) => item.value}
-                        listExtractor={(item) => item.label}
-                        displayValueExtractor={(item) => item.label}
-                    />
+                <Form.Select
+                    label="Salutation"
+                    placeholder="Select"
+                    options={[
+                        { value: "Mr", label: "Mr" },
+                        { value: "Mrs", label: "Mrs" },
+                        { value: "Miss", label: "Miss" },
+                    ]}
+                    valueExtractor={(item) => item.value}
+                    listExtractor={(item) => item.label}
+                    displayValueExtractor={(item) => item.label}
+                />
                 <Form.Field
                     label="Name"
                 />
@@ -130,7 +127,8 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         onClick={props.onSave}
                     >Submit</Button.Default>
                 </div>
-            </div>
+            
+            </Layout.Container>
         </StyledSection>
 
         </>

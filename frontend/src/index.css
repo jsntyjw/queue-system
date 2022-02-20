@@ -55,16 +55,8 @@
   float: right;
 }
 
-.container {
-  padding: 20%;
-  margin-top: -22%;
-}
-
 .form_btn {
   text-align: center;
-  margin-top: 50px;
+  margin: 50px auto;
 }
 
-.breadcrumb {
-  margin-bottom: 100px;
-}
