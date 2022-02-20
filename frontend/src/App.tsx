@@ -10,7 +10,7 @@ import Edit from './components/UpdateBooking';
 import Create from './components/CreateNewBooking';
 // import Home from './components/Appointments';
 import Home from './components/Home'
-import Appointments from './components/Appointments'
+import Appointments from './components/Home'
 import Dashboard from './components/dashboard.component';
 /** App.tsx **/
 
