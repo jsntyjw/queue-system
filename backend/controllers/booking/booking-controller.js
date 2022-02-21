@@ -65,15 +65,15 @@ class BookingController extends BaseController {
                 serviceProviderName : req.body.ServiceProviderName,
                 serviceProviderPhone: Number(req.body.ServiceProviderPhone),
                 serviceStartDateTime: req.body.ServiceStartDateTime,
-                serviceEndDateTime: req.body.ServiceEndDateTime,
+                // serviceEndDateTime: req.body.ServiceEndDateTime,
 
-                bookingCreationDate: req.body.BookingCreationDate,
-                bookingLocation: req.body.BookingLocation,
-                bookingDescription: req.body.BookingDescription,
-                bookingReference: req.body.BookingReference,
+                // bookingCreationDate: req.body.BookingCreationDate,
+                // bookingLocation: req.body.BookingLocation,
+                // bookingDescription: req.body.BookingDescription,
+                // bookingReference: req.body.BookingReference,
                 bookingStatus: req.body.BookingStatus,
 
-                dynamicFields: req.body.DynamicFields,
+                // dynamicFields: req.body.DynamicFields,
                 
             };
  
@@ -109,13 +109,13 @@ class BookingController extends BaseController {
                 serviceProviderName : req.body.ServiceProviderName,
                 serviceProviderPhone: Number(req.body.ServiceProviderPhone),
                 serviceStartDateTime: req.body.ServiceStartDateTime,
-                serviceEndDateTime: req.body.ServiceEndDateTime,
-                bookingCreationDate: req.body.BookingCreationDate,
-                bookingLocation: req.body.BookingLocation,
-                bookingDescription: req.body.BookingDescription,
-                bookingReference: req.body.BookingReference,
+                // serviceEndDateTime: req.body.ServiceEndDateTime,
+                // bookingCreationDate: req.body.BookingCreationDate,
+                // bookingLocation: req.body.BookingLocation,
+                // bookingDescription: req.body.BookingDescription,
+                // bookingReference: req.body.BookingReference,
                 bookingStatus: req.body.BookingStatus,
-                dynamicFields: req.body.DynamicFields,
+                // dynamicFields: req.body.DynamicFields,
             };
 
             let data = await this._facade.updateBooking(booking.id, booking);

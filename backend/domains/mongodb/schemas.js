@@ -14,13 +14,13 @@ const BOOKING = new Schema({
     serviceProviderEmail : String,
     serviceProviderPhone : Number,
     serviceStartDateTime : String,
-    serviceEndDateTime : String,
-    bookingCreationDate : String,
-    bookingLocation : String,
-    bookingDescription : String,
-    bookingReference : String,
+    // serviceEndDateTime : String,
+    // bookingCreationDate : String,
+    // bookingLocation : String,
+    // bookingDescription : String,
+    // bookingReference : String,
     bookingStatus : String,
-    dynamicFields : String,
+    // dynamicFields : String,
     
 
 }).pre('save', (next) => {

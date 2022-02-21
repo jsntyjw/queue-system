@@ -7,7 +7,9 @@ import {
     Layout, 
     Banner, 
     LinkList,
-    Breadcrumb 
+    Breadcrumb,
+    BoxContainer,
+    InputSelect 
 } from 'react-lifesg-design-system';
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
@@ -17,21 +19,25 @@ interface Props {
     onSave: () => void;
 }
 
-const StyledContainer = styled(Layout.GridContainer)`
-    grid-template-rows: 1fr 1fr 4fr 0fr;
-    grid-template-columns: 12fr;
-    grid-template-areas:
-        "title title title title"
-        "button button button button"
-        "queue queue queue queue";
-    grid-gap: 0.25rem;
-    padding: 25px;
+// const StyledContainer = styled(Layout.GridContainer)`
+//     grid-template-rows: 1fr 1fr 4fr 0fr;
+//     grid-template-columns: 12fr;
+//     grid-template-areas:
+//         "title title title title"
+//         "button button button button"
+//         "queue queue queue queue";
+//     grid-gap: 0.25rem;
+//     padding: 25px;
 
-`;
+// `;
 
 const StyledSection = styled(Layout.Section)`
     margin-top: 8%;
     min-height: 600px;
+`;
+
+const Accordion = styled(Text.Body)`
+    min-height: 300px;
 `;
 
 
@@ -54,21 +60,21 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
   return (
       <>
         <StyledSection>
+        <Layout.Container>
         <Breadcrumb links={[ { title: 'Home' , url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' } ]} />
-        
             
-      
-
-            <StyledContainer>
-                <Title><Text.H3>Current Serving</Text.H3></Title>
-                <NavBar>
-                    
-                    <div className='btn_right'>
+        <Layout.GridContainer className="column2">
+                <div>
+                    <Text.H3>Currently Serving</Text.H3>
+                    <div className='spacer1'></div>
+                    <Text.Body>Government services appointments</Text.Body>
+                </div>
+                <div className="inlinecontent" style={{justifyItems: "end", alignItems: "center"}}>
                     <Button.Default
                         onClick={props.onSave}
                     >Next Number</Button.Default>
-                    </div>
-                </NavBar>
+                </div>
+                </Layout.GridContainer>
                 <Main>
                     <LinkList items={[{
                     title: "First queue",
@@ -92,10 +98,31 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
                 }]} style="small" maxShown={2} />
                 </Main>
              
-                
-            </StyledContainer>
+                <BoxContainer title="This is the title">
+                    <div style={{
+                        padding: "2rem"
+                    }}>
+                        <Accordion>
+                        <InputSelect
+                            placeholder="Select"
+                            options={[
+                                { value: "A", label: "Option A" },
+                                { value: "B", label: "Option B" },
+                                { value: "C", label: "Option C" },
+                                { value: "D", label: "Option D" },
+                            ]}
+                            valueExtractor={(item) => item.value}
+                            listExtractor={(item) => item.label}
+                            displayValueExtractor={(item) => item.label}
+                        />
+                        <div style={{marginTop: "50px"}}>
+                            <Button.Small styleType="secondary">Transfer</Button.Small>
+                        </div>
+                        </Accordion>
+                    </div>
+                </BoxContainer>
 
-            
+        </Layout.Container>
         </StyledSection>
     </>
   )
