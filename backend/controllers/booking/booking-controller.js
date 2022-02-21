@@ -64,7 +64,10 @@ class BookingController extends BaseController {
                 serviceProviderEmail : req.body.ServiceProviderEmail,
                 serviceProviderName : req.body.ServiceProviderName,
                 serviceProviderPhone: Number(req.body.ServiceProviderPhone),
-                serviceStartDateTime: req.body.ServiceStartDateTime,
+                serviceStartDate: req.body.ServiceStartDate,
+                serviceStartTime: req.body.ServiceStartTime,
+
+                serviceProviderLocation: req.body.ServiceProviderLocation,
                 // serviceEndDateTime: req.body.ServiceEndDateTime,
 
                 // bookingCreationDate: req.body.BookingCreationDate,
@@ -108,7 +111,10 @@ class BookingController extends BaseController {
                 serviceProviderEmail : req.body.ServiceProviderEmail,
                 serviceProviderName : req.body.ServiceProviderName,
                 serviceProviderPhone: Number(req.body.ServiceProviderPhone),
-                serviceStartDateTime: req.body.ServiceStartDateTime,
+                serviceStartDate: req.body.ServiceStartDate,
+                serviceStartTime: req.body.ServiceStartTime,
+
+                serviceProviderLocation: req.body.ServiceProviderLocation,
                 // serviceEndDateTime: req.body.ServiceEndDateTime,
                 // bookingCreationDate: req.body.BookingCreationDate,
                 // bookingLocation: req.body.BookingLocation,

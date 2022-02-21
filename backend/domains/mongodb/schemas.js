@@ -13,7 +13,10 @@ const BOOKING = new Schema({
     serviceProviderName : String,
     serviceProviderEmail : String,
     serviceProviderPhone : Number,
-    serviceStartDateTime : String,
+    serviceStartDate : String,
+    serviceStartTime : String,
+
+    serviceProviderLocation : String,
     // serviceEndDateTime : String,
     // bookingCreationDate : String,
     // bookingLocation : String,

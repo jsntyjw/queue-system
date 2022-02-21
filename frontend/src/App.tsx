@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import './App.css';
 import './index.css';
 // import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'toastr/build/toastr.min.css';
+import 'toastr/build/toastr.min.css';
 import Index from './components/index.component';
 import Edit from './components/UpdateBooking';
 import Create from './components/CreateNewBooking';

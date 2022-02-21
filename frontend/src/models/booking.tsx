@@ -10,16 +10,19 @@ export default class Bookings {
     ServiceProviderName: string;
     ServiceProviderEmail: string;
     ServiceProviderPhone: string;
-    ServiceStartDateTime: string;
-    ServiceEndDateTime: string;
+    ServiceStartDate: string;
+    ServiceStartTime : string;
+    // ServiceEndDateTime: string;
 
-    BookingCreationDate: string;
-    BookingLocation: string;
-    BookingDescription: string;
-    BookingReference: string;
+    ServiceProviderLocation: string;
+
+    // BookingCreationDate: string;
+    // BookingLocation: string;
+    // BookingDescription: string;
+    // BookingReference: string;
     BookingStatus: string;
 
-    DynamicFields: string;
+    // DynamicFields: string;
 
     constructor(
         id: string,
@@ -33,15 +36,16 @@ export default class Bookings {
         serviceProviderName: string,
         serviceProviderEmail: string,
         serviceProviderPhone: string,
-        serviceStartDateTime: string,
-        serviceEndDateTime: string,
+        serviceStartDate: string,
+        serviceStartTime: string,
+        serviceProviderLocation: string,
 
-        bookingCreationDate: string,
-        bookingLocation: string,
-        bookingDescription: string,
-        bookingReference: string,
+        // bookingCreationDate: string,
+        // bookingLocation: string,
+        // bookingDescription: string,
+        // bookingReference: string,
         bookingStatus: string,
-        dynamicFields: string,
+        // dynamicFields: string,
         ) {
         this.Id = id;
         this.Nric = nric;
@@ -54,16 +58,19 @@ export default class Bookings {
         this.ServiceProviderName = serviceProviderName;
         this.ServiceProviderEmail = serviceProviderEmail;
         this.ServiceProviderPhone = serviceProviderPhone;
-        this.ServiceStartDateTime = serviceStartDateTime;
+        this.ServiceStartDate = serviceStartDate;
+        this.ServiceStartTime = serviceStartTime;
 
-        this.BookingCreationDate = bookingCreationDate;
-        this.BookingLocation = bookingLocation;
-        this.BookingDescription = bookingDescription;
-        this.BookingReference = bookingReference;
+        this.ServiceProviderLocation = serviceProviderLocation;
+
+        // this.BookingCreationDate = bookingCreationDate;
+        // this.BookingLocation = bookingLocation;
+        // this.BookingDescription = bookingDescription;
+        // this.BookingReference = bookingReference;
 
         
-        this.ServiceEndDateTime = serviceEndDateTime;
+        // this.ServiceEndDateTime = serviceEndDateTime;
         this.BookingStatus = bookingStatus;
-        this.DynamicFields = dynamicFields;
+        // this.DynamicFields = dynamicFields;
     } 
 }

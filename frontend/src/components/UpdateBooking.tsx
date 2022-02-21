@@ -42,16 +42,18 @@ export default class Edit extends React.Component<IProps, IState> {
                 ServiceProviderName : '',
                 ServiceProviderEmail : '',
                 ServiceProviderPhone : '',
-                ServiceStartDateTime : '',
-                ServiceEndDateTime : '',
+                ServiceStartDate : '',
+                ServiceStartTime :'',
+                ServiceProviderLocation : '',
+                // ServiceEndDateTime : '',
 
-                BookingCreationDate : '',
-                BookingLocation : '',
-                BookingDescription : '',
-                BookingReference : '',
+                // BookingCreationDate : '',
+                // BookingLocation : '',
+                // BookingDescription : '',
+                // BookingReference : '',
                 BookingStatus : '',
 
-                DynamicFields : '',
+                // DynamicFields : '',
                 Id: ''
             }
         }
@@ -90,16 +92,20 @@ export default class Edit extends React.Component<IProps, IState> {
                         booking.serviceName, 
                         booking.serviceProviderName, 
                         booking.serviceProviderEmail,
-                        booking.ServiceProviderPhone,
-                        booking.serviceStartDateTime, 
-                        booking.serviceEndDateTime, 
+                        booking.serviceProviderPhone,
+                        booking.serviceStartDate,
+                        booking.serviceStartTime, 
+                        booking.serviceProviderLocation,
+                        // booking.serviceEndDateTime, 
 
-                        booking.bookingCreationDate,
-                        booking.bookingLocation, 
-                        booking.bookingDescription, 
-                        booking.bookingReference, 
-                        booking.bookingStatus, 
-                        booking.dynamicFields )});
+                        // booking.bookingCreationDate,
+                        // booking.bookingLocation, 
+                        // booking.bookingDescription, 
+                        // booking.bookingReference, 
+                        booking.bookingStatus
+                        // booking.dynamicFields 
+                        
+                        )});
                 } else {
                     toastr.error(rp.Messages);
                     console.log("Messages: " + rp.Messages);
