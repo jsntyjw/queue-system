@@ -17,6 +17,7 @@ class BookingController extends BaseController {
         this.update = this.update.bind(this);
         this.del = this.del.bind(this);
         this.locationFiltering = this.locationFiltering.bind(this)
+        this.nricFiltering = this.nricFiltering.bind(this)
     }
 
 
@@ -60,16 +61,20 @@ class BookingController extends BaseController {
             this._handleError(error.message, res);
         }
 
-        // try {
-        //     let data = await this._facade.getListBookingByLocation();
-        //     return this._handleResult(data, res);
+    }
 
-        // } catch (error) {
-        //     res.render('err/occurs-error', {
-        //         layout: false,
-        //         err: error
-        //     });
-        // }
+    async nricFiltering(req, res) {
+        try {
+            let citizenNric = req.params.nric;
+            let data = await this._facade.getListBookingByNric(citizenNric);
+
+            return this._handleResult(data, res);
+
+
+        } catch (error) {
+            this._handleError(error.message, res);
+        }
+
     }
 
     async create(req, res) {

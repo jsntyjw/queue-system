@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../App.css';
 import { Text, Form, Button, Layout, BoxContainer, LinkList, Breadcrumb, Icon, InputGroup, Accordion } from 'react-lifesg-design-system';
 import { ThemeProvider } from "styled-components";
@@ -7,10 +7,12 @@ import Booking from "../models/booking";
 import { render } from 'react-dom';
 
 
+
 interface Props {
     onChange: (fieldName: string, value: string) => void;
     onSave: () => void;
 }
+
 
 
 
@@ -37,28 +39,45 @@ const Main = styled.main`
   padding: 0.25rem;
 `;
 
+interface MyState {
+    bookings: Booking[],
+    inputLocation: string,
+    clicked: string
+}
 
-// const Appointment: React.FunctionComponent<Props> = (props) => {
-class Appointment extends React.Component {
 
 
-    state = {
-        bookings: [],
-        booking: Booking,
-        }
 
-    public async  searchByLocation() {
+class Appointment extends React.Component<{}, MyState> {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            bookings: [],
+            inputLocation: '',
+            clicked: 'none'
+            // booking: Booking
+
+        };
+
+        this.searchByLocation = this.searchByLocation.bind(this)
+
+    }
+
+
+    public async searchByLocation() {
         let data = ''
+
         const newSubElement = document.getElementsByTagName("Accordion.Base")[0]
 
-
-        fetch('http://localhost:3001/api/booking')
+        fetch('http://localhost:3001/api/booking/citizen/' + this.state.inputLocation)
             .then(function (response) {
                 return response.json();
 
             })
 
-            .then(function (myJson) {
+            .then((myJson) => {
                 myJson.data.forEach(element => {
                     var eachBooking = new Booking(
                         element["_id"],
@@ -76,86 +95,30 @@ class Appointment extends React.Component {
                         element["serviceProviderLocation"],
                         element["bookingStatus"]
                     );
-                    console.log(eachBooking.Nric)
-                    
-                    // console.log(newSubElement)
-                    // var newDiv = document.createElement("Accordion.Item"); 
-                    // var sub_Div = document.createElement("Text.Body")
-                    // var newContent = document.createTextNode(element["citizenEmail"])
-                    
-                    
-                    // newSubElement.append(newDiv)
-                    // newDiv.append(sub_Div)
-                    // sub_Div.append(newContent)
-                    
-                    // var newContent = document.createTextNode(element["citizenEmail"])
-                    // newSubElement.appendChild(newContent)
 
-                    // return newSubElement;
+                    this.state.bookings.length = 0
 
-                    // console.log(newSubElement)
+                    const bookings = this.state.bookings.slice(0);
+                    bookings.push(eachBooking)
 
-                    // var out_str = 
-                    //     `<Accordion.Item  title="` + eachBooking.CitizenEmail + `">
-                            
-                    //     <Text.Body>`+ 
-                    //     `
-                    //     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    //     do eiusmod tempor incididunt ut labore et dolore magna
-                    //     aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    //     ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    // </Text.Body>
-                    //     </Accordion.Item>` 
+                    this.setState({
+                        bookings: bookings,
+                        clicked : 'block'
+                    });
 
-                        // var parser = new DOMParser();
-	                    // var output = parser.parseFromString(out_str, 'text/html');
-                      
-                    //     console.log(output)
-                    // return output;  
-                    
+                    document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
 
-                    
-                    
+
+
                 })
-                
-                
-                ;
-
-                //    var eachBooking = new Booking(myJson.data[0][])
-
-                // console.log(myJson.data[0])
-
-                //     console.log(myJson.data[0]["nric"])
-                //     console.log(myJson.data[0]["citizenSalutation"])
-
-                //     console.log(myJson.data[0]["nric"])
-                //     console.log(myJson.data[0]["nric"])
-                //     console.log(myJson.data[0]["nric"])
-                //     console.log(myJson.data[0]["nric"])
-                //     console.log(myJson.data[0]["nric"])
-                //     console.log(myJson.data[0]["nric"])
-
+                    ;
             });
     }
-
-
-
-
-    // public async searchByLocation(): Promise<Booking[]> {
-    //     const response = await fetch('http://localhost:3001/api/booking');
-    //     // var result = await response.json().then()
-
-    //     var result = objArray.map(function(a) {return a.foo;});
-    //     return result.data
-    //     var bookings = result.data
-    //     console.log(bookings)
-    //     // console.log(await response.json()) ;
-    // }
-
 
     render() {
 
         return (
+
 
             <StyledSection>
                 <Layout.Container>
@@ -166,24 +129,32 @@ class Appointment extends React.Component {
                             <InputGroup addon={{
                                 // children: <Icon type="search" />,
                                 type: 'custom'
-                            }} placeholder="Search..." />
+                            }} placeholder="Search..."
+                                onChange={evt => this.updateInputValue(evt)}
+
+                            />
+
+
                             <Button.Default onClick={this.searchByLocation}>Search</Button.Default>
                         </div>
                         <div className="spacer2"></div>
-                        <BoxContainer title="Citizen Information" collapsible={false} className="textleft">
-                            <div style={{ padding: "2rem", minWidth: "1080px" }}>
+                        <div id="outsideCitizenInfoDiv" style={{ display : 'none'}}>
+                        <BoxContainer title="Citizen Information" collapsible={false}  className="textleft" >
+                            <div style={{ padding: "2rem", minWidth: "1080px"}}>
                                 <Layout.GridContainer className="column4">
                                     <Text.Body weight="semibold">NRIC</Text.Body>
-                                    <Text.Body weight="semibold">Salutation/Name</Text.Body>
+                                    <Text.Body weight="semibold">Name</Text.Body>
                                     <Text.Body weight="semibold">Phone Number</Text.Body>
                                     <Text.Body weight="semibold">Email</Text.Body>
-                                    <Text.Body>S****567D</Text.Body> {/* Service Provider  */}
-                                    <Text.Body>Mr. Mehraj Shaik Pasha</Text.Body> {/* Service Name  */}
-                                    <Text.Body>+(65) 92379395</Text.Body> {/* Phone */}
-                                    <Text.Body>mehraj999@gmail.com</Text.Body> {/* Email  */}
+                                    <Text.Body>{this.state.bookings[0]?.Nric}</Text.Body> {/* Service Provider  */}
+                                    <Text.Body>{this.state.bookings[0]?.CitizenName}</Text.Body> {/* Service Name  */}
+                                    <Text.Body>{this.state.bookings[0]?.CitizenNumber}</Text.Body> {/* Phone */}
+                                    <Text.Body>{this.state.bookings[0]?.CitizenEmail}</Text.Body> {/* Email  */}
                                 </Layout.GridContainer>
                             </div>
                         </BoxContainer>
+                        </div>
+                        
                     </StyledContainer>
                     <div className="spacer5"></div>
                     <StyledContainer>
@@ -192,36 +163,57 @@ class Appointment extends React.Component {
                         <Main>
 
 
-                            <Accordion.Base className='base'>
-
-                                {/* {this.state.output} */}
-
+                            <Accordion.Base className='base' >
+                                {this.state.bookings.map(function (input, index) {
+                                    return (
+                                        <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                            <Text.Body>
+                                                <ul>
+                                                    <li>
+                                                        <b>Citizen Name :</b>  {input.CitizenName}
+                                                    </li>
+                                                    <li>
+                                                        <b>Citizen Number: </b> {input.CitizenNumber}
+                                                    </li>
+                                                    <li>
+                                                        <b>Citizen Email: </b> {input.CitizenEmail}
+                                                    </li>
+                                                    <li>
+                                                        <b>Service start date:</b>  {input.ServiceStartDate}
+                                                    </li>
+                                                    <li>
+                                                        <b>Service start time:</b>  {input.ServiceStartTime}
+                                                    </li>
+                                                    <li>
+                                                        <b>Service Name:</b>  {input.ServiceName}
+                                                    </li>
+                                                    <li>
+                                                        <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                    </li>
+                                                </ul>
+                                            </Text.Body>
+                                        </Accordion.Item>
+                                    )
+                                })}
                             </Accordion.Base>
 
-                            {/* <LinkList items={[
-                                {
-                                    title: "Upcoming Appointments",
-                                    description: "There is currently one appointments.",
-                                    href: "/UpcomingAppointments",
-                                }, {
-                                    title: "Missed Appointments",
-                                    description: "There is no missed appointments.",
-                                    href: "https://www.google.com",
-                                }
-                            ]} style="small" maxShown={2} /> */}
                         </Main>
 
                         <div className="spacer3"></div>
-
-
-
-
 
                     </StyledContainer>
                 </Layout.Container>
             </StyledSection>
 
         )
+    }
+
+    updateInputValue(evt) {
+        const val = evt.target.value;
+        // ...
+        this.setState({
+            inputLocation: val
+        });
     }
 }
 

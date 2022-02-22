@@ -23,6 +23,10 @@ class BookingEntity extends BaseEntityMongoDb {
         return this._model.find({serviceProviderLocation : location}).sort([['_id', -1]]);
     }
 
+    findByNric(citizenNric){
+        return this._model.find({nric : citizenNric}).sort([['_id', -1]]);
+    }
+
     add(data) {
         let newObj = new this._model(data);
         return newObj.save();

@@ -33,6 +33,9 @@ class Facade extends BaseCore {
     async getListBookingByLocation(location) {
         return this._bookingComponent.getListBookingByLocation(location);
     }
+    async getListBookingByNric(citizenNric) {
+        return this._bookingComponent.getListBookingByNric(citizenNric);
+    }
 
 }
 

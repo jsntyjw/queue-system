@@ -13,5 +13,7 @@ router.post("/create", controller.create);
 router.post("/update/:id", controller.update);
 router.delete("/del", controller.del); 
 router.get("/location/:serviceProviderLocation", controller.locationFiltering)
+router.get("/citizen/:nric", controller.nricFiltering)
+
 
 module.exports = router;
