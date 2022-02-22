@@ -11,7 +11,7 @@ class BookingEntity extends BaseEntityMongoDb {
     }
 
     list() {
-        return this._model.find({serviceProviderLocation : "Tampines"}).sort([['_id', -1]]);
+        return this._model.find({}).sort([['_id', -1]]);
 
     }
 

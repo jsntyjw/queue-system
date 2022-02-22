@@ -28,6 +28,7 @@ import { BaseTheme, Footer, Breadcrumb } from "react-lifesg-design-system";
 
 import { Navbar } from 'react-lifesg-design-system'
 import { INavbarItems } from 'react-lifesg-design-system/components/navbar/types';
+import ViewAllBookings from './components/ViewAllBookings';
 
 interface CustomType {
     isExternal?: boolean;
@@ -94,7 +95,7 @@ const App = () => {
                     <Route path='/ServiceCounter' component={ ServiceCounter } />
                     <Route path='/ScanIC' component={ ScanIC } />
                     <Route path='/BookingFound' component={ BookingFound } />
-
+                    <Route path='/ViewAllBookings' component = {ViewAllBookings} />
                 </Switch>
             </Router>
 
