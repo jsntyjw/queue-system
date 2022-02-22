@@ -34,6 +34,41 @@ const Main = styled.main`
 
 
 const Appointment: React.FunctionComponent<Props> = (props) => {
+
+
+   
+
+// var axios = require('axios');
+//     var data = JSON.stringify({
+//       "collection": "bookings",
+//       "database": "myFirstDatabase",
+//       "dataSource": "SMU-FYP",
+//       "projection": {
+//         "_id": 1
+//       }
+//     });
+  
+//     var config = {
+//       method: 'post',
+//       url: 'https://data.mongodb-api.com/app/data-bmvll/endpoint/data/beta/action/findOne',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Access-Control-Request-Headers': '*',
+//         'api-key': 'R5KIDgHFaMolqyyMbSokgzA1O7OTD0vDT9PPFnxBiaUtm9cvGGkLkqjzP46U8ZOM'
+//       },
+//       data: data
+//     };
+  
+//     axios(config)
+//       .then(function (response) {
+//         console.log(JSON.stringify(response.data));
+//       })
+//       .catch(function (error) {
+//         console.log(error);
+//       });
+
+
+
   return (
       <>
         <StyledSection>

@@ -24,8 +24,15 @@ interface IProps {
   index: Number;
 }
 
-const TableRow: React.FunctionComponent<IProps> = (props) => { 
+const ViewAllBookings: React.FunctionComponent<IProps> = (props) => {
+
+  
   return (
+
+
+    
+
+
     <tr>
       <td>{props.index}</td>
       <td>{props.booking.Nric}</td>
@@ -62,4 +69,14 @@ const TableRow: React.FunctionComponent<IProps> = (props) => {
     </tr>
   );
 };
-export default TableRow;
+
+
+
+
+
+
+
+
+
+
+export default ViewAllBookings;

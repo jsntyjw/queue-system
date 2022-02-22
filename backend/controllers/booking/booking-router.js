@@ -12,5 +12,6 @@ router.get("/edit/:id", controller.detail);
 router.post("/create", controller.create);
 router.post("/update/:id", controller.update);
 router.delete("/del", controller.del); 
+router.get("/location/:serviceProviderLocation", controller.locationFiltering)
 
 module.exports = router;

@@ -11,12 +11,16 @@ class BookingEntity extends BaseEntityMongoDb {
     }
 
     list() {
-        return this._model.find({}).sort([['_id', -1]]);
+        return this._model.find({serviceProviderLocation : "Tampines"}).sort([['_id', -1]]);
 
     }
 
     findById(id) {
         return this._model.findById(id);
+    }
+
+    findByLocation(location){
+        return this._model.find({serviceProviderLocation : location}).sort([['_id', -1]]);
     }
 
     add(data) {

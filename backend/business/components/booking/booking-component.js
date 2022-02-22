@@ -17,6 +17,20 @@ class BookingComponent extends BaseCore {
         return bookings;
     }
 
+    async getListBookingByLocation(location){
+
+        // if (!location) {
+        //     throw {
+        //         message: "Invalid input"
+        //     }
+        // }
+        // let bookings = await this._bookingEntity.findByLocation(location);
+        // return bookings;
+
+        let bookings = await this._bookingEntity.findByLocation(location);
+        return bookings;
+    }
+
 
     async getDetailBooking(id) {
         if (!id) {

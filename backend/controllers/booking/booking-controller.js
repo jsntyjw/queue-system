@@ -16,6 +16,7 @@ class BookingController extends BaseController {
         this.create = this.create.bind(this);
         this.update = this.update.bind(this);
         this.del = this.del.bind(this);
+        this.locationFiltering = this.locationFiltering.bind(this)
     }
 
 
@@ -45,6 +46,30 @@ class BookingController extends BaseController {
         } catch (error) {
             this._handleError(error.message, res);
         }
+    }
+
+    async locationFiltering(req, res) {
+        try {
+            let location = req.params.serviceProviderLocation;
+            let data = await this._facade.getListBookingByLocation(location);
+
+            return this._handleResult(data, res);
+
+
+        } catch (error) {
+            this._handleError(error.message, res);
+        }
+
+        // try {
+        //     let data = await this._facade.getListBookingByLocation();
+        //     return this._handleResult(data, res);
+
+        // } catch (error) {
+        //     res.render('err/occurs-error', {
+        //         layout: false,
+        //         err: error
+        //     });
+        // }
     }
 
     async create(req, res) {
