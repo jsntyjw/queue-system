@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
-import { Text, Form, Button, Layout, BoxContainer, LinkList, Breadcrumb, Icon, InputGroup, Accordion } from 'react-lifesg-design-system';
+import { Text, Form, Button, Layout, BoxContainer, LinkList, Breadcrumb, Icon, InputGroup, Accordion, InputSelect } from 'react-lifesg-design-system';
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
 import Booking from "../models/booking";
@@ -70,11 +70,11 @@ class Appointment extends React.Component<{}, MyState> {
         let data = ''
 
         const newSubElement = document.getElementsByTagName("Accordion.Base")[0]
-        var apiURL : string
-        if(searchMethod == "location"){
+        var apiURL: string
+        if (searchMethod == "location") {
             apiURL = 'http://localhost:3001/api/booking/location/';
         }
-        else{
+        else {
             apiURL = 'http://localhost:3001/api/booking/citizen/';
         }
 
@@ -110,7 +110,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                     this.setState({
                         bookings: bookings,
-                        clicked : 'block'
+                        clicked: 'block'
                     });
 
                     document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
@@ -127,14 +127,18 @@ class Appointment extends React.Component<{}, MyState> {
         return (
 
 
+
+
             <StyledSection>
                 <Layout.Container>
                     <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
 
+
+
                     <StyledContainer>
-                    <Text.H3>View appointments by NRIC:</Text.H3>
+                        <Text.H3>View appointments by NRIC:</Text.H3>
                         <div className="inlinecontent" style={{ justifyItems: "start", }}>
-                            
+
                             <InputGroup addon={{
                                 // children: <Icon type="search" />,
                                 type: 'custom'
@@ -144,58 +148,58 @@ class Appointment extends React.Component<{}, MyState> {
                             />
 
 
-                            <Button.Default onClick={() =>this.searchByLocation("NRIC")} >Search</Button.Default>
+                            <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                         </div>
 
-                    <Text.H3>View appointments by Location: </Text.H3>
-                    <div className="inlinecontent" style={{ justifyItems: "start", }}>
-                        
-                    <Form.Select
-                        label="Service Provider Location"
-                        placeholder="Select"
+                        <Text.H3>View appointments by Location: </Text.H3>
+                        <div className="inlinecontent" style={{ justifyItems: "start", }}>
 
-                        options={[
-                            { value: "Tampines", label: "Tampines" },
-                            { value: "Woodlands", label: "Woodlands" },
-                            { value: "Toa Payoh", label: "Toa Payoh" },
-                            { value: "Punggol", label: "Punggol" },
+                            <InputSelect
+                                options={[
+                                    { value: "Tampines", label: "Tampines" },
+                                    { value: "Woodlands", label: "Woodlands" },
+                                    { value: "Toa Payoh", label: "Toa Payoh" },
+                                    { value: "Punggol", label: "Punggol" },
 
 
-                        ]}
-                        valueExtractor={(item) => item.value}
-                        listExtractor={(item) => item.label}
-                        displayValueExtractor={(item) => item.label}
-                        onSelectItem={(item, selectedValue) => {
-                            this.setState({
-                                inputValue: selectedValue
-                            });                            
-                            this.searchByLocation('location')
-                            // find = value
-                            console.log(this.state.inputValue)
-                        }}
-                    />
+                                ]}
+                                valueExtractor={(item) => item.value}
+                                listExtractor={(item) => item.label}
+                                displayValueExtractor={(item) => item.label}
+                                onSelectItem={(item, selectedValue) => {
+
+                                    this.setState({ inputValue: selectedValue }, () => {
+                                        this.searchByLocation('location')
+                                    });
+                                    
+                                    
+                                    // find = value
+                                    console.log(this.state.inputValue)
+                                }} />
 
 
-                       
-                    </div>
+
+
+
+                        </div>
                         <div className="spacer2"></div>
-                        <div id="outsideCitizenInfoDiv" style={{ display : 'none'}}>
-                        <BoxContainer title="Citizen Information" collapsible={false}  className="textleft" >
-                            <div style={{ padding: "2rem", minWidth: "1080px"}}>
-                                <Layout.GridContainer className="column4">
-                                    <Text.Body weight="semibold">NRIC</Text.Body>
-                                    <Text.Body weight="semibold">Name</Text.Body>
-                                    <Text.Body weight="semibold">Phone Number</Text.Body>
-                                    <Text.Body weight="semibold">Email</Text.Body>
-                                    <Text.Body>{this.state.bookings[0]?.Nric}</Text.Body> {/* Service Provider  */}
-                                    <Text.Body>{this.state.bookings[0]?.CitizenName}</Text.Body> {/* Service Name  */}
-                                    <Text.Body>{this.state.bookings[0]?.CitizenNumber}</Text.Body> {/* Phone */}
-                                    <Text.Body>{this.state.bookings[0]?.CitizenEmail}</Text.Body> {/* Email  */}
-                                </Layout.GridContainer>
-                            </div>
-                        </BoxContainer>
+                        <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
+                            <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
+                                <div style={{ padding: "2rem", minWidth: "1080px" }}>
+                                    <Layout.GridContainer className="column4">
+                                        <Text.Body weight="semibold">NRIC</Text.Body>
+                                        <Text.Body weight="semibold">Name</Text.Body>
+                                        <Text.Body weight="semibold">Phone Number</Text.Body>
+                                        <Text.Body weight="semibold">Email</Text.Body>
+                                        <Text.Body>{this.state.bookings[0]?.Nric}</Text.Body> {/* Service Provider  */}
+                                        <Text.Body>{this.state.bookings[0]?.CitizenName}</Text.Body> {/* Service Name  */}
+                                        <Text.Body>{this.state.bookings[0]?.CitizenNumber}</Text.Body> {/* Phone */}
+                                        <Text.Body>{this.state.bookings[0]?.CitizenEmail}</Text.Body> {/* Email  */}
+                                    </Layout.GridContainer>
+                                </div>
+                            </BoxContainer>
                         </div>
-                        
+
                     </StyledContainer>
                     <div className="spacer5"></div>
                     <StyledContainer>
