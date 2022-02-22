@@ -41,7 +41,7 @@ const Main = styled.main`
 
 interface MyState {
     bookings: Booking[],
-    inputLocation: string,
+    inputValue: string,
     clicked: string
 }
 
@@ -55,7 +55,7 @@ class Appointment extends React.Component<{}, MyState> {
 
         this.state = {
             bookings: [],
-            inputLocation: '',
+            inputValue: '',
             clicked: 'none'
             // booking: Booking
 
@@ -66,12 +66,19 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
 
-    public async searchByLocation() {
+    public async searchByLocation(searchMethod: string) {
         let data = ''
 
         const newSubElement = document.getElementsByTagName("Accordion.Base")[0]
+        var apiURL : string
+        if(searchMethod == "location"){
+            apiURL = 'http://localhost:3001/api/booking/location/';
+        }
+        else{
+            apiURL = 'http://localhost:3001/api/booking/citizen/';
+        }
 
-        fetch('http://localhost:3001/api/booking/citizen/' + this.state.inputLocation)
+        fetch(apiURL + this.state.inputValue)
             .then(function (response) {
                 return response.json();
 
@@ -125,18 +132,52 @@ class Appointment extends React.Component<{}, MyState> {
                     <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
 
                     <StyledContainer>
+                    <Text.H3>View appointments by NRIC:</Text.H3>
                         <div className="inlinecontent" style={{ justifyItems: "start", }}>
+                            
                             <InputGroup addon={{
                                 // children: <Icon type="search" />,
                                 type: 'custom'
-                            }} placeholder="Search..."
+                            }} placeholder="Type NRIC here..."
                                 onChange={evt => this.updateInputValue(evt)}
 
                             />
 
 
-                            <Button.Default onClick={this.searchByLocation}>Search</Button.Default>
+                            <Button.Default onClick={() =>this.searchByLocation("NRIC")} >Search</Button.Default>
                         </div>
+
+                    <Text.H3>View appointments by Location: </Text.H3>
+                    <div className="inlinecontent" style={{ justifyItems: "start", }}>
+                        
+                    <Form.Select
+                        label="Service Provider Location"
+                        placeholder="Select"
+
+                        options={[
+                            { value: "Tampines", label: "Tampines" },
+                            { value: "Woodlands", label: "Woodlands" },
+                            { value: "Toa Payoh", label: "Toa Payoh" },
+                            { value: "Punggol", label: "Punggol" },
+
+
+                        ]}
+                        valueExtractor={(item) => item.value}
+                        listExtractor={(item) => item.label}
+                        displayValueExtractor={(item) => item.label}
+                        onSelectItem={(item, selectedValue) => {
+                            this.setState({
+                                inputValue: selectedValue
+                            });                            
+                            this.searchByLocation('location')
+                            // find = value
+                            console.log(this.state.inputValue)
+                        }}
+                    />
+
+
+                       
+                    </div>
                         <div className="spacer2"></div>
                         <div id="outsideCitizenInfoDiv" style={{ display : 'none'}}>
                         <BoxContainer title="Citizen Information" collapsible={false}  className="textleft" >
@@ -212,7 +253,7 @@ class Appointment extends React.Component<{}, MyState> {
         const val = evt.target.value;
         // ...
         this.setState({
-            inputLocation: val
+            inputValue: val
         });
     }
 }
