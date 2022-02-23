@@ -8,7 +8,6 @@ import { BookingPage } from './displayBookingForm';
 
 interface IProps { 
     history: History;
-    //Map properties match
     match:{ 
         isExact: boolean
         params: {
@@ -45,15 +44,9 @@ export default class Edit extends React.Component<IProps, IState> {
                 ServiceStartDate : '',
                 ServiceStartTime :'',
                 ServiceProviderLocation : '',
-                // ServiceEndDateTime : '',
 
-                // BookingCreationDate : '',
-                // BookingLocation : '',
-                // BookingDescription : '',
-                // BookingReference : '',
                 BookingStatus : '',
 
-                // DynamicFields : '',
                 Id: ''
             }
         }
@@ -96,14 +89,8 @@ export default class Edit extends React.Component<IProps, IState> {
                         booking.serviceStartDate,
                         booking.serviceStartTime, 
                         booking.serviceProviderLocation,
-                        // booking.serviceEndDateTime, 
 
-                        // booking.bookingCreationDate,
-                        // booking.bookingLocation, 
-                        // booking.bookingDescription, 
-                        // booking.bookingReference, 
                         booking.bookingStatus
-                        // booking.dynamicFields 
                         
                         )});
                 } else {

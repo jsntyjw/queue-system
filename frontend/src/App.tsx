@@ -3,12 +3,10 @@ import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 
 import './App.css';
 import './index.css';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'toastr/build/toastr.min.css';
 import Index from './components/index.component';
 import Edit from './components/UpdateBooking';
 import Create from './components/CreateNewBooking';
-// import Home from './components/Appointments';
 import Home from './components/Home'
 import Appointments from './components/Appointments'
 import UpcomingAppointments from './components/UpcomingAppointments'
@@ -20,8 +18,7 @@ import BookingFound from './components/bookingfound.component';
 
 
 // import React from "react";
-import { ThemeProvider } from "styled-components";
-import { BaseTheme, Footer, Breadcrumb } from "react-lifesg-design-system";
+import {  Footer, Breadcrumb } from "react-lifesg-design-system";
 
 
 

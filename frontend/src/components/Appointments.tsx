@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../App.css';
-import { Text, Form, Button, Layout, BoxContainer, LinkList, Breadcrumb, Icon, InputGroup, Accordion, InputSelect } from 'react-lifesg-design-system';
+import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import Booking from "../models/booking";
-
-
-
-interface Props {
-    onChange: (fieldName: string, value: string) => void;
-    onSave: () => void;
-}
-
-
-
 
 const StyledContainer = styled(Layout.GridContainer)`
     grid-template-rows: 1fr;
@@ -43,28 +33,40 @@ interface MyState {
 }
 
 
+async function sendtoQueue() {
 
+
+    const requestOptions = {
+        // method: 'GET',
+        // headers: { 'Content-Type': 'application/json' },
+        body:
+            JSON.stringify({
+                "exchangeID": "hospital",
+                "bindingKey": "doctor",
+                "bookingID": "test"
+            })
+    };
+    fetch('https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender', requestOptions)
+        .then(function (response) {
+            return response.json();
+
+        }).then((myJson) => {
+            console.log(myJson)
+        })
+}
 
 class Appointment extends React.Component<{}, MyState> {
 
     constructor(props) {
         super(props);
-
         this.state = {
             bookings: [],
             inputValue: '',
             clicked: 'none'
-            // booking: Booking
 
         };
-
         this.searchByLocation = this.searchByLocation.bind(this)
-
     }
-
-
-
-
 
     public async searchByLocation(searchMethod: string) {
 
@@ -83,9 +85,7 @@ class Appointment extends React.Component<{}, MyState> {
         fetch(apiURL + this.state.inputValue)
             .then(function (response) {
                 return response.json();
-
             })
-
             .then((myJson) => {
                 myJson.data.forEach(element => {
                     var eachBooking = new Booking(
@@ -106,7 +106,6 @@ class Appointment extends React.Component<{}, MyState> {
                     );
 
                     this.state.bookings.length = 0
-
                     const bookings = this.state.bookings.slice(0);
                     bookings.push(eachBooking)
 
@@ -115,16 +114,11 @@ class Appointment extends React.Component<{}, MyState> {
                         clicked: 'block'
                     });
 
-
-
-
-                })
-                    ;
+                });
             });
     }
 
     render() {
-
         return (
             <StyledSection>
                 <Layout.Container>
@@ -132,16 +126,11 @@ class Appointment extends React.Component<{}, MyState> {
                     <StyledContainer>
                         <Text.H3>View appointments by NRIC:</Text.H3>
                         <div className="inlinecontent" style={{ justifyItems: "start", }}>
-
                             <InputGroup addon={{
-                                // children: <Icon type="search" />,
                                 type: 'custom'
                             }} placeholder="Type NRIC here..."
                                 onChange={evt => this.updateInputValue(evt)}
-
                             />
-
-
                             <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                         </div>
 
@@ -154,26 +143,15 @@ class Appointment extends React.Component<{}, MyState> {
                                     { value: "Woodlands", label: "Woodlands" },
                                     { value: "Toa Payoh", label: "Toa Payoh" },
                                     { value: "Punggol", label: "Punggol" },
-
-
                                 ]}
                                 valueExtractor={(item) => item.value}
                                 listExtractor={(item) => item.label}
                                 displayValueExtractor={(item) => item.label}
                                 onSelectItem={(item, selectedValue) => {
-
                                     this.setState({ inputValue: selectedValue }, () => {
                                         this.searchByLocation('location')
                                     });
-
-
-                                    // find = value
-                                    console.log(this.state.inputValue)
                                 }} />
-
-
-
-
 
                         </div>
                         <div className="spacer2"></div>
@@ -185,10 +163,10 @@ class Appointment extends React.Component<{}, MyState> {
                                         <Text.Body weight="semibold">Name</Text.Body>
                                         <Text.Body weight="semibold">Phone Number</Text.Body>
                                         <Text.Body weight="semibold">Email</Text.Body>
-                                        <Text.Body>{this.state.bookings[0]?.Nric}</Text.Body> {/* Service Provider  */}
-                                        <Text.Body>{this.state.bookings[0]?.CitizenName}</Text.Body> {/* Service Name  */}
-                                        <Text.Body>{this.state.bookings[0]?.CitizenNumber}</Text.Body> {/* Phone */}
-                                        <Text.Body>{this.state.bookings[0]?.CitizenEmail}</Text.Body> {/* Email  */}
+                                        <Text.Body>{this.state.bookings[0]?.Nric}</Text.Body>
+                                        <Text.Body>{this.state.bookings[0]?.CitizenName}</Text.Body>
+                                        <Text.Body>{this.state.bookings[0]?.CitizenNumber}</Text.Body>
+                                        <Text.Body>{this.state.bookings[0]?.CitizenEmail}</Text.Body>
                                     </Layout.GridContainer>
                                 </div>
                             </BoxContainer>
@@ -241,9 +219,7 @@ class Appointment extends React.Component<{}, MyState> {
                             </Accordion.Base>
 
                         </Main>
-
                         <div className="spacer3"></div>
-
                     </StyledContainer>
                 </Layout.Container>
             </StyledSection>
@@ -253,7 +229,6 @@ class Appointment extends React.Component<{}, MyState> {
 
     updateInputValue(evt) {
         const val = evt.target.value;
-        // ...
         this.setState({
             inputValue: val
         });
@@ -261,29 +236,3 @@ class Appointment extends React.Component<{}, MyState> {
 }
 
 export default Appointment;
-
-function componentDidMount() {
-    throw new Error('Function not implemented.');
-}
-
-async function sendtoQueue() {
-
-
-    const requestOptions = {
-        // method: 'GET',
-        // headers: { 'Content-Type': 'application/json' },
-        body:
-            JSON.stringify({
-                "exchangeID": "hospital",
-                "bindingKey": "doctor",
-                "bookingID": "test"
-            })
-    };
-    fetch('https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender', requestOptions)
-        .then(function (response) {
-            return response.json();
-
-        }).then((myJson) => {
-            console.log(myJson)
-        })
-}

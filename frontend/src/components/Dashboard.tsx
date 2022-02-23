@@ -2,15 +2,11 @@ import React from 'react';
 import '../App.css';
 import { 
     Text, 
-    Form, 
     Button, 
     Layout, 
-    Banner, 
-    LinkList,
     Breadcrumb,
     Accordion
 } from 'react-lifesg-design-system';
-import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
 
 interface Props {

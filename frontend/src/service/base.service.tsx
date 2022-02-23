@@ -3,7 +3,6 @@ import axios from "axios";
 
 
 export default class BaseService {
-    // private static baseURL: string = "https://sal-react-demo-server.herokuapp.com/api";
 
     private static baseURL: string = "http://localhost:3001/api";
 

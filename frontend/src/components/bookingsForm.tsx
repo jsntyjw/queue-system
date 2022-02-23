@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Booking from '../models/booking';
 
-import { Input, DateInput, ButtonSave } from '../common/components/form';
-import { Text, Form, Layout, Breadcrumb, AlertBox } from 'react-lifesg-design-system';
+import { Input, ButtonSave } from '../common/components/form';
+import { Text, Form, Layout, Breadcrumb } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import '../App.css';
 import '../index.css';
@@ -30,7 +30,6 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
         <StyledSection>
             <Layout.Container>
                 <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/' }, { title: 'Appointments', url: 'http://localhost:3000/Appointments' }, { title: 'Add Appointment' }]} />
-
                 <Text.H1>Add Appointment</Text.H1>
                 <ModifiedText>Citizen Information</ModifiedText>
                 <form>
@@ -56,7 +55,6 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                     <Form.Select
                         label="Salutation"
                         placeholder="Select"
-
                         options={[
                             { value: "Miss", label: "Miss" },
                             { value: "Mrs", label: "Mrs" },
@@ -67,7 +65,6 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         displayValueExtractor={(item) => item.label}
                         onSelectItem={(item, value) => {
                             props.booking.ServiceProviderName = value
-
                         }}
                     />
 
@@ -92,18 +89,6 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
 
                     <ModifiedText>Service Provider Information</ModifiedText>
 
-
-                    {/* <Dropdown
-                        name="ServiceName"
-                        label="ServiceName"
-                        // options={["Psychology", "Ophthalmologist"]}
-                        // value={props.booking.ServiceName}
-                        value={props.booking.ServiceName}
-                        onChange={props.onChange}
-
-                        
-                    /> */}
-
                     <Form.Select
                         label="Service"
                         placeholder="Select"
@@ -117,14 +102,8 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         displayValueExtractor={(item) => item.label}
                         onSelectItem={(item, value) => {
                             props.booking.ServiceName = value
-
                         }}
                     />
-
-
-
-
-
                     <Form.Select
                         label="Service Provider Name"
                         placeholder="Select"
@@ -159,14 +138,13 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         onChange={props.onChange}
                     />
 
-                <Form.DateInput label="Date" 
-                onChange={ (value) => {
-                    props.booking.ServiceStartDate = value
-                }
+                    <Form.DateInput label="Date"
+                        onChange={(value) => {
+                            props.booking.ServiceStartDate = value
+                        }
 
-                }
-                />
-
+                        }
+                    />
 
                     <Form.Select
                         label="Service Time"
@@ -181,7 +159,7 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         listExtractor={(item) => item.label}
                         displayValueExtractor={(item) => item.label}
                         onSelectItem={(item, value) => {
-                            props.booking.ServiceStartTime =  value
+                            props.booking.ServiceStartTime = value
                         }}
                     />
 
@@ -207,11 +185,6 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         }}
                     />
 
-
-
-
-
-
                     <Input
                         name="BookingStatus"
                         defaultValue='New'
@@ -221,8 +194,6 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         value={props.booking.BookingStatus}
                         onChange={props.onChange}
                     />
-
-
 
                     <ButtonSave
                         className="btn btn-success mt-2"

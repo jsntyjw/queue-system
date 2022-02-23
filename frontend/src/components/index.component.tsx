@@ -47,15 +47,7 @@ class Index extends React.Component<IProps, IState> {
             p.serviceStartDate,
             p.serviceStartTime, 
             p.serviceProviderLocation,
-            // p.serviceEndDateTime, 
-
-
-            // p.bookingCreationDate,
-            // p.bookingLocation, 
-            // p.bookingDescription, 
-            // p.bookingReference, 
             p.bookingStatus,
-            // p.dynamicFields 
             
             ));
         });
@@ -139,15 +131,8 @@ class Index extends React.Component<IProps, IState> {
               <th>ServiceStartDate</th>
               <th>ServiceStartTime</th>
               <th>ServiceProviderLocation</th>
-              {/* <th>ServiceEndDateTime</th>
-
-              <th>BookingCreationDate</th>
-              <th>BookingLocation</th>
-              <th>BookingDescription</th>
-              <th>BookingReference</th> */}
               <th>BookingStatus</th>
               
-              {/* <th>DynamicFields</th> */}
               <th className="text-center" colSpan={2}>
                 Action
               </th>

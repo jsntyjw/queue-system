@@ -1,7 +1,6 @@
 import React from 'react';
 import '../App.css';
-import {Text, Form, Button, Layout, BoxContainer, LinkList, Breadcrumb, Icon, InputGroup } from 'react-lifesg-design-system';
-import { ThemeProvider } from "styled-components";
+import {Text, Form, Button, Layout, LinkList, Breadcrumb } from 'react-lifesg-design-system';
 import styled from "styled-components";
 
 interface Props {

@@ -47,15 +47,9 @@ const ViewAllBookings: React.FunctionComponent<IProps> = (props) => {
       <td>{props.booking.ServiceProviderPhone}</td>
       <td>{props.booking.ServiceStartDate}</td>
       <td>{props.booking.ServiceStartTime}</td>
-      {/* <td>{props.booking.ServiceEndDateTime}</td> */}
 
-      {/* <td>{props.booking.BookingCreationDate}</td>
-      <td>{props.booking.BookingLocation}</td>
-      <td>{props.booking.BookingDescription}</td>
-      <td>{props.booking.BookingReference}</td> */}
       <td>{props.booking.BookingStatus}</td>
 
-      {/* <td>{props.booking.DynamicFields}</td> */}
       <td>
         <Link to={"/edit/" + props.booking.Id} className="btn btn-primary">
           Edit
@@ -69,14 +63,6 @@ const ViewAllBookings: React.FunctionComponent<IProps> = (props) => {
     </tr>
   );
 };
-
-
-
-
-
-
-
-
 
 
 export default ViewAllBookings;

@@ -10,9 +10,6 @@ interface IState {
 
 class ScanIC extends React.Component<IProps, IState> {
 
-    public componentDidMount() {
-
-    }
 
     public render(): React.ReactNode {
         return (

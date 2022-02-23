@@ -41,13 +41,7 @@ export default class Create extends  React.Component<IProps, IState> {
                 ServiceStartDate : '',
                 ServiceStartTime : '',
                 ServiceProviderLocation : '',
-                // ServiceEndDateTime : '',
-                // BookingCreationDate : '',
-                // BookingLocation : '',
-                // BookingDescription : '',
-                // BookingReference : '',
                 BookingStatus : 'New',
-                // DynamicFields : '',
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
@@ -86,13 +80,7 @@ export default class Create extends  React.Component<IProps, IState> {
                             ServiceStartTime : '',
 
                             ServiceProviderLocation : '',
-                            // ServiceEndDateTime : '',
-                            // BookingCreationDate : '',
-                            // BookingLocation : '',
-                            // BookingDescription : '',
-                            // BookingReference : '',
                             BookingStatus : 'New',
-                            // DynamicFields : '',
                             Id: '',
                         }
                     });

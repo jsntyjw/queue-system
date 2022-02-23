@@ -9,10 +9,6 @@ interface IState {
 
 class BookingFound extends React.Component<IProps, IState> {
 
-    public componentDidMount() {
-
-    }
-
     public render(): React.ReactNode {
         return (
             <Layout.Content className="center">

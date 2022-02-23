@@ -12,14 +12,8 @@ export default class Bookings {
     ServiceProviderPhone: string;
     ServiceStartDate: string;
     ServiceStartTime : string;
-    // ServiceEndDateTime: string;
 
     ServiceProviderLocation: string;
-
-    // BookingCreationDate: string;
-    // BookingLocation: string;
-    // BookingDescription: string;
-    // BookingReference: string;
     BookingStatus: string;
 
     // DynamicFields: string;
@@ -40,12 +34,7 @@ export default class Bookings {
         serviceStartTime: string,
         serviceProviderLocation: string,
 
-        // bookingCreationDate: string,
-        // bookingLocation: string,
-        // bookingDescription: string,
-        // bookingReference: string,
         bookingStatus: string,
-        // dynamicFields: string,
         ) {
         this.Id = id;
         this.Nric = nric;
@@ -63,14 +52,6 @@ export default class Bookings {
 
         this.ServiceProviderLocation = serviceProviderLocation;
 
-        // this.BookingCreationDate = bookingCreationDate;
-        // this.BookingLocation = bookingLocation;
-        // this.BookingDescription = bookingDescription;
-        // this.BookingReference = bookingReference;
-
-        
-        // this.ServiceEndDateTime = serviceEndDateTime;
         this.BookingStatus = bookingStatus;
-        // this.DynamicFields = dynamicFields;
     } 
 }
