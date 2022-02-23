@@ -66,6 +66,38 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
 
+    
+
+
+
+    // public  sendtoQueue() {
+
+    //     console.log(":Test")
+    // Simple POST request with a JSON body using fetch
+    // const requestOptions = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body:
+    //         JSON.stringify({
+    //             "exchangeID": "hospital",
+    //             "bindingKey": "doctor",
+    //             "bookingID": "test"
+    //         })
+    // };
+    // fetch('https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender', requestOptions)
+    //     .then(function (response) {
+    //         return response.json();
+
+    //     }).then((myJson) => {
+    //         console.log(myJson)
+    //     }).catch
+
+    // }
+
+
+
+
+
     public async searchByLocation(searchMethod: string) {
         let data = ''
 
@@ -171,8 +203,8 @@ class Appointment extends React.Component<{}, MyState> {
                                     this.setState({ inputValue: selectedValue }, () => {
                                         this.searchByLocation('location')
                                     });
-                                    
-                                    
+
+
                                     // find = value
                                     console.log(this.state.inputValue)
                                 }} />
@@ -236,6 +268,10 @@ class Appointment extends React.Component<{}, MyState> {
                                                         <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
                                                     </li>
                                                 </ul>
+
+                                                <Button.Default
+                                                    onClick={ () =>  sendtoQueue() }
+                                                >test</Button.Default>
                                             </Text.Body>
                                         </Accordion.Item>
                                     )
@@ -266,4 +302,26 @@ export default Appointment;
 
 function componentDidMount() {
     throw new Error('Function not implemented.');
+}
+
+ async function sendtoQueue() {
+
+
+    const requestOptions = {
+        // method: 'GET',
+        // headers: { 'Content-Type': 'application/json' },
+        body:
+            JSON.stringify({
+                "exchangeID": "hospital",
+                "bindingKey": "doctor",
+                "bookingID": "test"
+            })
+    };
+    fetch('https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender', requestOptions)
+        .then(function (response) {
+            return response.json();
+
+        }).then((myJson) => {
+            console.log(myJson)
+        })
 }
