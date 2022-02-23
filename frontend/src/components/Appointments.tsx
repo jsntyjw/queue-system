@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import '../App.css';
 import { Text, Form, Button, Layout, BoxContainer, LinkList, Breadcrumb, Icon, InputGroup, Accordion, InputSelect } from 'react-lifesg-design-system';
-import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
 import Booking from "../models/booking";
-import { render } from 'react-dom';
 
 
 
@@ -65,48 +63,21 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
 
-    
-
-
-
-    // public  sendtoQueue() {
-
-    //     console.log(":Test")
-    // Simple POST request with a JSON body using fetch
-    // const requestOptions = {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body:
-    //         JSON.stringify({
-    //             "exchangeID": "hospital",
-    //             "bindingKey": "doctor",
-    //             "bookingID": "test"
-    //         })
-    // };
-    // fetch('https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender', requestOptions)
-    //     .then(function (response) {
-    //         return response.json();
-
-    //     }).then((myJson) => {
-    //         console.log(myJson)
-    //     }).catch
-
-    // }
-
-
 
 
 
     public async searchByLocation(searchMethod: string) {
-        let data = ''
 
-        const newSubElement = document.getElementsByTagName("Accordion.Base")[0]
         var apiURL: string
         if (searchMethod == "location") {
             apiURL = 'http://localhost:3001/api/booking/location/';
+            document.getElementById("outsideCitizenInfoDiv")!!.style.display = "none";
+
         }
         else {
             apiURL = 'http://localhost:3001/api/booking/citizen/';
+            document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
+
         }
 
         fetch(apiURL + this.state.inputValue)
@@ -144,7 +115,6 @@ class Appointment extends React.Component<{}, MyState> {
                         clicked: 'block'
                     });
 
-                    document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
 
 
 
@@ -156,16 +126,9 @@ class Appointment extends React.Component<{}, MyState> {
     render() {
 
         return (
-
-
-
-
             <StyledSection>
                 <Layout.Container>
                     <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
-
-
-
                     <StyledContainer>
                         <Text.H3>View appointments by NRIC:</Text.H3>
                         <div className="inlinecontent" style={{ justifyItems: "start", }}>
@@ -242,7 +205,7 @@ class Appointment extends React.Component<{}, MyState> {
                             <Accordion.Base className='base' >
                                 {this.state.bookings.map(function (input, index) {
                                     return (
-                                        <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                        <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
                                             <Text.Body>
                                                 <ul>
                                                     <li>
@@ -269,7 +232,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                 </ul>
 
                                                 <Button.Default
-                                                    onClick={ () =>  sendtoQueue() }
+                                                    onClick={() => sendtoQueue()}
                                                 >test</Button.Default>
                                             </Text.Body>
                                         </Accordion.Item>
@@ -303,7 +266,7 @@ function componentDidMount() {
     throw new Error('Function not implemented.');
 }
 
- async function sendtoQueue() {
+async function sendtoQueue() {
 
 
     const requestOptions = {
