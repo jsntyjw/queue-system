@@ -17,13 +17,7 @@ const BOOKING = new Schema({
     serviceStartTime : String,
 
     serviceProviderLocation : String,
-    // serviceEndDateTime : String,
-    // bookingCreationDate : String,
-    // bookingLocation : String,
-    // bookingDescription : String,
-    // bookingReference : String,
     bookingStatus : String,
-    // dynamicFields : String,
     
 
 }).pre('save', (next) => {
@@ -32,6 +26,5 @@ const BOOKING = new Schema({
 });
 
 exports.SCHEMAS = {
-    // ACCOUNT: ACCOUNT,
     BOOKING: BOOKING
 };

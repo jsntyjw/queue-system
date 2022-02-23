@@ -7,8 +7,6 @@ class Facade extends BaseCore {
 
     constructor() {
         super();
-
-        // this._accountComponent = new AccountComponent;
         this._bookingComponent = new BookingComponent; 
     }
 

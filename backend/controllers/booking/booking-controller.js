@@ -98,16 +98,7 @@ class BookingController extends BaseController {
                 serviceStartTime: req.body.ServiceStartTime,
 
                 serviceProviderLocation: req.body.ServiceProviderLocation,
-                // serviceEndDateTime: req.body.ServiceEndDateTime,
-
-                // bookingCreationDate: req.body.BookingCreationDate,
-                // bookingLocation: req.body.BookingLocation,
-                // bookingDescription: req.body.BookingDescription,
-                // bookingReference: req.body.BookingReference,
-                bookingStatus: req.body.BookingStatus,
-
-                // dynamicFields: req.body.DynamicFields,
-                
+                bookingStatus: req.body.BookingStatus,                
             };
  
             let data = await this._facade.addBooking(booking);
@@ -145,13 +136,7 @@ class BookingController extends BaseController {
                 serviceStartTime: req.body.ServiceStartTime,
 
                 serviceProviderLocation: req.body.ServiceProviderLocation,
-                // serviceEndDateTime: req.body.ServiceEndDateTime,
-                // bookingCreationDate: req.body.BookingCreationDate,
-                // bookingLocation: req.body.BookingLocation,
-                // bookingDescription: req.body.BookingDescription,
-                // bookingReference: req.body.BookingReference,
                 bookingStatus: req.body.BookingStatus,
-                // dynamicFields: req.body.DynamicFields,
             };
 
             let data = await this._facade.updateBooking(booking.id, booking);
