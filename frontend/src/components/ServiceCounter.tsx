@@ -34,7 +34,7 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
                             <div className='spacer1'></div>
 
                             <Button.Default className='buttonsuccess'
-                                onClick={props.onSave}
+                                onClick={ () => consumeQueue(handle200)}
                             >Next Patient</Button.Default>
 
                             <div className='spacer1'></div>
@@ -69,10 +69,8 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
                         <InputSelect
                             placeholder="Select"
                             options={[
-                                { value: "A", label: "Option A" },
-                                { value: "B", label: "Option B" },
-                                { value: "C", label: "Option C" },
-                                { value: "D", label: "Option D" },
+                                { value: "Payment", label: "Payment" },
+                                { value: "Medication", label: "Medication" }
                             ]}
                             valueExtractor={(item) => item.value}
                             listExtractor={(item) => item.label}
@@ -86,7 +84,7 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
 
                     <Button.Default
                         onClick={props.onSave}
-                    >Next Number</Button.Default>
+                    >Send to next service</Button.Default>
 
 
                 </Layout.Container>
@@ -96,3 +94,37 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
 }
 
 export default ServiceCounter;
+
+
+
+function handle200(response) {
+    console.log('handle200 has received:', response);
+}
+
+function consumeQueue(callback) {
+    const xhr = new XMLHttpRequest(),
+        method = "GET",
+        url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=doctorQueue";
+    // initialize a new GET request
+    xhr.open(method, url, true);
+
+    // respond to every readyState change
+    xhr.onreadystatechange = function () {
+
+        // ignore all readyStates other than "DONE"
+        if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
+
+        // call the callback with status
+        if (xhr.status === 200) {
+            return callback(xhr.status);
+        }
+
+        // got something other than 200,
+        // re-initialize and send another GET request
+        xhr.open(method, url, true);
+        xhr.send();
+    }
+
+    // send the initial GET request
+    xhr.send();
+}

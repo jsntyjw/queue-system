@@ -33,27 +33,7 @@ interface MyState {
 }
 
 
-async function sendtoQueue() {
 
-
-    const requestOptions = {
-        // method: 'GET',
-        // headers: { 'Content-Type': 'application/json' },
-        body:
-            JSON.stringify({
-                "exchangeID": "hospital",
-                "bindingKey": "doctor",
-                "bookingID": "test"
-            })
-    };
-    fetch('https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender', requestOptions)
-        .then(function (response) {
-            return response.json();
-
-        }).then((myJson) => {
-            console.log(myJson)
-        })
-}
 
 class Appointment extends React.Component<{}, MyState> {
 
@@ -210,7 +190,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                 </ul>
 
                                                 <Button.Default
-                                                    onClick={() => sendtoQueue()}
+                                                    onClick={() => checkPage(handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
                                                 >test</Button.Default>
                                             </Text.Body>
                                         </Accordion.Item>
@@ -236,3 +216,50 @@ class Appointment extends React.Component<{}, MyState> {
 }
 
 export default Appointment;
+
+function handle200(response) {
+    console.log('handle200 has received:', response);
+}
+
+function checkPage(callback, bookingId : string, nric : string, citizenName : string, citizenEmail : string, citizenNumber : string) {
+    const queueObject = {
+        "_id" :bookingId,
+        "nric":nric,
+        "citizenName":citizenName,
+        "citizenEmail":citizenEmail,
+        "citizenNumber":citizenNumber
+    }
+
+    const myJSON = encodeURI(JSON.stringify(queueObject));
+
+    console.log(typeof(myJSON))
+
+    const xhr = new XMLHttpRequest(),
+        method = "GET",
+        url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=booking001&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
+    // initialize a new GET request
+    xhr.open(method, url, true);
+
+    // respond to every readyState change
+    xhr.onreadystatechange = function () {
+
+        // ignore all readyStates other than "DONE"
+        if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
+
+        // call the callback with status
+        if (xhr.status === 200) {
+            return callback(xhr.status);
+        }
+
+        // got something other than 200,
+        // re-initialize and send another GET request
+        xhr.open(method, url, true);
+        xhr.send();
+    }
+
+    // send the initial GET request
+    xhr.send();
+}
+
+// call checkPage once
+
