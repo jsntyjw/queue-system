@@ -25,7 +25,6 @@ const StyledContainer = styled(Layout.GridContainer)`
         "queue";
     grid-gap: 0.25rem;
     grid-row-gap: 16px;
-    padding: 0 25px;
 `;
 
 const StyledSection = styled(Layout.Section)`

@@ -7,7 +7,8 @@ import {
     Layout, 
     Banner, 
     LinkList,
-    Breadcrumb 
+    Breadcrumb,
+    Accordion
 } from 'react-lifesg-design-system';
 import { ThemeProvider } from "styled-components";
 import styled from "styled-components";
@@ -25,17 +26,7 @@ const StyledContainer = styled(Layout.GridContainer)`
         "button "
         "queue";
     grid-gap: 0.25rem;
-    padding: 25px;
-`;
-
-const StyledContainer1 = styled(Layout.GridContainer)`
-    grid-template-rows: 1fr;
-    grid-template-columns: 12fr;
-    grid-template-areas:
-        "title"
-        "queue";
-    grid-gap: 0.25rem;
-    padding: 25px;
+    margin-bottom: 20px;
 `;
 
 const StyledSection = styled(Layout.Section)`
@@ -68,105 +59,145 @@ const Dashboard: React.FunctionComponent<Props> = (props) => {
         
             <StyledContainer>
                 <Title><Text.H3>Currently Serving</Text.H3></Title>
-                <Buttons>
-                    <Button.Default styleType="secondary"
-                        onClick={props.onSave}
-                    >Recall</Button.Default>
-                    <div className='btn_right'>
-                    <Button.Default
-                        onClick={props.onSave}
-                    >Next Number</Button.Default>
-                    </div>
-                </Buttons>
-                <Main>
-                    <LinkList items={[{
-                    title: "First queue",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Second queue",
-                    description: "Excepteur sint occaecat cupidatat non proident",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Third queue",
-                    description: "Lorem ipsum dolar sit amet",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Fourth queue",
-                    description: "Ut enim ad minima veniam, quis nostrum exercitationem",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }]} style="small" maxShown={2} />
-                </Main>
-             
-                
+                <Accordion.Base className='base' >
+                    <Accordion.Item title="" key="" expanded={false}>
+                        <Text.Body>
+                            <ul>
+                                <li>
+                                    <b>Citizen Name :</b>
+                                </li>
+                                <li>
+                                    <b>Citizen Number: </b>
+                                </li>
+                                <li>
+                                    <b>Citizen Email: </b>
+                                </li>
+                                <li>
+                                    <b>Service start date:</b>
+                                </li>
+                                <li>
+                                    <b>Service start time:</b>
+                                </li>
+                                <li>
+                                    <b>Service Name:</b>
+                                </li>
+                                <li>
+                                    <b>Service Provider Location:</b>
+                                </li>
+                            </ul>
+                        </Text.Body>
+                    </Accordion.Item>
+                </Accordion.Base>
+            </StyledContainer>
+
+
+            <StyledContainer>
+                <Title><Text.H3>Upcoming Queue</Text.H3></Title>
+                <Accordion.Base className='base' >
+                    <Accordion.Item title="" key="" expanded={false}>
+                        <Text.Body>
+                            <ul>
+                                <li>
+                                    <b>Citizen Name :</b>
+                                </li>
+                                <li>
+                                    <b>Citizen Number: </b>
+                                </li>
+                                <li>
+                                    <b>Citizen Email: </b>
+                                </li>
+                                <li>
+                                    <b>Service start date:</b>
+                                </li>
+                                <li>
+                                    <b>Service start time:</b>
+                                </li>
+                                <li>
+                                    <b>Service Name:</b>
+                                </li>
+                                <li>
+                                    <b>Service Provider Location:</b>
+                                </li>
+                            </ul>
+                        </Text.Body>
+                    </Accordion.Item>
+                </Accordion.Base>
             </StyledContainer>
       
 
-            <StyledContainer1>
+            <StyledContainer>
                 <Title><Text.H3>Previous Queue</Text.H3></Title>
-                
-                <Main>
-                    <LinkList items={[{
-                    title: "First queue",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Second queue",
-                    description: "Excepteur sint occaecat cupidatat non proident",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Third queue",
-                    description: "Lorem ipsum dolar sit amet",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Fourth queue",
-                    description: "Ut enim ad minima veniam, quis nostrum exercitationem",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }]} style="small" maxShown={2} />
-                </Main>
-             
-                
-            </StyledContainer1>
+                <Accordion.Base className='base' >
+                    <Accordion.Item title="" key="" expanded={false}>
+                        <Text.Body>
+                            <ul>
+                                <li>
+                                    <b>Citizen Name :</b>
+                                </li>
+                                <li>
+                                    <b>Citizen Number: </b>
+                                </li>
+                                <li>
+                                    <b>Citizen Email: </b>
+                                </li>
+                                <li>
+                                    <b>Service start date:</b>
+                                </li>
+                                <li>
+                                    <b>Service start time:</b>
+                                </li>
+                                <li>
+                                    <b>Service Name:</b>
+                                </li>
+                                <li>
+                                    <b>Service Provider Location:</b>
+                                </li>
+                            </ul>
+                        </Text.Body>
+                    </Accordion.Item>
+                </Accordion.Base>
+            </StyledContainer>
 
             <StyledContainer>
                 <Title><Text.H3>Missed Queue</Text.H3></Title>
-                <Buttons>
-                    <div className='btn_right'>
-                    <Button.Default
-                        onClick={props.onSave}
-                    >Transfer</Button.Default>
-                    </div>
-                </Buttons>
-                <Main>
-                    <LinkList items={[{
-                    title: "First queue",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Second queue",
-                    description: "Excepteur sint occaecat cupidatat non proident",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Third queue",
-                    description: "Lorem ipsum dolar sit amet",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }, {
-                    title: "Fourth queue",
-                    description: "Ut enim ad minima veniam, quis nostrum exercitationem",
-                    href: "https://www.google.com",
-                    target: "_blank"
-                }]} style="small" maxShown={2} />
-                </Main>
-             
                 
+                <Accordion.Base className='base' >
+                    <Accordion.Item title="" key="" expanded={false}>
+                        <Text.Body>
+                            <ul>
+                                <li>
+                                    <b>Citizen Name :</b>
+                                </li>
+                                <li>
+                                    <b>Citizen Number: </b>
+                                </li>
+                                <li>
+                                    <b>Citizen Email: </b>
+                                </li>
+                                <li>
+                                    <b>Service start date:</b>
+                                </li>
+                                <li>
+                                    <b>Service start time:</b>
+                                </li>
+                                <li>
+                                    <b>Service Name:</b>
+                                </li>
+                                <li>
+                                    <b>Service Provider Location:</b>
+                                </li>
+                            </ul>
+
+                            <Buttons>
+                                <div>
+                                <Button.Default
+                                    onClick={props.onSave}
+                                >Transfer</Button.Default>
+                                </div>
+                            </Buttons>
+                        </Text.Body>
+                    </Accordion.Item>
+                </Accordion.Base>
             </StyledContainer>
             
             </Layout.Container>
