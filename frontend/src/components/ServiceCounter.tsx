@@ -176,8 +176,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
     
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
-            document.getElementById("divCurrentCitizen")!!.style.display = "block";
-            document.getElementById("divButtonNextPatient")!!.style.display = "none";
+            
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=doctorQueue"
 
         }
@@ -195,8 +194,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             console.log("---------------")
             console.log(queueObject)
-            document.getElementById("divCurrentCitizen")!!.style.display = "none";
-            document.getElementById("divButtonNextPatient")!!.style.display = "block";
+
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=" + this.state.inputValue+"&bookingDetails=" + myJSON;
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.inputValue
             // console.log(respectiveURL + "--------------")
@@ -219,20 +217,26 @@ class ServiceCounter extends React.Component<{}, MyState> {
             // call the callback with status
             if (xhr.status === 200) {
                 if (buttonSelected == "nextPatient") {
+                    document.getElementById("divCurrentCitizen")!!.style.display = "block";
+                    document.getElementById("divButtonNextPatient")!!.style.display = "none";
                     this.setState({
-                        _bookingId : JSON.parse(xhr.responseText)._bookingId ,
+                        _bookingId : JSON.parse(xhr.responseText)._id,
                         nric:  JSON.parse(xhr.responseText).nric,
                         name: JSON.parse(xhr.responseText).citizenName,
                         phone: JSON.parse(xhr.responseText).citizenNumber,
                         email: JSON.parse(xhr.responseText).citizenEmail
 
                     })
+                    
                 }
                 
                 if(buttonSelected == "sendtoNextService"){
                     this.setState({
                         showModal: true
                     });
+
+                    document.getElementById("divCurrentCitizen")!!.style.display = "none";
+                    document.getElementById("divButtonNextPatient")!!.style.display = "block";
                 }
 
                 // console.log(JSON.parse(xhr.responseText));
