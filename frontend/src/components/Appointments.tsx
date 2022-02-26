@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../App.css';
-import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect } from 'react-lifesg-design-system';
+import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import Booking from "../models/booking";
+
+import { ModalContent } from "../models/doc-elements";
+
 
 const StyledContainer = styled(Layout.GridContainer)`
     grid-template-rows: 1fr;
@@ -29,7 +32,8 @@ const Main = styled.main`
 interface MyState {
     bookings: Booking[],
     inputValue: string,
-    clicked: string
+    clicked: string,
+    showModal: boolean
 }
 
 
@@ -37,12 +41,15 @@ interface MyState {
 
 class Appointment extends React.Component<{}, MyState> {
 
+
+
     constructor(props) {
         super(props);
         this.state = {
             bookings: [],
             inputValue: '',
-            clicked: 'none'
+            clicked: 'none',
+            showModal: false
 
         };
         this.searchByLocation = this.searchByLocation.bind(this)
@@ -99,9 +106,37 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
     render() {
+
+
         return (
+
             <StyledSection>
+
+                    <Modal.Base
+                        show={this.state.showModal}
+                        animationFrom="bottom"
+                        enableOverlayClick={true}
+                    // onOverlayClick={closeModal()}
+                    >
+                        <Modal.Box onClose={() => {
+
+                            this.setState({
+                                showModal: false
+                            });
+
+
+
+                        }}>
+                            <ModalContent>
+                                <span>Send to queue succesfully</span>
+                            </ModalContent>
+                        </Modal.Box>
+                    </Modal.Base>
+
                 <Layout.Container>
+
+
+
                     <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
                     <StyledContainer>
                         <Text.H3>View appointments by NRIC:</Text.H3>
@@ -161,7 +196,7 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                             <Accordion.Base className='base' >
-                                {this.state.bookings.map(function (input, index) {
+                                {this.state.bookings.map( (input, index) => {
                                     return (
                                         <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
                                             <Text.Body>
@@ -190,7 +225,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                 </ul>
 
                                                 <Button.Default
-                                                    onClick={() => checkPage(handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
+                                                     onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
                                                 >Send to Queue</Button.Default>
                                             </Text.Body>
                                         </Accordion.Item>
@@ -207,6 +242,52 @@ class Appointment extends React.Component<{}, MyState> {
         )
     }
 
+     handle200(response) {
+        console.log('handle200 has received:', response);
+    }
+    
+     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string) {
+        const queueObject = {
+            "_id": bookingId,
+            "nric": nric,
+            "citizenName": citizenName,
+            "citizenEmail": citizenEmail,
+            "citizenNumber": citizenNumber
+        }
+    
+        const myJSON = encodeURI(JSON.stringify(queueObject));
+    
+    
+        const xhr = new XMLHttpRequest(),
+            method = "GET",
+            url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
+        // initialize a new GET request
+        xhr.open(method, url, true);
+    
+        // respond to every readyState change
+        xhr.onreadystatechange = () => {
+    
+            // ignore all readyStates other than "DONE"
+            if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
+    
+            // call the callback with status
+            if (xhr.status === 200) {
+                this.setState({
+                    showModal: true
+                });
+                return callback(xhr.status);
+            }
+    
+            // got something other than 200,
+            // re-initialize and send another GET request
+            xhr.open(method, url, true);
+            xhr.send();
+        }
+    
+        // send the initial GET request
+        xhr.send();
+    }
+
     updateInputValue(evt) {
         const val = evt.target.value;
         this.setState({
@@ -217,48 +298,18 @@ class Appointment extends React.Component<{}, MyState> {
 
 export default Appointment;
 
-function handle200(response) {
-    console.log('handle200 has received:', response);
-}
-
-function checkPage(callback, bookingId : string, nric : string, citizenName : string, citizenEmail : string, citizenNumber : string) {
-    const queueObject = {
-        "_id" :bookingId,
-        "nric":nric,
-        "citizenName":citizenName,
-        "citizenEmail":citizenEmail,
-        "citizenNumber":citizenNumber
-    }
-
-    const myJSON = encodeURI(JSON.stringify(queueObject));
 
 
-    const xhr = new XMLHttpRequest(),
-        method = "GET",
-        url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
-    // initialize a new GET request
-    xhr.open(method, url, true);
 
-    // respond to every readyState change
-    xhr.onreadystatechange = function () {
 
-        // ignore all readyStates other than "DONE"
-        if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
 
-        // call the callback with status
-        if (xhr.status === 200) {
-            return callback(xhr.status);
-        }
-
-        // got something other than 200,
-        // re-initialize and send another GET request
-        xhr.open(method, url, true);
-        xhr.send();
-    }
-
-    // send the initial GET request
-    xhr.send();
-}
-
+// function closeModalFn(): (() => void) | undefined {
+//     throw new Error('Function not implemented.');
+// }
+// const [show, setShow ] = useState(false)
+// function closeModal(): (() => void) | undefined {
+//     document.getElementById("divModal")!!.style.display = "none";
+//     throw new Error('Function not implemented.');
+// }
 // call checkPage once
 

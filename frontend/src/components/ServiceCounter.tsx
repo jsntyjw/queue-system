@@ -6,9 +6,13 @@ import {
     Layout,
     Breadcrumb,
     BoxContainer,
-    InputSelect
+    InputSelect,
+    Modal
 } from 'react-lifesg-design-system';
 import styled from "styled-components";
+
+import { ModalContent } from "../models/doc-elements";
+
 
 interface Props {
     onChange: (fieldName: string, value: string) => void;
@@ -27,6 +31,8 @@ interface MyState {
     phone: string,
     email: string,
     inputValue : string
+    showModal: boolean
+
 }
 
 
@@ -40,7 +46,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
             name: "",
             phone: "",
             email: "",
-            inputValue: ""
+            inputValue: "",
+            showModal: false
+
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -50,6 +58,27 @@ class ServiceCounter extends React.Component<{}, MyState> {
     render() {
         return (
             <StyledSection>
+
+<Modal.Base
+                        show={this.state.showModal}
+                        animationFrom="bottom"
+                        enableOverlayClick={true}
+                    // onOverlayClick={closeModal()}
+                    >
+                        <Modal.Box onClose={() => {
+
+                            this.setState({
+                                showModal: false
+                            });
+
+
+
+                        }}>
+                            <ModalContent>
+                                <span>Send to queue succesfully</span>
+                            </ModalContent>
+                        </Modal.Box>
+                    </Modal.Base>
                 <Layout.Container>
                     <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' }]} />
 
@@ -125,7 +154,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
                         <Button.Default
-                            onClick={() => this.consumeQueue(this.handle200, "", this.state._bookingId, this.state.nric, this.state.name, this.state.email, this.state.phone)}
+                            onClick={() => this.consumeQueue(this.handle200, "sendtoNextService", this.state._bookingId, this.state.nric, this.state.name, this.state.email, this.state.phone)}
                             
                         >Send to next service</Button.Default>
 
@@ -196,10 +225,15 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         name: JSON.parse(xhr.responseText).citizenName,
                         phone: JSON.parse(xhr.responseText).citizenNumber,
                         email: JSON.parse(xhr.responseText).citizenEmail
+
                     })
                 }
                 
-                
+                if(buttonSelected == "sendtoNextService"){
+                    this.setState({
+                        showModal: true
+                    });
+                }
 
                 // console.log(JSON.parse(xhr.responseText));
                 
