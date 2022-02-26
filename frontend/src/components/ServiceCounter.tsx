@@ -26,20 +26,30 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
             <StyledSection>
                 <Layout.Container>
                     <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' }]} />
+                    
+                    <div id='divButtonNextPatient'>
 
+                   
+                    <Button.Default className='buttonsuccess'
+                                onClick={ () => consumeQueue(handle200,"nextPatient")}
+                            >Next Patient</Button.Default>
+
+                    </div>
+                    <div id='divCurrentCitizen'  style={{ display: 'none' }}>
+                    
                     <Layout.GridContainer className="column2">
                         <div>
+                            
+
+                            
+
+                            <div className='spacer1'></div>
+
                             <Text.H3>Currently Serving</Text.H3>
                             <div className='spacer1'></div>
                             <div className='spacer1'></div>
 
-                            <Button.Default className='buttonsuccess'
-                                onClick={ () => consumeQueue(handle200)}
-                            >Next Patient</Button.Default>
-
-                            <div className='spacer1'></div>
-
-                            <div >
+                            
                                 <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
                                     <div style={{ padding: "2rem", minWidth: "1080px" }}>
                                         <Layout.GridContainer className="column4">
@@ -55,7 +65,7 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
                                     </div>
                                 </BoxContainer>
 
-                            </div>
+                         
                             <Text.Body>Next service: </Text.Body>
 
 
@@ -83,9 +93,10 @@ const ServiceCounter: React.FunctionComponent<Props> = (props) => {
 
 
                     <Button.Default
-                        onClick={props.onSave}
+                         onClick={ () => consumeQueue(handle200,"sendToNextService")}
                     >Send to next service</Button.Default>
 
+                    </div>
 
                 </Layout.Container>
             </StyledSection>
@@ -101,10 +112,37 @@ function handle200(response) {
     console.log('handle200 has received:', response);
 }
 
-function consumeQueue(callback) {
+function consumeQueue(callback, buttonSelected : string, bookingId? : string, nric? : string, citizenName? : string, citizenEmail? : string, citizenNumber? : string) {
+
+    var respectiveURL = ""
+    if(buttonSelected == "nextPatient"){
+        document.getElementById("divCurrentCitizen")!!.style.display = "block";
+        document.getElementById("divButtonNextPatient")!!.style.display = "none";
+        respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=doctorQueue"
+        
+    }
+    else{
+
+        const queueObject = {
+            "_id" :bookingId,
+            "nric":nric,
+            "citizenName":citizenName,
+            "citizenEmail":citizenEmail,
+            "citizenNumber":citizenNumber
+        }
+    
+        var myJSON = encodeURI(JSON.stringify(queueObject));
+        document.getElementById("divCurrentCitizen")!!.style.display = "none";
+        document.getElementById("divButtonNextPatient")!!.style.display = "block";
+        respectiveURL =  "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=booking001&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
+
+    }
+
+
+    
     const xhr = new XMLHttpRequest(),
         method = "GET",
-        url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=doctorQueue";
+        url = respectiveURL;
     // initialize a new GET request
     xhr.open(method, url, true);
 
@@ -116,6 +154,7 @@ function consumeQueue(callback) {
 
         // call the callback with status
         if (xhr.status === 200) {
+            console.log(xhr.responseText)
             return callback(xhr.status);
         }
 
@@ -128,3 +167,5 @@ function consumeQueue(callback) {
     // send the initial GET request
     xhr.send();
 }
+
+

@@ -191,7 +191,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                                                 <Button.Default
                                                     onClick={() => checkPage(handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
-                                                >test</Button.Default>
+                                                >Send to Queue</Button.Default>
                                             </Text.Body>
                                         </Accordion.Item>
                                     )
@@ -232,7 +232,6 @@ function checkPage(callback, bookingId : string, nric : string, citizenName : st
 
     const myJSON = encodeURI(JSON.stringify(queueObject));
 
-    console.log(typeof(myJSON))
 
     const xhr = new XMLHttpRequest(),
         method = "GET",
