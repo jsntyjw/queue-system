@@ -235,7 +235,7 @@ function checkPage(callback, bookingId : string, nric : string, citizenName : st
 
     const xhr = new XMLHttpRequest(),
         method = "GET",
-        url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=booking001&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
+        url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
     // initialize a new GET request
     xhr.open(method, url, true);
 
