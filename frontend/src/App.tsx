@@ -36,12 +36,12 @@ const items: INavbarItems<CustomType> = {
         {
             id: "home",
             children: "Home",
-            href: "http://54.211.119.92:3000/Home"
+            href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
         },
         {
             id: "appointments",
             children: "Appointments",
-            href: "http://54.211.119.92:3000/Appointments",
+            href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
             options: {
                 isExternal: true,
             },
@@ -49,12 +49,12 @@ const items: INavbarItems<CustomType> = {
         {
             id: "dashboard",
             children: "Dashboard",
-            href: "http://54.211.119.92:3000/Dashboard"
+            href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
         },
         {
             id: "servicecounter",
             children: "ServiceCounter",
-            href: "http://54.211.119.92:3000/ServiceCounter"
+            href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
         },
 
     ],
@@ -82,7 +82,7 @@ const App = () => {
             
             <Router>
                 <Switch>
-                    <Route exact path='/create' component={Create} />
+                    <Route exact path='/' component={Home} />
                     <Route path='/edit/:id' component={Edit} />
                     <Route path='/index' component={Index} />
                     <Route path='/Home' component={Home} />
