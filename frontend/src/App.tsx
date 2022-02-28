@@ -36,12 +36,12 @@ const items: INavbarItems<CustomType> = {
         {
             id: "home",
             children: "Home",
-            href: "http://localhost:3000/Home"
+            href: "http://54.211.119.92:3000/Home"
         },
         {
             id: "appointments",
             children: "Appointments",
-            href: "http://localhost:3000/Appointments",
+            href: "http://54.211.119.92:3000/Appointments",
             options: {
                 isExternal: true,
             },
@@ -49,12 +49,12 @@ const items: INavbarItems<CustomType> = {
         {
             id: "dashboard",
             children: "Dashboard",
-            href: "http://localhost:3000/Dashboard"
+            href: "http://54.211.119.92:3000/Dashboard"
         },
         {
             id: "servicecounter",
             children: "ServiceCounter",
-            href: "http://localhost:3000/ServiceCounter"
+            href: "http://54.211.119.92:3000/ServiceCounter"
         },
 
     ],
