@@ -66,12 +66,12 @@ class Appointment extends React.Component<{}, MyState> {
         var apiURL: string
         if (searchMethod == "location") {
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/';
-            // document.getElementById("outsideCitizenInfoDiv")!!.style.display = "none";
+            document.getElementById("divAppointments")!!.style.display = "block";
 
         }
         else {
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/';
-            // document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
+            document.getElementById("divAppointments")!!.style.display = "block";
 
         }
 
@@ -226,6 +226,10 @@ class Appointment extends React.Component<{}, MyState> {
                         </div> */}
 
                         <div className="spacer5"></div>
+
+                        <div id='divAppointments' style={display: 'none'}>
+
+                        
                         <StyledContainer>
                             <Text.H3>Appointments</Text.H3>
                             <Text.Body>Government services appointments</Text.Body>
@@ -273,6 +277,8 @@ class Appointment extends React.Component<{}, MyState> {
                             </Main>
                             <div className="spacer3"></div>
                         </StyledContainer>
+
+                        </div>
                     </Layout.Container>
                 </StyledSection>
             </div>
