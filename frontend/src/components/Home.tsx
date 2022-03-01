@@ -31,7 +31,7 @@ class Home extends React.Component<IProps, IState> {
       <div>
 
 
-        <br></br> <br></br> <br></br> <br></br>
+        <br></br> <br></br> 
         <MasonryTileGridContainer numOfCols={3}>
 
           <MasonryTile colEnd={1} colStart={1}>

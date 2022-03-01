@@ -227,7 +227,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <div className="spacer5"></div>
 
-                        <div id='divAppointments' style={display: 'none'}>
+                        <div id='divAppointments' style={{display:'none'}}>
 
                         
                         <StyledContainer>
