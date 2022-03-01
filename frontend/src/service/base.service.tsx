@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default class BaseService {
 
-    private static baseURL: string = process.env.REACT_APP_MY_EC2_ADDRESS + "api";
+    private static baseURL: string = process.env.REACT_APP_MY_EC2_API_ADDRESS + "api";
 
 
     public static async getAll<T>(url: string): Promise<Response> {

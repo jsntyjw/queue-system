@@ -77,9 +77,11 @@ class Appointment extends React.Component<{}, MyState> {
 
         fetch(apiURL + this.state.inputValue)
             .then(function (response) {
+                
                 return response.json();
             })
             .then((myJson) => {
+                this.state.bookings.length = 0;
                 myJson.data.forEach(element => {
                     var eachBooking = new Booking(
                         element["_id"],
@@ -98,12 +100,13 @@ class Appointment extends React.Component<{}, MyState> {
                         element["bookingStatus"]
                     );
 
-                    this.state.bookings.length = 0
-                    const bookings = this.state.bookings.slice(0);
-                    bookings.push(eachBooking)
+                    
+                    // const bookings = this.state.bookings.slice(0);
+                    this.state.bookings.push(eachBooking)
+                    // console.log(bookings)
 
                     this.setState({
-                        bookings: bookings,
+                        bookings: this.state.bookings,
                         clicked: 'block'
                     });
 
@@ -229,15 +232,38 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <div id='divAppointments' style={{display:'none'}}>
 
-                        
+                        {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', alignContent:'right', display: this.state.showLocation }}>
+                            <InputSelect
+                                options={[
+                                    { value: "Tampines", label: "Tampines" },
+                                    { value: "Woodlands", label: "Woodlands" },
+                                    { value: "Toa Payoh", label: "Toa Payoh" },
+                                    { value: "Punggol", label: "Punggol" },
+                                ]}
+                                
+                                valueExtractor={(item) => item.value}
+                                listExtractor={(item) => item.label}
+                                displayValueExtractor={(item) => item.label}
+                                placeholder="Select a location"
+                                onSelectItem={(item, selectedValue) => {
+                                    this.setState({ inputValue: selectedValue }, () => {
+                                        this.searchByLocation('location')
+                                    });
+                                }} />
+
+                        </div> */}
                         <StyledContainer>
                             <Text.H3>Appointments</Text.H3>
                             <Text.Body>Government services appointments</Text.Body>
                             <Main>
 
+                           
+
 
                                 <Accordion.Base className='base' >
                                     {this.state.bookings.map((input, index) => {
+
+                                        console.log(this.state.bookings)
                                         return (
                                             <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
                                                 <Text.Body>

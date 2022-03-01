@@ -86,6 +86,7 @@ const App = () => {
                     <Route path='/edit/:id' component={Edit} />
                     <Route path='/index' component={Index} />
                     <Route path='/Home' component={Home} />
+                    <Route path='/Create' component={Create} />
                     <Route path='/Appointments' component={ Appointments } />
                     <Route path='/UpcomingAppointments' component={ UpcomingAppointments } />
                     <Route path='/Dashboard' component={ Dashboard } />
