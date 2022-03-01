@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import '../App.css';
-import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, } from 'react-lifesg-design-system';
+import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, RadioButton, } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import Booking from "../models/booking";
 
-import { ModalContent } from "../models/doc-elements";
+import { Container, Label, ModalContent, OptionContainer } from "../models/doc-elements";
 
 
 const StyledContainer = styled(Layout.GridContainer)`
@@ -33,7 +33,10 @@ interface MyState {
     bookings: Booking[],
     inputValue: string,
     clicked: string,
-    showModal: boolean
+    showModal: boolean,
+    showNRIC: string,
+    showLocation: string,
+    selected: string
 }
 
 
@@ -49,7 +52,10 @@ class Appointment extends React.Component<{}, MyState> {
             bookings: [],
             inputValue: '',
             clicked: 'none',
-            showModal: false
+            showModal: false,
+            showNRIC: 'block',
+            showLocation: 'none',
+            selected: 'A'
 
         };
         this.searchByLocation = this.searchByLocation.bind(this)
@@ -60,12 +66,12 @@ class Appointment extends React.Component<{}, MyState> {
         var apiURL: string
         if (searchMethod == "location") {
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/';
-            document.getElementById("outsideCitizenInfoDiv")!!.style.display = "none";
+            // document.getElementById("outsideCitizenInfoDiv")!!.style.display = "none";
 
         }
         else {
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/';
-            document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
+            // document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
 
         }
 
@@ -110,7 +116,11 @@ class Appointment extends React.Component<{}, MyState> {
 
         return (
 
-            <StyledSection>
+            <div>
+
+
+
+                <StyledSection>
 
                     <Modal.Base
                         show={this.state.showModal}
@@ -133,25 +143,51 @@ class Appointment extends React.Component<{}, MyState> {
                         </Modal.Box>
                     </Modal.Base>
 
-                <Layout.Container>
+                    <Layout.Container>
 
 
 
-                    <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
-                    <StyledContainer>
-                        <Text.H3>View appointments by NRIC:</Text.H3>
-                        <div className="inlinecontent" style={{ justifyItems: "start", }}>
+                        <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
+
+                        <Container>
+                            <OptionContainer>
+                                <RadioButton value="A" id="multiple-options-a" name="multiple-options" onChange={() => {
+                                    this.setState({
+                                        selected: 'A',
+                                        showNRIC: 'block',
+                                        showLocation: 'none'
+                                    }
+
+                                    );
+                                }} checked={this.state.selected === "A"} />
+                                <Label htmlFor="multiple-options-a">View appointments by NRIC</Label>
+                            </OptionContainer>
+                            <OptionContainer>
+                                <RadioButton value="B" id="multiple-options-b" name="multiple-options" onChange={() => {
+                                    this.setState({
+                                        selected: 'B',
+                                        showLocation: 'block',
+                                        showNRIC: 'none'
+                                    });
+                                }} checked={this.state.selected === "B"} />
+                                <Label htmlFor="multiple-options-b">View appointments by Location</Label>
+                            </OptionContainer>
+                        </Container>
+
+                        <div className="spacer2"></div>
+
+                        <div id='divNRIC' style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showNRIC }}>
                             <InputGroup addon={{
                                 type: 'custom'
                             }} placeholder="Type NRIC here..."
                                 onChange={evt => this.updateInputValue(evt)}
                             />
+
+                            <br />
                             <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                         </div>
 
-                        <Text.H3>View appointments by Location: </Text.H3>
-                        <div className="inlinecontent" style={{ justifyItems: "start", }}>
-
+                        <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', display: this.state.showLocation }}>
                             <InputSelect
                                 options={[
                                     { value: "Tampines", label: "Tampines" },
@@ -159,9 +195,11 @@ class Appointment extends React.Component<{}, MyState> {
                                     { value: "Toa Payoh", label: "Toa Payoh" },
                                     { value: "Punggol", label: "Punggol" },
                                 ]}
+                                
                                 valueExtractor={(item) => item.value}
                                 listExtractor={(item) => item.label}
                                 displayValueExtractor={(item) => item.label}
+                                placeholder="Select a location"
                                 onSelectItem={(item, selectedValue) => {
                                     this.setState({ inputValue: selectedValue }, () => {
                                         this.searchByLocation('location')
@@ -170,7 +208,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         </div>
                         <div className="spacer2"></div>
-                        <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
+                        {/* <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
                             <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
                                 <div style={{ padding: "2rem", minWidth: "1080px" }}>
                                     <Layout.GridContainer className="column4">
@@ -185,68 +223,67 @@ class Appointment extends React.Component<{}, MyState> {
                                     </Layout.GridContainer>
                                 </div>
                             </BoxContainer>
-                        </div>
+                        </div> */}
 
-                    </StyledContainer>
-                    <div className="spacer5"></div>
-                    <StyledContainer>
-                        <Text.H3>Appointments</Text.H3>
-                        <Text.Body>Government services appointments</Text.Body>
-                        <Main>
+                        <div className="spacer5"></div>
+                        <StyledContainer>
+                            <Text.H3>Appointments</Text.H3>
+                            <Text.Body>Government services appointments</Text.Body>
+                            <Main>
 
 
-                            <Accordion.Base className='base' >
-                                {this.state.bookings.map( (input, index) => {
-                                    return (
-                                        <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
-                                            <Text.Body>
-                                                <ul>
-                                                    <li>
-                                                        <b>Citizen Name :</b>  {input.CitizenName}
-                                                    </li>
-                                                    <li>
-                                                        <b>Citizen Number: </b> {input.CitizenNumber}
-                                                    </li>
-                                                    <li>
-                                                        <b>Citizen Email: </b> {input.CitizenEmail}
-                                                    </li>
-                                                    <li>
-                                                        <b>Service start date:</b>  {input.ServiceStartDate}
-                                                    </li>
-                                                    <li>
-                                                        <b>Service start time:</b>  {input.ServiceStartTime}
-                                                    </li>
-                                                    <li>
-                                                        <b>Service Name:</b>  {input.ServiceName}
-                                                    </li>
-                                                    <li>
-                                                        <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
-                                                    </li>
-                                                </ul>
+                                <Accordion.Base className='base' >
+                                    {this.state.bookings.map((input, index) => {
+                                        return (
+                                            <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
+                                                <Text.Body>
+                                                    <ul>
+                                                        <li>
+                                                            <b>Citizen Name :</b>  {input.CitizenName}
+                                                        </li>
+                                                        <li>
+                                                            <b>Citizen Number: </b> {input.CitizenNumber}
+                                                        </li>
+                                                        <li>
+                                                            <b>Citizen Email: </b> {input.CitizenEmail}
+                                                        </li>
+                                                        <li>
+                                                            <b>Service start date:</b>  {input.ServiceStartDate}
+                                                        </li>
+                                                        <li>
+                                                            <b>Service start time:</b>  {input.ServiceStartTime}
+                                                        </li>
+                                                        <li>
+                                                            <b>Service Name:</b>  {input.ServiceName}
+                                                        </li>
+                                                        <li>
+                                                            <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                        </li>
+                                                    </ul>
 
-                                                <Button.Default
-                                                     onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
-                                                >Send to Queue</Button.Default>
-                                            </Text.Body>
-                                        </Accordion.Item>
-                                    )
-                                })}
-                            </Accordion.Base>
+                                                    <Button.Default
+                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
+                                                    >Send to Queue</Button.Default>
+                                                </Text.Body>
+                                            </Accordion.Item>
+                                        )
+                                    })}
+                                </Accordion.Base>
 
-                        </Main>
-                        <div className="spacer3"></div>
-                    </StyledContainer>
-                </Layout.Container>
-            </StyledSection>
-
+                            </Main>
+                            <div className="spacer3"></div>
+                        </StyledContainer>
+                    </Layout.Container>
+                </StyledSection>
+            </div>
         )
     }
 
-     handle200(response) {
+    handle200(response) {
         console.log('handle200 has received:', response);
     }
-    
-     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string) {
+
+    checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string) {
         const queueObject = {
             "_id": bookingId,
             "nric": nric,
@@ -254,22 +291,22 @@ class Appointment extends React.Component<{}, MyState> {
             "citizenEmail": citizenEmail,
             "citizenNumber": citizenNumber
         }
-    
+
         const myJSON = encodeURI(JSON.stringify(queueObject));
-    
-    
+
+
         const xhr = new XMLHttpRequest(),
             method = "GET",
             url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
         // initialize a new GET request
         xhr.open(method, url, true);
-    
+
         // respond to every readyState change
         xhr.onreadystatechange = () => {
-    
+
             // ignore all readyStates other than "DONE"
             if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
-    
+
             // call the callback with status
             if (xhr.status === 200) {
                 this.setState({
@@ -277,13 +314,13 @@ class Appointment extends React.Component<{}, MyState> {
                 });
                 return callback(xhr.status);
             }
-    
+
             // got something other than 200,
             // re-initialize and send another GET request
             xhr.open(method, url, true);
             xhr.send();
         }
-    
+
         // send the initial GET request
         xhr.send();
     }
