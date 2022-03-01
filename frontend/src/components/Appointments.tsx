@@ -59,12 +59,12 @@ class Appointment extends React.Component<{}, MyState> {
 
         var apiURL: string
         if (searchMethod == "location") {
-            apiURL = 'http://localhost:3001/api/booking/location/';
+            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/';
             document.getElementById("outsideCitizenInfoDiv")!!.style.display = "none";
 
         }
         else {
-            apiURL = 'http://localhost:3001/api/booking/citizen/';
+            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/';
             document.getElementById("outsideCitizenInfoDiv")!!.style.display = "block";
 
         }
