@@ -42,9 +42,13 @@ import * as toastr from 'toastr'
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { BrowserRouter, Router } from 'react-router-dom';
 
 ReactDOM.render(
-<App />
+    <BrowserRouter>
+    <App />
+
+</BrowserRouter>
 
 
 , document.getElementById('root'));
