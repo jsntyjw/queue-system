@@ -108,17 +108,13 @@ class ViewAllBookings extends React.Component<{}, MyState> {
 
     return (
 
+    <Layout.Container>
     <div >
-
-
       {/* <StyledContainer> */}
         <br /><br /><br /><br />
         <Text.H3>Appointments</Text.H3>
         <Text.Body>Government services appointments</Text.Body>
         <Main>
-
-
-
 
           <Accordion.Base className='base' >
             {this.state.bookings.map((input, index) => {
@@ -165,6 +161,7 @@ class ViewAllBookings extends React.Component<{}, MyState> {
       {/* </StyledContainer> */}
 
     </div>
+    </Layout.Container>
 
     )
   }

@@ -17,7 +17,7 @@ import BookingFound from './components/bookingfound.component';
 
 
 // import React from "react";
-import { Footer, Breadcrumb, Button, AlertBox, Text } from "react-lifesg-design-system";
+import { Footer, Breadcrumb, Button, AlertBox, Text, Layout } from "react-lifesg-design-system";
 
 // require('dotenv').config();
 
@@ -157,17 +157,16 @@ const App = () => {
         
     // }
     return (
+        <>
+        <Layout.Container>
         <div>
-
-
-
-            <div style={{ height: "150px" }}>
+            <div style={{ height: "150px", marginBottom: "80px" }}>
                
                 <div id='divNavBar' style={{ height: "150px", margin: "20px", display: "block" }}>
                     <Navbar items={items} />
 
                 </div>
-                <div style={{ marginLeft: '40px' }}>
+                <div style={{  }}>
                     <Text.H3> Welcome, {name}</Text.H3>
                     <Text.Hyperlink.Default href={process.env.REACT_APP_MY_EC2_ADDRESS + "Login"} onClick={
                         () => {
@@ -206,51 +205,53 @@ const App = () => {
 
 
 
-            <div>
-                <Footer
-                    lastUpdated={new Date()}
-                    addon="download"
-                    links={[
-                        [
-                            { children: "Home", href: "https://www.life.gov.sg" },
-                            {
-                                children: "How it works",
-                                href: "https://www.life.gov.sg/#how-it-works",
-                            },
-                            {
-                                children: "Ways we help",
-                                href: "https://www.life.gov.sg/#ways-we-help",
-                            },
-                            {
-                                children: "Campaigns",
-                                href: "https://www.life.gov.sg/#campaigns",
-                            },
-                            {
-                                children: "News and media",
-                                href: "https://www.life.gov.sg/#newsandmedia",
-                            },
-                        ],
-                        [
-                            {
-                                children: "About us",
-                                href: "https://www.life.gov.sg/about-us",
-                            },
-                            {
-                                children: "Help & Support",
-                                href: "https://www.life.gov.sg/help-support",
-                            },
-                            {
-                                children: "Get in touch with us",
-                                href: "https://www.life.gov.sg/get-in-touch",
-                            },
-                        ],
-                    ]}
-                />
-            </div>
-
+            
 
         </div>
+        </Layout.Container>
 
+        <div>
+        <Footer
+            lastUpdated={new Date()}
+            addon="download"
+            links={[
+                [
+                    { children: "Home", href: "https://www.life.gov.sg" },
+                    {
+                        children: "How it works",
+                        href: "https://www.life.gov.sg/#how-it-works",
+                    },
+                    {
+                        children: "Ways we help",
+                        href: "https://www.life.gov.sg/#ways-we-help",
+                    },
+                    {
+                        children: "Campaigns",
+                        href: "https://www.life.gov.sg/#campaigns",
+                    },
+                    {
+                        children: "News and media",
+                        href: "https://www.life.gov.sg/#newsandmedia",
+                    },
+                ],
+                [
+                    {
+                        children: "About us",
+                        href: "https://www.life.gov.sg/about-us",
+                    },
+                    {
+                        children: "Help & Support",
+                        href: "https://www.life.gov.sg/help-support",
+                    },
+                    {
+                        children: "Get in touch with us",
+                        href: "https://www.life.gov.sg/get-in-touch",
+                    },
+                ],
+            ]}
+        />
+        </div>
+        </>
     );
 };
 
