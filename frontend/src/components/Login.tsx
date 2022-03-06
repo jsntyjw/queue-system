@@ -22,12 +22,13 @@ interface IState {
     selected: string,
     userDivShow: string,
     adminShow: string,
-    nric: string,
-    dateOfIssue: string,
+    userName: string,
     data: string[],
     whoLoggedin: string,
     redirect: boolean,
-    role: string
+    role: string,
+    citizenLogin: string,
+    adminLogin: string
     // redirect_address: string
     // history: any
 }
@@ -55,12 +56,13 @@ class Login extends React.Component<IProps, IState> {
             selected: 'A',
             userDivShow: 'block',
             adminShow: 'none',
-            nric: '',
-            dateOfIssue: '',
-            role:'citizen',
+            userName: '',
+            role: 'citizen',
             data: [],
             whoLoggedin: '',
             redirect: false,
+            citizenLogin: 'block',
+            adminLogin: 'none'
             // redirect_address: ''
         }
         // let history = useHistory();
@@ -147,8 +149,11 @@ class Login extends React.Component<IProps, IState> {
                                         selected: 'A',
                                         userDivShow: 'block',
                                         adminShow: 'none',
-                                        role: 'citizen'
+                                        role: 'citizen',
+                                        citizenLogin: 'block',
+                                        adminLogin: 'none'
                                     }
+
 
                                     );
                                 }} checked={this.state.selected === "A"} />
@@ -160,7 +165,9 @@ class Login extends React.Component<IProps, IState> {
                                         selected: 'B',
                                         userDivShow: 'none',
                                         'adminShow': 'block',
-                                        role: 'admin'
+                                        role: 'admin',
+                                        citizenLogin: 'none',
+                                        adminLogin: 'block'
                                     });
                                 }} checked={this.state.selected === "B"} />
                                 <Label htmlFor="multiple-options-b">I'm an admin</Label>
@@ -187,7 +194,7 @@ class Login extends React.Component<IProps, IState> {
                             onChange={evt => this.updateInputValue(evt)}
 
                         />
-                        <Form.DateInput label="NRIC Issue Date"
+                        {/* <Form.DateInput label="NRIC Issue Date"
                             onChange={(value) => {
                                 // console.log(value)
                                 // props.booking.ServiceStartDate = value
@@ -197,30 +204,59 @@ class Login extends React.Component<IProps, IState> {
 
                             }
                             }
-                        />
+                        /> */}
 
-                        <ButtonSave
-                            className="btn btn-success mt-2"
+                        <div id='citizenLoginButton' style={{ display: this.state.citizenLogin }}>
+                            <ButtonSave
+                                className="btn btn-success mt-2"
+                                onClick={() => {
+                                    // console.log("test!!!!!!!")
+                                    this.setState({
+                                        data: [`{"Role": "${this.state.role}","userName": "${this.state.userName}"}`],
+                                        whoLoggedin: 'user',
+                                        redirect: true,
+                                        // redirect_address: '/home'
+
+                                    }, () => {
+                                        sessionStorage.setItem('data', this.state.data.toString())
+                                    }
+
+                                    )
+
+                                    console.log(this.state.whoLoggedin)
+
+
+                                }} label={'Login'}
+
+                            ></ButtonSave>
+                        </div>
+
+                        {/* <div id='adminLoginButton' style={{display: this.state.adminLogin}}>
+                        <button
+                            // className="btn btn-success mt-2"
                             onClick={() => {
+                                console.log("Test")
+                                // this.setState({
+                                //     data: [`{"Role": "${this.state.role}","userName": "admin"}`],
+                                //     whoLoggedin: 'user',
+                                //     redirect: true,
+                                //     // redirect_address: '/home'
 
-                                this.setState({
-                                    data: [`{"Role": "${this.state.role}","NRIC": "${this.state.nric}","dateOfIssue": "${this.state.dateOfIssue}"}`],
-                                    whoLoggedin: 'user',
-                                    redirect: true,
-                                    // redirect_address: '/home'
+                                // }, () => {
+                                //     sessionStorage.setItem('data', this.state.data.toString())
+                                // }
 
-                                }, () => {
-                                    sessionStorage.setItem('data', this.state.data.toString())
-                                }
+                                // )
 
-                                )
-
-                                console.log(this.state.whoLoggedin)
+                                // console.log(this.state.whoLoggedin)
 
 
-                            }} label={'Login'}
+                            }}
 
-                        ></ButtonSave>
+                        ></button>
+                        </div> */}
+
+
 
 
 
@@ -256,7 +292,24 @@ class Login extends React.Component<IProps, IState> {
 
                         <ButtonSave
                             className="btn btn-success mt-2"
-                            onClick={() => { }} label={'Login'}
+                            onClick={() => {
+                                // console.log("test!!!!!!!")
+                                this.setState({
+                                    data: [`{"Role": "${this.state.role}","userName": "admin"}`],
+                                    whoLoggedin: 'user',
+                                    redirect: true,
+                                    // redirect_address: '/home'
+
+                                }, () => {
+                                    sessionStorage.setItem('data', this.state.data.toString())
+                                }
+
+                                )
+
+                                console.log(this.state.whoLoggedin)
+
+
+                            }} label={'Login'}
 
                         ></ButtonSave>
 
@@ -323,7 +376,7 @@ class Login extends React.Component<IProps, IState> {
     updateInputValue(evt) {
         const val = evt.target.value;
         this.setState({
-            nric: val,
+            userName: val,
         });
     }
 

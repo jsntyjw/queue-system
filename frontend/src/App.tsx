@@ -32,86 +32,37 @@ import Login from './components/Login';
 interface CustomType {
     isExternal?: boolean;
 }
+// var role = "citizen"
+// var sessionResult = sessionStorage.getItem('data') || '{}'
+//         var obj = JSON.parse(sessionResult);
+//         console.log(sessionResult)
+//         role = obj.Role
 
-var sessionResult = sessionStorage.getItem('data') || '{}'
-var obj = JSON.parse(sessionResult);
-console.log(sessionResult)
 
-var role = obj.Role
+// document.onreadystatechange = function(e)
+// {
+//     if (document.readyState === 'complete')
+//     {
+//         //dom is ready, window.onload fires later
+//         var sessionResult = sessionStorage.getItem('data') || '{}'
+//         var obj = JSON.parse(sessionResult);
+//         console.log(sessionResult)
+//         role = obj.Role
+//     }
+// };
 
-if(role == 'admin'){
-    var items: INavbarItems<CustomType> = {
 
-    
-        desktop: [
-            {
-                id: "home",
-                children: "Home",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
-            },
-            {
-                id: "appointments",
-                children: "Appointments",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
-                options: {
-                    isExternal: true,
-                },
-            },
-            {
-                id: "dashboard",
-                children: "Dashboard",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
-            },
-            {
-                id: "servicecounter",
-                children: "ServiceCounter",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
-            },
-    
-        ],
-    };
-}
+   
 
-if(role == 'citizen'){
-    var items: INavbarItems<CustomType> = {
-
-    
-        desktop: [
-            {
-                id: "home",
-                children: "Home",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
-            },
-            {
-                id: "CreateAppointments",
-                children: "Create New Appointment",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Create",
-                options: {
-                    isExternal: true,
-                },
-            },
-            {
-                id: "dashboard",
-                children: "Queue Dashboard",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
-            },
-            {
-                id: "View My Appoinment",
-                children: "View My Appoinment",
-                href: process.env.REACT_APP_MY_EC2_ADDRESS + "ViewAllBookings"
-            },
-    
-        ],
-    };
-}
-
+console.log(sessionStorage.getItem('data'))
 
 
 const App = () => {
 
     // const history = useHistory();
 
-    if (sessionStorage.getItem('data') == null) {
+    if (sessionStorage.getItem('data') == null  ) {
+        
         return (
             <div>
                 <Login />
@@ -120,12 +71,82 @@ const App = () => {
         )
     }
 
+    var sessionResult = sessionStorage.getItem('data') || '{}'
+    var obj = JSON.parse(sessionResult);
+        
+
+
+    // console.log(sessionResult)
+
+
+    var role = obj.Role
+
+        if(role == "admin"){
+            var items: INavbarItems<CustomType> = {
+
+    
+                desktop: [
+                    {
+                        id: "home",
+                        children: "Home",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
+                    },
+                    {
+                        id: "appointments",
+                        children: "Appointments",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
+                        options: {
+                            isExternal: true,
+                        },
+                    },
+                    {
+                        id: "dashboard",
+                        children: "Dashboard",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
+                    },
+                    {
+                        id: "servicecounter",
+                        children: "ServiceCounter",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
+                    },
+            
+                ],
+            };
+        }
+        else{
+            var items: INavbarItems<CustomType> = {
+
+    
+                desktop: [
+                    {
+                        id: "home",
+                        children: "Home",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
+                    },
+
+                    {
+                        id: "dashboard",
+                        children: "Queue Dashboard",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
+                    },
+                    {
+                        id: "View My Appoinment",
+                        children: "View My Appoinment",
+                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "ViewAllBookings"
+                    },
+            
+                ],
+            };
+        }
+
+        
+
     // history.push(`/dashboard`);
     // var sessionResult = sessionStorage.getItem('data') || '{}'
     // var obj = JSON.parse(sessionResult);
     // console.log(sessionResult)
 
-    var name = obj.NRIC
+    var name = obj.userName
     // console.log(sessionResult)
     // if(obj.role == 'citizen'){
     //     return(
@@ -151,6 +172,7 @@ const App = () => {
                     <Text.Hyperlink.Default href={process.env.REACT_APP_MY_EC2_ADDRESS + "Login"} onClick={
                         () => {
                             sessionStorage.removeItem('data')
+                            sessionStorage.clear()
                             return (
                                 <div>
                                     <Login />

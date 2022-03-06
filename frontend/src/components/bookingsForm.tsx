@@ -29,7 +29,7 @@ var sessionResult = sessionStorage.getItem('data') || '{}'
     var obj = JSON.parse(sessionResult);
     console.log(sessionResult)
     
-    var nric = obj.NRIC
+    var nric = obj.userName
 
 export const BookingForm: React.FunctionComponent<Props> = (props) => {
     return (

@@ -37,7 +37,7 @@ var sessionResult = sessionStorage.getItem('data') || '{}'
 var obj = JSON.parse(sessionResult);
 console.log(sessionResult)
 
-var nric = obj.NRIC
+var nric = obj.userName
 
 class ViewAllBookings extends React.Component<{}, MyState> {
 
