@@ -24,6 +24,13 @@ const StyledSection = styled(Layout.Section)`
     min-height: 600px;
 `;
 
+
+var sessionResult = sessionStorage.getItem('data') || '{}'
+    var obj = JSON.parse(sessionResult);
+    console.log(sessionResult)
+    
+    var nric = obj.NRIC
+
 export const BookingForm: React.FunctionComponent<Props> = (props) => {
     return (
 
@@ -39,14 +46,14 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         label="Nric"
                         defaultValue=''
                         onChange={props.onChange}
-                        value={props.booking.Nric}
+                        value={nric}
+                        disabled
                     />
 
                     <Input
                         name="CitizenName"
                         label="CitizenName"
                         defaultValue=''
-
                         value={props.booking.CitizenName}
                         onChange={props.onChange}
                     />

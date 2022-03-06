@@ -23,10 +23,11 @@ interface IState {
     userDivShow: string,
     adminShow: string,
     nric: string,
-    dob: string,
+    dateOfIssue: string,
     data: string[],
     whoLoggedin: string,
     redirect: boolean,
+    role: string
     // redirect_address: string
     // history: any
 }
@@ -55,7 +56,8 @@ class Login extends React.Component<IProps, IState> {
             userDivShow: 'block',
             adminShow: 'none',
             nric: '',
-            dob: '',
+            dateOfIssue: '',
+            role:'citizen',
             data: [],
             whoLoggedin: '',
             redirect: false,
@@ -75,11 +77,11 @@ class Login extends React.Component<IProps, IState> {
 
             return (
                 <div>
-                <Redirect to="/Home"  />
+                    <Redirect to="/Home" />
 
                 </div>
-                
-                
+
+
             )
 
         }
@@ -144,7 +146,8 @@ class Login extends React.Component<IProps, IState> {
                                     this.setState({
                                         selected: 'A',
                                         userDivShow: 'block',
-                                        adminShow: 'none'
+                                        adminShow: 'none',
+                                        role: 'citizen'
                                     }
 
                                     );
@@ -156,7 +159,8 @@ class Login extends React.Component<IProps, IState> {
                                     this.setState({
                                         selected: 'B',
                                         userDivShow: 'none',
-                                        'adminShow': 'block'
+                                        'adminShow': 'block',
+                                        role: 'admin'
                                     });
                                 }} checked={this.state.selected === "B"} />
                                 <Label htmlFor="multiple-options-b">I'm an admin</Label>
@@ -183,12 +187,12 @@ class Login extends React.Component<IProps, IState> {
                             onChange={evt => this.updateInputValue(evt)}
 
                         />
-                        <Form.DateInput label="Date"
+                        <Form.DateInput label="NRIC Issue Date"
                             onChange={(value) => {
                                 // console.log(value)
                                 // props.booking.ServiceStartDate = value
                                 this.setState({
-                                    dob: value
+                                    dateOfIssue: value
                                 })
 
                             }
@@ -200,7 +204,7 @@ class Login extends React.Component<IProps, IState> {
                             onClick={() => {
 
                                 this.setState({
-                                    data: [`{"NRIC": "${this.state.nric}","DOB": "${this.state.dob}"}`],
+                                    data: [`{"Role": "${this.state.role}","NRIC": "${this.state.nric}","dateOfIssue": "${this.state.dateOfIssue}"}`],
                                     whoLoggedin: 'user',
                                     redirect: true,
                                     // redirect_address: '/home'
@@ -319,7 +323,7 @@ class Login extends React.Component<IProps, IState> {
     updateInputValue(evt) {
         const val = evt.target.value;
         this.setState({
-            nric: val
+            nric: val,
         });
     }
 

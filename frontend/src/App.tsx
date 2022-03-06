@@ -1,10 +1,9 @@
 import * as React from 'react';
-import {  Route, Link, Switch, useHistory, BrowserRouter, withRouter } from "react-router-dom";
+import { Route, Link, Switch, useHistory, BrowserRouter, withRouter } from "react-router-dom";
 
 import './App.css';
 import './index.css';
 import 'toastr/build/toastr.min.css';
-import Index from './components/index.component';
 import Edit from './components/UpdateBooking';
 import Create from './components/CreateNewBooking';
 import Home from './components/Home'
@@ -34,34 +33,79 @@ interface CustomType {
     isExternal?: boolean;
 }
 
-const items: INavbarItems<CustomType> = {
-    desktop: [
-        {
-            id: "home",
-            children: "Home",
-            href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
-        },
-        {
-            id: "appointments",
-            children: "Appointments",
-            href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
-            options: {
-                isExternal: true,
-            },
-        },
-        {
-            id: "dashboard",
-            children: "Dashboard",
-            href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
-        },
-        {
-            id: "servicecounter",
-            children: "ServiceCounter",
-            href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
-        },
+var sessionResult = sessionStorage.getItem('data') || '{}'
+var obj = JSON.parse(sessionResult);
+console.log(sessionResult)
 
-    ],
-};
+var role = obj.Role
+
+if(role == 'admin'){
+    var items: INavbarItems<CustomType> = {
+
+    
+        desktop: [
+            {
+                id: "home",
+                children: "Home",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
+            },
+            {
+                id: "appointments",
+                children: "Appointments",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
+                options: {
+                    isExternal: true,
+                },
+            },
+            {
+                id: "dashboard",
+                children: "Dashboard",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
+            },
+            {
+                id: "servicecounter",
+                children: "ServiceCounter",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
+            },
+    
+        ],
+    };
+}
+
+if(role == 'citizen'){
+    var items: INavbarItems<CustomType> = {
+
+    
+        desktop: [
+            {
+                id: "home",
+                children: "Home",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
+            },
+            {
+                id: "CreateAppointments",
+                children: "Create New Appointment",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Create",
+                options: {
+                    isExternal: true,
+                },
+            },
+            {
+                id: "dashboard",
+                children: "Queue Dashboard",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
+            },
+            {
+                id: "View My Appoinment",
+                children: "View My Appoinment",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "ViewAllBookings"
+            },
+    
+        ],
+    };
+}
+
+
 
 const App = () => {
 
@@ -77,22 +121,28 @@ const App = () => {
     }
 
     // history.push(`/dashboard`);
-    var sessionResult = sessionStorage.getItem('data') || '{}'
-    var obj = JSON.parse(sessionResult);
-    console.log(obj)
+    // var sessionResult = sessionStorage.getItem('data') || '{}'
+    // var obj = JSON.parse(sessionResult);
+    // console.log(sessionResult)
 
     var name = obj.NRIC
     // console.log(sessionResult)
+    // if(obj.role == 'citizen'){
+    //     return(
+
+    //     )
+    // }
+    // else{
+        
+    // }
     return (
         <div>
 
 
 
             <div style={{ height: "150px" }}>
-                {/* <AlertBox.Base type="success">
-    This will serves as a acknowledgement of a successful action.
-  </AlertBox.Base> */}
-                <div id='divNavBar' style={{ height: "150px", margin: "20px", display:"block" }}>
+               
+                <div id='divNavBar' style={{ height: "150px", margin: "20px", display: "block" }}>
                     <Navbar items={items} />
 
                 </div>
@@ -101,9 +151,9 @@ const App = () => {
                     <Text.Hyperlink.Default href={process.env.REACT_APP_MY_EC2_ADDRESS + "Login"} onClick={
                         () => {
                             sessionStorage.removeItem('data')
-                            return(
+                            return (
                                 <div>
-                                 <Login />
+                                    <Login />
 
                                 </div>
                             )
@@ -116,21 +166,20 @@ const App = () => {
 
 
             <div>
-                    <Switch>
-                        <Route exact path='/' component={Home} />
-                        <Route path='/edit/:id' component={Edit} />
-                        <Route path='/index' component={Index} />
-                        <Route path='/Home' component={Home} />
-                        <Route path='/Create' component={Create} />
+                <Switch>
+                    <Route exact path='/' component={Home} />
+                    <Route path='/edit/:id' component={Edit} />
+                    <Route path='/Home' component={Home} />
+                    <Route path='/Create' component={Create} />
 
-                        <Route path='/Appointments' component={Appointments} />
-                        <Route path='/UpcomingAppointments' component={UpcomingAppointments} />
-                        <Route path='/Dashboard' component={Dashboard} />
-                        <Route path='/ServiceCounter' component={ServiceCounter} />
-                        <Route path='/ScanIC' component={ScanIC} />
-                        <Route path='/BookingFound' component={BookingFound} />
-                        <Route path='/ViewAllBookings' component={ViewAllBookings} />
-                    </Switch>
+                    <Route path='/Appointments' component={Appointments} />
+                    <Route path='/UpcomingAppointments' component={UpcomingAppointments} />
+                    <Route path='/Dashboard' component={Dashboard} />
+                    <Route path='/ServiceCounter' component={ServiceCounter} />
+                    <Route path='/ScanIC' component={ScanIC} />
+                    <Route path='/BookingFound' component={BookingFound} />
+                    <Route path='/ViewAllBookings' component={ViewAllBookings} />
+                </Switch>
             </div>
 
 
