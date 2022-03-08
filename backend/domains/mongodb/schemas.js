@@ -8,17 +8,18 @@ const BOOKING = new Schema({
     citizenName : String,
     citizenSalutation : String,
     citizenEmail : String,
-    citizenNumber : Number,
+    citizenNumber : String,
     serviceName : String,
     serviceProviderName : String,
     serviceProviderEmail : String,
-    serviceProviderPhone : Number,
+    serviceProviderPhone : String,
     serviceStartDate : String,
     serviceStartTime : String,
 
     serviceProviderLocation : String,
     bookingStatus : String,
-    
+    queueNumber: String,
+
 
 }).pre('save', (next) => {
     console.log('SAVE BOOKING');

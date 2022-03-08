@@ -88,17 +88,18 @@ class BookingController extends BaseController {
                 citizenName: req.body.CitizenName,
                 citizenSalutation: req.body.CitizenSalutation,
                 citizenEmail: req.body.CitizenEmail,
-                citizenNumber: Number(req.body.CitizenNumber),
-
+                citizenNumber: req.body.CitizenNumber,
                 serviceName : req.body.ServiceName,
                 serviceProviderEmail : req.body.ServiceProviderEmail,
                 serviceProviderName : req.body.ServiceProviderName,
-                serviceProviderPhone: Number(req.body.ServiceProviderPhone),
+                serviceProviderPhone: req.body.ServiceProviderPhone,
                 serviceStartDate: req.body.ServiceStartDate,
                 serviceStartTime: req.body.ServiceStartTime,
 
                 serviceProviderLocation: req.body.ServiceProviderLocation,
-                bookingStatus: req.body.BookingStatus,                
+                bookingStatus: req.body.BookingStatus,       
+                queueNumber: req.body.QueueNumber,
+         
             };
  
             let data = await this._facade.addBooking(booking);
@@ -127,16 +128,17 @@ class BookingController extends BaseController {
                 citizenName: req.body.CitizenName,
                 citizenSalutation: req.body.CitizenSalutation,
                 citizenEmail: req.body.CitizenEmail,
-                citizenNumber: Number(req.body.CitizenNumber),
+                citizenNumber: req.body.CitizenNumber,
                 serviceName : req.body.ServiceName,
                 serviceProviderEmail : req.body.ServiceProviderEmail,
                 serviceProviderName : req.body.ServiceProviderName,
-                serviceProviderPhone: Number(req.body.ServiceProviderPhone),
+                serviceProviderPhone: req.body.ServiceProviderPhone,
                 serviceStartDate: req.body.ServiceStartDate,
                 serviceStartTime: req.body.ServiceStartTime,
-
                 serviceProviderLocation: req.body.ServiceProviderLocation,
                 bookingStatus: req.body.BookingStatus,
+                queueNumber: req.body.QueueNumber,
+
             };
 
             let data = await this._facade.updateBooking(booking.id, booking);

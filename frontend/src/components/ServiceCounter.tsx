@@ -11,7 +11,11 @@ import {
 } from 'react-lifesg-design-system';
 import styled from "styled-components";
 
+import Booking from "../models/booking";
+
+
 import { ModalContent } from "../models/doc-elements";
+import BaseService from '../service/base.service';
 
 
 interface Props {
@@ -25,14 +29,23 @@ const StyledSection = styled(Layout.Section)`
 `;
 
 interface MyState {
-    _bookingId : string,
+    _bookingId: string,
     nric: string,
-    name: string,
-    phone: string,
-    email: string,
-    inputValue : string
-    showModal: boolean
-
+    citizenName: string,
+    citizenNumber: string,
+    citizenEmail: string,
+    inputValue: string,
+    queueNumber: string,
+    showModal: boolean,
+    citizenSalutation: string,
+    serviceName: string,
+    serviceProviderEmail: string,
+    serviceProviderName: string,
+    serviceStartDate: string,
+    serviceProviderPhone: string,
+    serviceStartTime: string,
+    serviceProviderLocation: string,
+    bookingStatus: string
 }
 
 
@@ -43,12 +56,21 @@ class ServiceCounter extends React.Component<{}, MyState> {
         this.state = {
             _bookingId: "",
             nric: "",
-            name: "",
-            phone: "",
-            email: "",
+            citizenName: "",
+            citizenNumber: "",
+            citizenEmail: "",
             inputValue: "",
-            showModal: false
-
+            queueNumber: "",
+            showModal: false,
+            citizenSalutation: "",
+            serviceName: "",
+            serviceProviderEmail: "",
+            serviceProviderName: "",
+            serviceStartDate: "",
+            serviceProviderPhone: "",
+            serviceStartTime: "",
+            serviceProviderLocation: "",
+            bookingStatus: ""
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -59,26 +81,22 @@ class ServiceCounter extends React.Component<{}, MyState> {
         return (
             <StyledSection>
 
-<Modal.Base
-                        show={this.state.showModal}
-                        animationFrom="bottom"
-                        enableOverlayClick={true}
-                    // onOverlayClick={closeModal()}
-                    >
-                        <Modal.Box onClose={() => {
-
-                            this.setState({
-                                showModal: false
-                            });
-
-
-
-                        }}>
-                            <ModalContent>
-                                <span>Send to queue succesfully</span>
-                            </ModalContent>
-                        </Modal.Box>
-                    </Modal.Base>
+                <Modal.Base
+                    show={this.state.showModal}
+                    animationFrom="bottom"
+                    enableOverlayClick={true}
+                // onOverlayClick={closeModal()}
+                >
+                    <Modal.Box onClose={() => {
+                        this.setState({
+                            showModal: false
+                        });
+                    }}>
+                        <ModalContent>
+                            <span>Send to queue succesfully</span>
+                        </ModalContent>
+                    </Modal.Box>
+                </Modal.Base>
                 <Layout.Container>
                     <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' }]} />
 
@@ -94,16 +112,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                         <Layout.GridContainer className="column2">
                             <div>
-
-
-
-
                                 <div className='spacer1'></div>
 
                                 <Text.H3>Currently Serving</Text.H3>
-                                <div className='spacer1'></div>
-                                <div className='spacer1'></div>
 
+                                <Text.H5>Current Queue Number : {this.state.queueNumber}</Text.H5>
+                                <div className='spacer1'></div>
+                                <div className='spacer1'></div>
 
                                 <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
                                     <div style={{ padding: "2rem", minWidth: "1080px" }}>
@@ -113,9 +128,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                             <Text.Body weight="semibold">Phone Number</Text.Body>
                                             <Text.Body weight="semibold">Email</Text.Body>
                                             <Text.Body>{this.state.nric}</Text.Body>
-                                            <Text.Body>{this.state.name}</Text.Body>
-                                            <Text.Body>{this.state.phone}</Text.Body>
-                                            <Text.Body>{this.state.email}</Text.Body>
+                                            <Text.Body>{this.state.citizenName}</Text.Body>
+                                            <Text.Body>{this.state.citizenNumber}</Text.Body>
+                                            <Text.Body>{this.state.citizenEmail}</Text.Body>
                                         </Layout.GridContainer>
                                     </div>
                                 </BoxContainer>
@@ -143,9 +158,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 onSelectItem={(item, selectedValue) => {
 
                                     this.setState({
-                                        inputValue : selectedValue
+                                        inputValue: selectedValue
                                     })
-                                }} 
+                                }}
                             />
                         </Layout.GridContainer>
 
@@ -154,8 +169,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
                         <Button.Default
-                            onClick={() => this.consumeQueue(this.handle200, "sendtoNextService", this.state._bookingId, this.state.nric, this.state.name, this.state.email, this.state.phone)}
-                            
+                            onClick={() => this.consumeQueue(this.handle200, "sendtoNextService", this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenEmail, this.state.citizenNumber, this.state.queueNumber)}
+
                         >Send to next service</Button.Default>
 
                     </div>
@@ -166,116 +181,143 @@ class ServiceCounter extends React.Component<{}, MyState> {
     }
 
 
-     handle200(response) {
+    handle200(response) {
         console.log('handle200 has received:', response);
     }
 
-    
-    
-     consumeQueue(callback, buttonSelected: string, bookingId?: string, nric?: string, citizenName?: string, citizenEmail?: string, citizenNumber?: string) {
-    
+
+
+    consumeQueue(callback, buttonSelected: string, bookingId?: string, nric?: string, citizenName?: string, citizenEmail?: string, citizenNumber?: string, queueNumber?: string) {
+
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
-            
+
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=doctorQueue"
 
         }
-        else {
-    
+        if (buttonSelected == "sendtoNextService") {
+
             const queueObject = {
-                "_id" :bookingId,
+                "_id": bookingId,
                 "nric": nric,
                 "citizenName": citizenName,
                 "citizenEmail": citizenEmail,
-                "citizenNumber": citizenNumber
+                "citizenNumber": citizenNumber,
+                "queueNumber": queueNumber,
             }
-    
+
             var myJSON = encodeURI(JSON.stringify(queueObject));
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=" + this.state.inputValue + "&bookingDetails=" + myJSON;
 
-            console.log("---------------")
-            console.log(queueObject)
-
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=" + this.state.inputValue+"&bookingDetails=" + myJSON;
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.inputValue
-            // console.log(respectiveURL + "--------------")
         }
-    
-    
-    
+
+
+
         const xhr = new XMLHttpRequest(),
             method = "GET",
             url = respectiveURL;
         // initialize a new GET request
         xhr.open(method, url, true);
-    
+
         // respond to every readyState change
         xhr.onreadystatechange = () => {
-    
+
             // ignore all readyStates other than "DONE"
-            if (xhr.readyState !== XMLHttpRequest.DONE) { return; }
-    
+            if (xhr.readyState !== XMLHttpRequest.DONE) { console.log(XMLHttpRequest); return; }
+
             // call the callback with status
             if (xhr.status === 200) {
+                var calledBooking: Booking;
                 if (buttonSelected == "nextPatient") {
+                    console.log(xhr.responseText)
+                    this.setState({
+                        _bookingId: JSON.parse(xhr.responseText)._id,
+                        nric: JSON.parse(xhr.responseText).nric,
+                        citizenName: JSON.parse(xhr.responseText).citizenName,
+                        citizenEmail: JSON.parse(xhr.responseText).citizenEmail,
+                        citizenNumber: JSON.parse(xhr.responseText).citizenNumber,
+                        citizenSalutation: JSON.parse(xhr.responseText).citizenSalutation,
+                        queueNumber: JSON.parse(xhr.responseText).queueNumber,
+                        serviceName: JSON.parse(xhr.responseText).serviceName,
+
+                        serviceProviderEmail: JSON.parse(xhr.responseText).serviceProviderEmail,
+                        serviceProviderName: JSON.parse(xhr.responseText).serviceProviderName,
+                        serviceStartDate: JSON.parse(xhr.responseText).serviceStartDate,
+                        serviceProviderPhone: JSON.parse(xhr.responseText).serviceProviderPhone,
+                        serviceStartTime: JSON.parse(xhr.responseText).serviceStartTime,
+                        serviceProviderLocation: JSON.parse(xhr.responseText).serviceProviderLocation,
+                        bookingStatus: JSON.parse(xhr.responseText).bookingStatus,
+                    })
+
+
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
+
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
-                    this.setState({
-                        _bookingId : JSON.parse(xhr.responseText)._id,
-                        nric:  JSON.parse(xhr.responseText).nric,
-                        name: JSON.parse(xhr.responseText).citizenName,
-                        phone: JSON.parse(xhr.responseText).citizenNumber,
-                        email: JSON.parse(xhr.responseText).citizenEmail
+                    calledBooking.BookingStatus = "Doctor"
 
-                    })
-                    
+                    BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
+
+                        (rp) => {
+                            if (rp.Status) {
+                                console.log('Booking saved.');
+                            } else {
+                                console.log(rp.Messages);
+                                console.log("Messages: " + rp.Messages);
+                                console.log("Exception: " + rp.Exception);
+                            }
+                        }
+                    );
+
                 }
-                
-                if(buttonSelected == "sendtoNextService"){
+
+                if (buttonSelected == "sendtoNextService") {
                     this.setState({
                         showModal: true
                     });
 
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
+
+
                     document.getElementById("divCurrentCitizen")!!.style.display = "none";
                     document.getElementById("divButtonNextPatient")!!.style.display = "block";
+
+
+                    calledBooking.BookingStatus = "Payment"
+
+                    BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
+
+                        (rp) => {
+                            if (rp.Status) {
+                                console.log('Booking saved.');
+                            } else {
+                                console.log(rp.Messages);
+                                console.log("Messages: " + rp.Messages);
+                                console.log("Exception: " + rp.Exception);
+                            }
+                        }
+                    );
+
                 }
 
+
+
                 // console.log(JSON.parse(xhr.responseText));
-                
+
                 return callback(xhr.status);
             }
-    
+
             // got something other than 200,
             // re-initialize and send another GET request
             xhr.open(method, url, true);
             xhr.send();
         }
-    
+
         // send the initial GET request
         xhr.send();
-    } 
+    }
 
 
 }
 
 export default ServiceCounter;
-
-
-
-
-
-
-
-
-
-// function foundResult(_id: any, nric: any, phone: any, email: any, name: any)  {
-//      queueObject = {
-//         "_id" :_id,
-//         "nric":nric,
-//         "citizenName":name,
-//         "citizenEmail":email,
-//         "citizenNumber":phone
-//     }
-
-//     console.log(queueObject)
-// }
-

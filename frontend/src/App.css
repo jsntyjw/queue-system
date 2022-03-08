@@ -20,3 +20,17 @@
 .App-link {
   color: #09d3ac;
 }
+
+.column {
+  float: left;
+  width: 33.33%;
+  margin: 8px;
+  
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}

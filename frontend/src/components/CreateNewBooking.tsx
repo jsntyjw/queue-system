@@ -23,11 +23,11 @@ interface IState {
 }
 
 
-var sessionResult = sessionStorage.getItem('data') || '{}'
-    var obj = JSON.parse(sessionResult);
-    console.log(sessionResult)
+// var sessionResult = sessionStorage.getItem('data') || '{}'
+//     var obj = JSON.parse(sessionResult);
+//     console.log(sessionResult)
     
-    var nric = obj.NRIC
+//     var nric = obj.NRIC
 
 
 
@@ -38,7 +38,7 @@ export default class Create extends  React.Component<IProps, IState> {
          
         this.state = {
             booking: {
-                Nric : nric,
+                Nric : '',
                 CitizenName : '',
                 CitizenSalutation : '',
                 CitizenEmail : '',
@@ -51,6 +51,7 @@ export default class Create extends  React.Component<IProps, IState> {
                 ServiceStartTime : '',
                 ServiceProviderLocation : '',
                 BookingStatus : 'New',
+                QueueNumber : '',
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
@@ -76,7 +77,7 @@ export default class Create extends  React.Component<IProps, IState> {
 
                     this.setState({
                         booking: {
-                            Nric : nric,
+                            Nric : '',
                             CitizenName : '',
                             CitizenSalutation : '',
                             CitizenEmail : '',
@@ -91,6 +92,7 @@ export default class Create extends  React.Component<IProps, IState> {
                             ServiceProviderLocation : '',
                             BookingStatus : 'New',
                             Id: '',
+                            QueueNumber: '',
                         }
                     });
                      

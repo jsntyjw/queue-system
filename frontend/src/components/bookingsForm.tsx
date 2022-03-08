@@ -25,11 +25,11 @@ const StyledSection = styled(Layout.Section)`
 `;
 
 
-var sessionResult = sessionStorage.getItem('data') || '{}'
-    var obj = JSON.parse(sessionResult);
-    console.log(sessionResult)
+// var sessionResult = sessionStorage.getItem('data') || '{}'
+//     var obj = JSON.parse(sessionResult);
+//     console.log(sessionResult)
     
-    var nric = obj.userName
+//     var nric = obj.userName
 
 export const BookingForm: React.FunctionComponent<Props> = (props) => {
     return (
@@ -46,8 +46,7 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                         label="Nric"
                         defaultValue=''
                         onChange={props.onChange}
-                        value={nric}
-                        disabled
+                        value={props.booking.Nric}
                     />
 
                     <Input

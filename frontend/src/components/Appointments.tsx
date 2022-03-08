@@ -5,6 +5,7 @@ import styled from "styled-components";
 import Booking from "../models/booking";
 
 import { Container, Label, ModalContent, OptionContainer } from "../models/doc-elements";
+import BaseService from '../service/base.service';
 
 
 const StyledContainer = styled(Layout.GridContainer)`
@@ -39,12 +40,15 @@ interface MyState {
     selected: string
 }
 
+var queueNumberArray : number[] = [];
+
+
 
 
 
 class Appointment extends React.Component<{}, MyState> {
 
-
+    
 
     constructor(props) {
         super(props);
@@ -97,12 +101,15 @@ class Appointment extends React.Component<{}, MyState> {
                         element["serviceStartDate"],
                         element["serviceStartTime"],
                         element["serviceProviderLocation"],
-                        element["bookingStatus"]
+                        element["bookingStatus"],
+                        element["queueNumber"]
                     );
 
                     
                     // const bookings = this.state.bookings.slice(0);
                     this.state.bookings.push(eachBooking)
+
+                    
                     // console.log(bookings)
 
                     this.setState({
@@ -292,7 +299,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     </ul>
 
                                                     <Button.Default
-                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber)}
+                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                     >Send to Queue</Button.Default>
                                                 </Text.Body>
                                             </Accordion.Item>
@@ -315,13 +322,42 @@ class Appointment extends React.Component<{}, MyState> {
         console.log('handle200 has received:', response);
     }
 
-    checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string) {
+    checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
+        this.state.bookings.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1)) ));
+
+        console.log("test!!" + queueNumberArray)
+
+        var num = Math.max.apply(null, queueNumberArray) + 1;
+
+        console.log(num);
+        
+        var str = String(num);
+
+        while (str.length < 4 ) str = "0" + str;
+         
+        str = "H" + str;
+        booking.QueueNumber = str;
+
+        console.log(str)
+        
+
+   
         const queueObject = {
             "_id": bookingId,
             "nric": nric,
             "citizenName": citizenName,
             "citizenEmail": citizenEmail,
-            "citizenNumber": citizenNumber
+            "citizenNumber": booking.CitizenNumber,
+            "citizenSalutation": booking.CitizenSalutation,
+            "serviceName": booking.ServiceName,
+            "serviceProviderEmail": booking.ServiceProviderEmail,
+            "serviceProviderName": booking.ServiceProviderName,
+            "serviceStartDate": booking.ServiceStartDate,
+            "serviceProviderPhone": booking.ServiceProviderPhone,
+            "serviceStartTime": booking.ServiceStartTime,
+            "serviceProviderLocation": booking.ServiceProviderLocation,
+            "bookingStatus": booking.BookingStatus,
+            "queueNumber": str,
         }
 
         const myJSON = encodeURI(JSON.stringify(queueObject));
@@ -371,8 +407,14 @@ export default Appointment;
 
 
 
+var pad = function(num) {
+    var str = String(num++);
+    while (str.length < 4) str = "0" + str;
+    return str;
+}; 
 
-// function closeModalFn(): (() => void) | undefined {
+
+// function closeModalFn(): (() => void) | undefined { 
 //     throw new Error('Function not implemented.');
 // }
 // const [show, setShow ] = useState(false)
