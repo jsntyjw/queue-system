@@ -65,21 +65,41 @@ class Appointment extends React.Component<{}, MyState> {
         this.searchByLocation = this.searchByLocation.bind(this)
     }
 
+
+    componentDidMount() {
+        this.loadData();
+        setInterval(this.loadData, 10000);
+      }
+
+      async loadData() {
+        try {
+         this.searchByLocation("location");
+
+        //   console.log(blocks.data)
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
     public async searchByLocation(searchMethod: string) {
 
         var apiURL: string
         if (searchMethod == "location") {
-            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/';
+            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
             document.getElementById("divAppointments")!!.style.display = "block";
 
         }
         else {
-            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/';
-            document.getElementById("divAppointments")!!.style.display = "block";
+            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+            console.log(apiURL)
+            if(this.state.inputValue == ''){
+                apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            }
+            // document.getElementById("divAppointments")!!.style.display = "block";
 
         }
 
-        fetch(apiURL + this.state.inputValue)
+        fetch(apiURL)
             .then(function (response) {
                 
                 return response.json();
@@ -159,7 +179,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
 
-                        <Container>
+                        {/* <Container>
                             <OptionContainer>
                                 <RadioButton value="A" id="multiple-options-a" name="multiple-options" onChange={() => {
                                     this.setState({
@@ -182,22 +202,26 @@ class Appointment extends React.Component<{}, MyState> {
                                 }} checked={this.state.selected === "B"} />
                                 <Label htmlFor="multiple-options-b">View appointments by Location</Label>
                             </OptionContainer>
-                        </Container>
+                        </Container> */}
 
-                        <div className="spacer2"></div>
+                        {/* <div className="spacer2"></div> */}
 
                         <div id='divNRIC' style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showNRIC }}>
+                            <div style={{'margin' : '5px'}}>
+                            <Text.Body >Search by NRIC: </Text.Body>
+                            </div>
                             <InputGroup addon={{
                                 type: 'custom'
                             }} placeholder="Type NRIC here..."
+                                
                                 onChange={evt => this.updateInputValue(evt)}
                             />
 
-                            <br />
+                            <div style={{'padding' : '5px'}}></div>
                             <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                         </div>
 
-                        <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', display: this.state.showLocation }}>
+                        {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', display: this.state.showLocation }}>
                             <InputSelect
                                 options={[
                                     { value: "Tampines", label: "Tampines" },
@@ -217,7 +241,7 @@ class Appointment extends React.Component<{}, MyState> {
                                 }} />
 
                         </div>
-                        <div className="spacer2"></div>
+                        <div className="spacer2"></div> */}
                         {/* <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
                             <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
                                 <div style={{ padding: "2rem", minWidth: "1080px" }}>
@@ -237,7 +261,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <div className="spacer5"></div>
 
-                        <div id='divAppointments' style={{display:'none'}}>
+                        <div id='divAppointments' >
 
                         {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', alignContent:'right', display: this.state.showLocation }}>
                             <InputSelect
@@ -260,7 +284,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         </div> */}
                         <StyledContainer>
-                            <Text.H3>Appointments</Text.H3>
+                            <Text.H3>Appointments for Tampines</Text.H3>
                             <Text.Body>Government services appointments</Text.Body>
                             <Main>
 
@@ -269,7 +293,10 @@ class Appointment extends React.Component<{}, MyState> {
 
                                 <Accordion.Base className='base' >
                                     {this.state.bookings.map((input, index) => {
-
+                                        var showButton = 'none';
+                                        if(input.BookingStatus == 'New'){
+                                            showButton = 'block';
+                                        }
                                         console.log(this.state.bookings)
                                         return (
                                             <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
@@ -296,11 +323,16 @@ class Appointment extends React.Component<{}, MyState> {
                                                         <li>
                                                             <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
                                                         </li>
+                                                        <li>
+                                                            <b>Service Status:</b>  {input.BookingStatus}
+                                                        </li>
                                                     </ul>
-
+                                                    <div style={{ 'display':  showButton }}>
                                                     <Button.Default
                                                         onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                     >Send to Queue</Button.Default>
+                                                    </div>
+                                                    
                                                 </Text.Body>
                                             </Accordion.Item>
                                         )
@@ -310,6 +342,9 @@ class Appointment extends React.Component<{}, MyState> {
                             </Main>
                             <div className="spacer3"></div>
                         </StyledContainer>
+
+
+                        
 
                         </div>
                     </Layout.Container>
@@ -398,6 +433,9 @@ class Appointment extends React.Component<{}, MyState> {
         this.setState({
             inputValue: val
         });
+        
+
+      
     }
 }
 

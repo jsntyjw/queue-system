@@ -52,7 +52,7 @@ interface CustomType {
 // };
 
 
-   
+
 
 console.log(sessionStorage.getItem('data'))
 
@@ -61,92 +61,92 @@ const App = () => {
 
     // const history = useHistory();
 
-    if (sessionStorage.getItem('data') == null  ) {
-        
-        return (
-            <div>
-                <Login />
+    // if (sessionStorage.getItem('data') == null) {
 
-            </div>
-        )
-    }
+    //     return (
+    //         <div>
+    //             <Login />
 
-    var sessionResult = sessionStorage.getItem('data') || '{}'
-    var obj = JSON.parse(sessionResult);
-        
+    //         </div>
+    //     )
+    // }
+
+    // var sessionResult = sessionStorage.getItem('data') || '{}'
+    // var obj = JSON.parse(sessionResult);
+
 
 
     // console.log(sessionResult)
 
 
-    var role = obj.Role
+    // var role = obj.Role
 
-        if(role == "admin"){
-            var items: INavbarItems<CustomType> = {
+    //     if(role == "admin"){
+    var items: INavbarItems<CustomType> = {
 
-    
-                desktop: [
-                    {
-                        id: "home",
-                        children: "Home",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
-                    },
-                    {
-                        id: "appointments",
-                        children: "Appointments",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
-                        options: {
-                            isExternal: true,
-                        },
-                    },
-                    {
-                        id: "dashboard",
-                        children: "Dashboard",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
-                    },
-                    {
-                        id: "servicecounter",
-                        children: "ServiceCounter",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
-                    },
-            
-                ],
-            };
-        }
-        else{
-            var items: INavbarItems<CustomType> = {
 
-    
-                desktop: [
-                    {
-                        id: "home",
-                        children: "Home",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
-                    },
+        desktop: [
+            {
+                id: "home",
+                children: "Home",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
+            },
+            {
+                id: "appointments",
+                children: "Appointments",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Appointments",
+                options: {
+                    isExternal: true,
+                },
+            },
+            {
+                id: "dashboard",
+                children: "Dashboard",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
+            },
+            {
+                id: "servicecounter",
+                children: "ServiceCounter",
+                href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
+            },
 
-                    {
-                        id: "dashboard",
-                        children: "Queue Dashboard",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
-                    },
-                    {
-                        id: "View My Appoinment",
-                        children: "View My Appoinment",
-                        href: process.env.REACT_APP_MY_EC2_ADDRESS + "ViewAllBookings"
-                    },
-            
-                ],
-            };
-        }
+        ],
+    };
+    // }
+    // else{
+    //     var items: INavbarItems<CustomType> = {
 
-        
+
+    //         desktop: [
+    //             {
+    //                 id: "home",
+    //                 children: "Home",
+    //                 href: process.env.REACT_APP_MY_EC2_ADDRESS + "Home"
+    //             },
+
+    //             {
+    //                 id: "dashboard",
+    //                 children: "Queue Dashboard",
+    //                 href: process.env.REACT_APP_MY_EC2_ADDRESS + "Dashboard"
+    //             },
+    //             {
+    //                 id: "View My Appoinment",
+    //                 children: "View My Appoinment",
+    //                 href: process.env.REACT_APP_MY_EC2_ADDRESS + "ViewAllBookings"
+    //             },
+
+    //         ],
+    //     };
+    // }
+
+
 
     // history.push(`/dashboard`);
     // var sessionResult = sessionStorage.getItem('data') || '{}'
     // var obj = JSON.parse(sessionResult);
     // console.log(sessionResult)
 
-    var name = obj.userName
+    // var name = obj.userName
     // console.log(sessionResult)
     // if(obj.role == 'citizen'){
     //     return(
@@ -154,103 +154,103 @@ const App = () => {
     //     )
     // }
     // else{
-        
+
     // }
     return (
         <>
-        <Layout.Container>
-        <div>
-            <div style={{ height: "150px", marginBottom: "80px" }}>
-               
-                <div id='divNavBar' style={{ height: "150px", margin: "20px", display: "block" }}>
-                    <Navbar items={items} />
+            <Layout.Container>
+                <div>
+                    <div style={{ height: "50px", marginBottom: "80px" }}>
+
+                        <div id='divNavBar' style={{ height: "150px", margin: "20px", display: "block" }}>
+                            <Navbar items={items} />
+
+                        </div>
+                        {/* <div style={{}}>
+                            <Text.H3> Welcome, {name}</Text.H3>
+                            <Text.Hyperlink.Default href={process.env.REACT_APP_MY_EC2_ADDRESS + "Login"} onClick={
+                                () => {
+                                    sessionStorage.removeItem('data')
+                                    sessionStorage.clear()
+                                    return (
+                                        <div>
+                                            <Login />
+
+                                        </div>
+                                    )
+                                }
+                            } target="blank">Logout</Text.Hyperlink.Default>
+
+                        </div> */}
+
+                    </div>
+
+
+                    <div>
+                        <Switch>
+                            <Route exact path='/' component={Home} />
+                            <Route path='/edit/:id' component={Edit} />
+                            <Route path='/Home' component={Home} />
+                            <Route path='/Create' component={Create} />
+
+                            <Route path='/Appointments' component={Appointments} />
+                            <Route path='/UpcomingAppointments' component={UpcomingAppointments} />
+                            <Route path='/Dashboard' component={Dashboard} />
+                            <Route path='/ServiceCounter' component={ServiceCounter} />
+                            <Route path='/ScanIC' component={ScanIC} />
+                            <Route path='/BookingFound' component={BookingFound} />
+                            <Route path='/ViewAllBookings' component={ViewAllBookings} />
+                        </Switch>
+                    </div>
+
+
+
+
 
                 </div>
-                <div style={{  }}>
-                    <Text.H3> Welcome, {name}</Text.H3>
-                    <Text.Hyperlink.Default href={process.env.REACT_APP_MY_EC2_ADDRESS + "Login"} onClick={
-                        () => {
-                            sessionStorage.removeItem('data')
-                            sessionStorage.clear()
-                            return (
-                                <div>
-                                    <Login />
-
-                                </div>
-                            )
-                        }
-                    } target="blank">Logout</Text.Hyperlink.Default>
-
-                </div>
-
-            </div>
-
+            </Layout.Container>
 
             <div>
-                <Switch>
-                    <Route exact path='/' component={Home} />
-                    <Route path='/edit/:id' component={Edit} />
-                    <Route path='/Home' component={Home} />
-                    <Route path='/Create' component={Create} />
-
-                    <Route path='/Appointments' component={Appointments} />
-                    <Route path='/UpcomingAppointments' component={UpcomingAppointments} />
-                    <Route path='/Dashboard' component={Dashboard} />
-                    <Route path='/ServiceCounter' component={ServiceCounter} />
-                    <Route path='/ScanIC' component={ScanIC} />
-                    <Route path='/BookingFound' component={BookingFound} />
-                    <Route path='/ViewAllBookings' component={ViewAllBookings} />
-                </Switch>
+                <Footer
+                    lastUpdated={new Date()}
+                    addon="download"
+                    links={[
+                        [
+                            { children: "Home", href: "https://www.life.gov.sg" },
+                            {
+                                children: "How it works",
+                                href: "https://www.life.gov.sg/#how-it-works",
+                            },
+                            {
+                                children: "Ways we help",
+                                href: "https://www.life.gov.sg/#ways-we-help",
+                            },
+                            {
+                                children: "Campaigns",
+                                href: "https://www.life.gov.sg/#campaigns",
+                            },
+                            {
+                                children: "News and media",
+                                href: "https://www.life.gov.sg/#newsandmedia",
+                            },
+                        ],
+                        [
+                            {
+                                children: "About us",
+                                href: "https://www.life.gov.sg/about-us",
+                            },
+                            {
+                                children: "Help & Support",
+                                href: "https://www.life.gov.sg/help-support",
+                            },
+                            {
+                                children: "Get in touch with us",
+                                href: "https://www.life.gov.sg/get-in-touch",
+                            },
+                        ],
+                    ]}
+                />
             </div>
-
-
-
-            
-
-        </div>
-        </Layout.Container>
-
-        <div>
-        <Footer
-            lastUpdated={new Date()}
-            addon="download"
-            links={[
-                [
-                    { children: "Home", href: "https://www.life.gov.sg" },
-                    {
-                        children: "How it works",
-                        href: "https://www.life.gov.sg/#how-it-works",
-                    },
-                    {
-                        children: "Ways we help",
-                        href: "https://www.life.gov.sg/#ways-we-help",
-                    },
-                    {
-                        children: "Campaigns",
-                        href: "https://www.life.gov.sg/#campaigns",
-                    },
-                    {
-                        children: "News and media",
-                        href: "https://www.life.gov.sg/#newsandmedia",
-                    },
-                ],
-                [
-                    {
-                        children: "About us",
-                        href: "https://www.life.gov.sg/about-us",
-                    },
-                    {
-                        children: "Help & Support",
-                        href: "https://www.life.gov.sg/help-support",
-                    },
-                    {
-                        children: "Get in touch with us",
-                        href: "https://www.life.gov.sg/get-in-touch",
-                    },
-                ],
-            ]}
-        />
-        </div>
         </>
     );
 };
