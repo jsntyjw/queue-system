@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../App.css';
-import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, RadioButton, } from 'react-lifesg-design-system';
+import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, RadioButton, LinkList, } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import Booking from "../models/booking";
 
@@ -36,11 +36,14 @@ interface MyState {
     clicked: string,
     showModal: boolean,
     showNRIC: string,
-    showLocation: string,
+    showGeneralPractioner: string,
+    showDivider: string,
+    showSpecialist: string,
+    showGeneralTypeDropDown: string,
     selected: string
 }
 
-var queueNumberArray : number[] = [];
+var queueNumberArray: number[] = [];
 
 
 
@@ -48,7 +51,7 @@ var queueNumberArray : number[] = [];
 
 class Appointment extends React.Component<{}, MyState> {
 
-    
+
 
     constructor(props) {
         super(props);
@@ -57,88 +60,121 @@ class Appointment extends React.Component<{}, MyState> {
             inputValue: '',
             clicked: 'none',
             showModal: false,
-            showNRIC: 'block',
-            showLocation: 'none',
+            showNRIC: 'none',
+            showGeneralPractioner: 'block',
+            showDivider: 'block',
+            showSpecialist: 'block',
+            showGeneralTypeDropDown: 'none',
             selected: 'A'
 
         };
-        this.searchByLocation = this.searchByLocation.bind(this)
+        this.loadData = this.loadData.bind(this)
     }
 
 
     componentDidMount() {
         this.loadData();
         setInterval(this.loadData, 10000);
-      }
+    }
 
-      async loadData() {
+    async loadData() {
         try {
-         this.searchByLocation("location");
-
-        //   console.log(blocks.data)
-        } catch (e) {
-          console.log(e);
-        }
-      }
-
-    public async searchByLocation(searchMethod: string) {
-
-        var apiURL: string
-        if (searchMethod == "location") {
+            var apiURL: string
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            document.getElementById("divAppointments")!!.style.display = "block";
+            // if (searchMethod == "location") {
+            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            //     document.getElementById("divAppointments")!!.style.display = "block";
 
-        }
-        else {
-            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
-            console.log(apiURL)
-            if(this.state.inputValue == ''){
-                apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            }
-            // document.getElementById("divAppointments")!!.style.display = "block";
+            // }
+            // else {
+            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+            //     console.log(apiURL)
+            //     if (this.state.inputValue == '') {
+            //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            //     }
+            //     // document.getElementById("divAppointments")!!.style.display = "block";
 
-        }
+            // }
 
-        fetch(apiURL)
-            .then(function (response) {
-                
-                return response.json();
-            })
-            .then((myJson) => {
-                this.state.bookings.length = 0;
-                myJson.data.forEach(element => {
-                    var eachBooking = new Booking(
-                        element["_id"],
-                        element["nric"],
-                        element["citizenName"],
-                        element["citizenSalutation"],
-                        element["citizenEmail"],
-                        element["citizenNumber"],
-                        element["serviceName"],
-                        element["serviceProviderName"],
-                        element["serviceProviderEmail"],
-                        element["serviceProviderPhone"],
-                        element["serviceStartDate"],
-                        element["serviceStartTime"],
-                        element["serviceProviderLocation"],
-                        element["bookingStatus"],
-                        element["queueNumber"]
-                    );
+            fetch(apiURL)
+                .then(function (response) {
 
-                    
-                    // const bookings = this.state.bookings.slice(0);
-                    this.state.bookings.push(eachBooking)
-
-                    
-                    // console.log(bookings)
-
+                    return response.json();
+                })
+                .then((myJson) => {
                     this.setState({
-                        bookings: this.state.bookings,
-                        clicked: 'block'
-                    });
+                        bookings: []
+                    })
+                    myJson.data.forEach(element => {
+                        var eachBooking = new Booking(
+                            element["_id"],
+                            element["nric"],
+                            element["citizenName"],
+                            element["citizenSalutation"],
+                            element["citizenEmail"],
+                            element["citizenNumber"],
+                            element["generalType"],
+                            element["serviceName"],
+                            element["serviceProviderName"],
+                            element["serviceProviderEmail"],
+                            element["serviceProviderPhone"],
+                            element["serviceStartDate"],
+                            element["serviceStartTime"],
+                            element["serviceProviderLocation"],
+                            element["bookingStatus"],
+                            element["queueNumber"]
+                        );
 
+
+                        // const bookings = this.state.bookings.slice(0);
+                        this.state.bookings.push(eachBooking)
+
+
+                        // console.log(bookings)
+
+                        this.setState({
+                            bookings: this.state.bookings,
+                            clicked: 'block'
+                        });
+
+                    });
                 });
+
+            //   console.log(blocks.data)
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    public async searchByLocation(val: string) {
+
+        console.log(val)
+
+        if (val == "General Practioner") {
+
+            this.setState({
+                showSpecialist: 'none',
+                showDivider: 'none',
+                showGeneralPractioner: 'block',
+                showNRIC: 'none',
+                showGeneralTypeDropDown: 'block'
             });
+
+
+
+
+        }
+        if (val == "Specialist") {
+            this.setState({
+                showSpecialist: 'block',
+                showDivider: 'none',
+                showGeneralPractioner: 'none',
+                showNRIC: 'none',
+                showGeneralTypeDropDown: 'block'
+            });
+
+        }
+
     }
 
     render() {
@@ -179,70 +215,92 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
 
-                        {/* <Container>
+                        <Container>
                             <OptionContainer>
                                 <RadioButton value="A" id="multiple-options-a" name="multiple-options" onChange={() => {
                                     this.setState({
                                         selected: 'A',
-                                        showNRIC: 'block',
-                                        showLocation: 'none'
+                                        showSpecialist: 'block',
+                                        showDivider: 'block',
+                                        showGeneralPractioner: 'block',
+                                        showNRIC: 'none',
+                                        showGeneralTypeDropDown: 'none'
                                     }
 
                                     );
                                 }} checked={this.state.selected === "A"} />
-                                <Label htmlFor="multiple-options-a">View appointments by NRIC</Label>
+                                <Label htmlFor="multiple-options-a">View All Appointments</Label>
                             </OptionContainer>
                             <OptionContainer>
                                 <RadioButton value="B" id="multiple-options-b" name="multiple-options" onChange={() => {
                                     this.setState({
                                         selected: 'B',
-                                        showLocation: 'block',
-                                        showNRIC: 'none'
-                                    });
-                                }} checked={this.state.selected === "B"} />
-                                <Label htmlFor="multiple-options-b">View appointments by Location</Label>
-                            </OptionContainer>
-                        </Container> */}
+                                        showSpecialist: 'none',
+                                        showDivider: 'none',
+                                        showGeneralPractioner: 'none',
+                                        showNRIC: 'block',
+                                        showGeneralTypeDropDown: 'none'
+                                    }
 
-                        {/* <div className="spacer2"></div> */}
+                                    );
+                                }} checked={this.state.selected === "B"} />
+                                <Label htmlFor="multiple-options-b">View appointments by NRIC</Label>
+                            </OptionContainer>
+                            <OptionContainer>
+                                <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
+                                    this.setState({
+                                        selected: 'C',
+                                        showSpecialist: 'none',
+                                        showDivider: 'none',
+                                        showGeneralPractioner: 'none',
+                                        showNRIC: 'none',
+                                        showGeneralTypeDropDown: 'block',
+                                        
+                                    });
+                                }} checked={this.state.selected === "C"} />
+                                <Label htmlFor="multiple-options-c">View Appointments by Service Type</Label>
+                            </OptionContainer>
+                        </Container>
+
+                        <div className="spacer2"></div>
 
                         <div id='divNRIC' style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showNRIC }}>
-                            <div style={{'margin' : '5px'}}>
-                            <Text.Body >Search by NRIC: </Text.Body>
+                            <div style={{ 'margin': '5px' }}>
+                                <Text.Body >Search by NRIC: </Text.Body>
                             </div>
                             <InputGroup addon={{
                                 type: 'custom'
                             }} placeholder="Type NRIC here..."
-                                
+
                                 onChange={evt => this.updateInputValue(evt)}
                             />
 
-                            <div style={{'padding' : '5px'}}></div>
+                            <div style={{ 'padding': '5px' }}></div>
                             <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                         </div>
 
-                        {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', display: this.state.showLocation }}>
+                        <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
                             <InputSelect
+                            id='dropDownType'
                                 options={[
-                                    { value: "Tampines", label: "Tampines" },
-                                    { value: "Woodlands", label: "Woodlands" },
-                                    { value: "Toa Payoh", label: "Toa Payoh" },
-                                    { value: "Punggol", label: "Punggol" },
+                                    { value: "General Practioner", label: "General Practioner" },
+                                    { value: "Specialist", label: "Specialist" },
+
                                 ]}
-                                
+
                                 valueExtractor={(item) => item.value}
                                 listExtractor={(item) => item.label}
                                 displayValueExtractor={(item) => item.label}
-                                placeholder="Select a location"
+                                placeholder="Select a service type"
                                 onSelectItem={(item, selectedValue) => {
                                     this.setState({ inputValue: selectedValue }, () => {
-                                        this.searchByLocation('location')
+                                        this.searchByLocation(selectedValue)
                                     });
                                 }} />
 
                         </div>
-                        <div className="spacer2"></div> */}
-                        {/* <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
+                        {/* <div className="spacer2"></div> 
+                         <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
                             <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
                                 <div style={{ padding: "2rem", minWidth: "1080px" }}>
                                     <Layout.GridContainer className="column4">
@@ -263,88 +321,143 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <div id='divAppointments' >
 
-                        {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start",maxWidth: '400px', alignContent:'right', display: this.state.showLocation }}>
-                            <InputSelect
-                                options={[
-                                    { value: "Tampines", label: "Tampines" },
-                                    { value: "Woodlands", label: "Woodlands" },
-                                    { value: "Toa Payoh", label: "Toa Payoh" },
-                                    { value: "Punggol", label: "Punggol" },
-                                ]}
-                                
-                                valueExtractor={(item) => item.value}
-                                listExtractor={(item) => item.label}
-                                displayValueExtractor={(item) => item.label}
-                                placeholder="Select a location"
-                                onSelectItem={(item, selectedValue) => {
-                                    this.setState({ inputValue: selectedValue }, () => {
-                                        this.searchByLocation('location')
-                                    });
-                                }} />
-
-                        </div> */}
-                        <StyledContainer>
-                            <Text.H3>Appointments for Tampines</Text.H3>
-                            <Text.Body>Government services appointments</Text.Body>
-                            <Main>
-
-                           
+                            <div id='divGeneralPractioner' className='rcorner2' style={{'display': this.state.showGeneralPractioner}}>
 
 
-                                <Accordion.Base className='base' >
-                                    {this.state.bookings.map((input, index) => {
-                                        var showButton = 'none';
-                                        if(input.BookingStatus == 'New'){
-                                            showButton = 'block';
-                                        }
-                                        console.log(this.state.bookings)
-                                        return (
-                                            <Accordion.Item title={input.ServiceName} key={index} expanded={false}>
-                                                <Text.Body>
-                                                    <ul>
-                                                        <li>
-                                                            <b>Citizen Name :</b>  {input.CitizenName}
-                                                        </li>
-                                                        <li>
-                                                            <b>Citizen Number: </b> {input.CitizenNumber}
-                                                        </li>
-                                                        <li>
-                                                            <b>Citizen Email: </b> {input.CitizenEmail}
-                                                        </li>
-                                                        <li>
-                                                            <b>Service start date:</b>  {input.ServiceStartDate}
-                                                        </li>
-                                                        <li>
-                                                            <b>Service start time:</b>  {input.ServiceStartTime}
-                                                        </li>
-                                                        <li>
-                                                            <b>Service Name:</b>  {input.ServiceName}
-                                                        </li>
-                                                        <li>
-                                                            <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
-                                                        </li>
-                                                        <li>
-                                                            <b>Service Status:</b>  {input.BookingStatus}
-                                                        </li>
-                                                    </ul>
-                                                    <div style={{ 'display':  showButton }}>
-                                                    <Button.Default
-                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
-                                                    >Send to Queue</Button.Default>
-                                                    </div>
-                                                    
-                                                </Text.Body>
-                                            </Accordion.Item>
-                                        )
-                                    })}
-                                </Accordion.Base>
-
-                            </Main>
-                            <div className="spacer3"></div>
-                        </StyledContainer>
+                                <StyledContainer>
+                                    <Text.H3>Appointments [General Practioner]</Text.H3>
+                                    <Text.Body>Government services appointments</Text.Body>
+                                    <Main>
 
 
-                        
+
+
+                                        <Accordion.Base className='base' >
+                                            {this.state.bookings.map((input, index) => {
+                                                var showButton = 'none';
+                                                if (input.BookingStatus == 'New') {
+                                                    showButton = 'block';
+                                                }
+                                                console.log(this.state.bookings)
+                                                return (
+                                                    <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                        <Text.Body>
+                                                            <ul>
+                                                                <li>
+                                                                    <b>Citizen Name :</b>  {input.CitizenName}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service Name:</b>  {input.ServiceName}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service Status:</b>  {input.BookingStatus}
+                                                                </li>
+                                                            </ul>
+                                                            <div style={{ 'display': showButton }}>
+                                                                <Button.Default
+                                                                    onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                >Send to Queue</Button.Default>
+                                                            </div>
+
+                                                        </Text.Body>
+                                                    </Accordion.Item>
+                                                )
+                                            })}
+                                        </Accordion.Base>
+
+                                    </Main>
+
+
+                                    <div className="spacer3"></div>
+                                </StyledContainer>
+
+
+                            </div>
+                            <div id='divDivider' className="spacer5" style={{'display': this.state.showDivider}}></div>
+
+
+
+                            <div id='divSpecialist' className='rcorner' style={{'display': this.state.showSpecialist}}>
+
+
+                                <StyledContainer>
+                                    <Text.H3>Appointments [Specialist]</Text.H3>
+                                    <Text.Body>Government services appointments</Text.Body>
+                                    <Main>
+
+
+
+
+                                        <Accordion.Base className='base' >
+                                            {this.state.bookings.map((input, index) => {
+                                                var showButton = 'none';
+                                                if (input.BookingStatus == 'New') {
+                                                    showButton = 'block';
+                                                }
+                                                console.log(this.state.bookings)
+                                                return (
+                                                    <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                        <Text.Body>
+                                                            <ul>
+                                                                <li>
+                                                                    <b>Citizen Name :</b>  {input.CitizenName}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service Name:</b>  {input.ServiceName}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                </li>
+                                                                <li>
+                                                                    <b>Service Status:</b>  {input.BookingStatus}
+                                                                </li>
+                                                            </ul>
+                                                            <div style={{ 'display': showButton }}>
+                                                                <Button.Default
+                                                                    onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                >Send to Queue</Button.Default>
+                                                            </div>
+
+                                                        </Text.Body>
+                                                    </Accordion.Item>
+                                                )
+                                            })}
+                                        </Accordion.Base>
+
+                                    </Main>
+
+
+                                    <div className="spacer3"></div>
+                                </StyledContainer>
+                            </div>
+
 
                         </div>
                     </Layout.Container>
@@ -358,25 +471,25 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
-        this.state.bookings.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1)) ));
+        this.state.bookings.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
 
         console.log("test!!" + queueNumberArray)
 
         var num = Math.max.apply(null, queueNumberArray) + 1;
 
         console.log(num);
-        
+
         var str = String(num);
 
-        while (str.length < 4 ) str = "0" + str;
-         
+        while (str.length < 4) str = "0" + str;
+
         str = "H" + str;
         booking.QueueNumber = str;
 
         console.log(str)
-        
 
-   
+
+
         const queueObject = {
             "_id": bookingId,
             "nric": nric,
@@ -433,9 +546,9 @@ class Appointment extends React.Component<{}, MyState> {
         this.setState({
             inputValue: val
         });
-        
 
-      
+
+
     }
 }
 
@@ -445,11 +558,11 @@ export default Appointment;
 
 
 
-var pad = function(num) {
+var pad = function (num) {
     var str = String(num++);
     while (str.length < 4) str = "0" + str;
     return str;
-}; 
+};
 
 
 // function closeModalFn(): (() => void) | undefined { 

@@ -6,6 +6,7 @@ export default class Bookings {
     CitizenEmail: string;
     CitizenNumber: string;
 
+    GeneralType: string;
     ServiceName: string;
     ServiceProviderName: string;
     ServiceProviderEmail: string;
@@ -27,6 +28,7 @@ export default class Bookings {
         citizenEmail: string,
         citizenNumber: string,
 
+        generalType: string,
         serviceName: string,
         serviceProviderName: string,
         serviceProviderEmail: string,
@@ -45,6 +47,7 @@ export default class Bookings {
         this.CitizenSalutation = citizenSalutation;
         this.CitizenEmail = citizenEmail;
 
+        this.GeneralType = generalType;
         this.ServiceName = serviceName;
         this.ServiceProviderName = serviceProviderName;
         this.ServiceProviderEmail = serviceProviderEmail;

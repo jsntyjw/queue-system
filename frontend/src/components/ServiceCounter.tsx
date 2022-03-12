@@ -38,6 +38,7 @@ interface MyState {
     queueNumber: string,
     showModal: boolean,
     citizenSalutation: string,
+    generalType: string,
     serviceName: string,
     serviceProviderEmail: string,
     serviceProviderName: string,
@@ -63,6 +64,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             queueNumber: "",
             showModal: false,
             citizenSalutation: "",
+            generalType: "",
             serviceName: "",
             serviceProviderEmail: "",
             serviceProviderName: "",
@@ -250,7 +252,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     })
 
 
-                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
@@ -276,7 +278,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         showModal: true
                     });
 
-                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
 
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "none";

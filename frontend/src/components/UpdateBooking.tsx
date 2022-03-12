@@ -37,6 +37,7 @@ export default class Edit extends React.Component<IProps, IState> {
                 CitizenEmail : '',
                 CitizenNumber : '',
 
+                GeneralType : '',
                 ServiceName : '',
                 ServiceProviderName : '',
                 ServiceProviderEmail : '',
@@ -83,6 +84,7 @@ export default class Edit extends React.Component<IProps, IState> {
                         booking.citizenEmail,
                         booking.citizenNumber,
 
+                        booking.generalType,
                         booking.serviceName, 
                         booking.serviceProviderName, 
                         booking.serviceProviderEmail,

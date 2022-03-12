@@ -76,6 +76,7 @@ class ViewAllBookings extends React.Component<{}, MyState> {
             element["citizenSalutation"],
             element["citizenEmail"],
             element["citizenNumber"],
+            element["generalType"],
             element["serviceName"],
             element["serviceProviderName"],
             element["serviceProviderEmail"],

@@ -28,7 +28,7 @@ const StyledSection = styled(Layout.Section)`
 // var sessionResult = sessionStorage.getItem('data') || '{}'
 //     var obj = JSON.parse(sessionResult);
 //     console.log(sessionResult)
-    
+
 //     var nric = obj.userName
 
 export const BookingForm: React.FunctionComponent<Props> = (props) => {
@@ -96,19 +96,30 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
                     <ModifiedText>Service Provider Information</ModifiedText>
 
                     <Form.Select
-                        label="Service"
+                        label="General Type"
                         placeholder="Select"
 
                         options={[
-                            { value: "Psychology", label: "Psychology" },
-                            { value: "Ophthalmologist", label: "Ophthalmologist" },
+                            { value: "General Practionar", label: "General Practionar" },
+                            { value: "Specialist", label: "Specialist" },
                         ]}
                         valueExtractor={(item) => item.value}
                         listExtractor={(item) => item.label}
                         displayValueExtractor={(item) => item.label}
                         onSelectItem={(item, value) => {
-                            props.booking.ServiceName = value
+                            props.booking.GeneralType = value
                         }}
+                    />
+
+
+                    <Input
+                        name="Service"
+                        defaultValue='Consultation'
+                        disabled
+                        placeholder='Consultation'
+                        label="Service"
+                        value={props.booking.GeneralType}
+                        onChange={props.onChange}
                     />
                     <Form.Select
                         label="Service Provider Name"

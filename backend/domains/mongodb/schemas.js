@@ -9,6 +9,7 @@ const BOOKING = new Schema({
     citizenSalutation : String,
     citizenEmail : String,
     citizenNumber : String,
+    generalType: String,
     serviceName : String,
     serviceProviderName : String,
     serviceProviderEmail : String,
