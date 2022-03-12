@@ -174,7 +174,63 @@ class Appointment extends React.Component<{}, MyState> {
             });
 
         }
+        // var apiURL: string
+        // if (searchMethod == "location") {
+        //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+        //     document.getElementById("divAppointments")!!.style.display = "block";
 
+        // }
+        // else {
+        //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+        //     console.log(apiURL)
+        //     if (this.state.inputValue == '') {
+        //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+        //     }
+        //     // document.getElementById("divAppointments")!!.style.display = "block";
+
+        // }
+
+        // fetch(apiURL)
+        //     .then(function (response) {
+
+        //         return response.json();
+        //     })
+        //     .then((myJson) => {
+        //         this.state.bookings.length = 0;
+        //         myJson.data.forEach(element => {
+        //             var eachBooking = new Booking(
+        //                 element["_id"],
+        //                 element["nric"],
+        //                 element["citizenName"],
+        //                 element["citizenSalutation"],
+        //                 element["citizenEmail"],
+        //                 element["citizenNumber"],
+        //                 element["generalType"],
+        //                 element["serviceName"],
+        //                 element["serviceProviderName"],
+        //                 element["serviceProviderEmail"],
+        //                 element["serviceProviderPhone"],
+        //                 element["serviceStartDate"],
+        //                 element["serviceStartTime"],
+        //                 element["serviceProviderLocation"],
+        //                 element["bookingStatus"],
+        //                 element["queueNumber"]
+        //             );
+
+
+        //             // const bookings = this.state.bookings.slice(0);
+        //             this.state.bookings.push(eachBooking)
+
+
+        //             // console.log(bookings)
+
+        //             this.setState({
+        //                 bookings: this.state.bookings,
+        //                 clicked: 'block'
+        //             });
+
+        //         });
+        //     });
     }
 
     render() {
@@ -255,7 +311,7 @@ class Appointment extends React.Component<{}, MyState> {
                                         showGeneralPractioner: 'none',
                                         showNRIC: 'none',
                                         showGeneralTypeDropDown: 'block',
-                                        
+
                                     });
                                 }} checked={this.state.selected === "C"} />
                                 <Label htmlFor="multiple-options-c">View Appointments by Service Type</Label>
@@ -281,7 +337,6 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
                             <InputSelect
-                            id='dropDownType'
                                 options={[
                                     { value: "General Practioner", label: "General Practioner" },
                                     { value: "Specialist", label: "Specialist" },
@@ -321,7 +376,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <div id='divAppointments' >
 
-                            <div id='divGeneralPractioner' className='rcorner2' style={{'display': this.state.showGeneralPractioner}}>
+                            <div id='divGeneralPractioner' className='rcorner2' style={{ 'display': this.state.showGeneralPractioner }}>
 
 
                                 <StyledContainer>
@@ -333,7 +388,7 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                         <Accordion.Base className='base' >
-                                            {this.state.bookings.map((input, index) => {
+                                            {this.state.bookings.filter((element => element.GeneralType == 'General Practionar')).map((input, index) => {
                                                 var showButton = 'none';
                                                 if (input.BookingStatus == 'New') {
                                                     showButton = 'block';
@@ -388,11 +443,11 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                             </div>
-                            <div id='divDivider' className="spacer5" style={{'display': this.state.showDivider}}></div>
+                            <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
 
 
 
-                            <div id='divSpecialist' className='rcorner' style={{'display': this.state.showSpecialist}}>
+                            <div id='divSpecialist' className='rcorner' style={{ 'display': this.state.showSpecialist }}>
 
 
                                 <StyledContainer>
@@ -404,51 +459,63 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                         <Accordion.Base className='base' >
-                                            {this.state.bookings.map((input, index) => {
-                                                var showButton = 'none';
-                                                if (input.BookingStatus == 'New') {
-                                                    showButton = 'block';
-                                                }
-                                                console.log(this.state.bookings)
-                                                return (
-                                                    <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
-                                                        <Text.Body>
-                                                            <ul>
-                                                                <li>
-                                                                    <b>Citizen Name :</b>  {input.CitizenName}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Citizen Number: </b> {input.CitizenNumber}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Citizen Email: </b> {input.CitizenEmail}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service start date:</b>  {input.ServiceStartDate}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service start time:</b>  {input.ServiceStartTime}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service Name:</b>  {input.ServiceName}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service Status:</b>  {input.BookingStatus}
-                                                                </li>
-                                                            </ul>
-                                                            <div style={{ 'display': showButton }}>
-                                                                <Button.Default
-                                                                    onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
-                                                                >Send to Queue</Button.Default>
-                                                            </div>
+                                            {
 
-                                                        </Text.Body>
-                                                    </Accordion.Item>
-                                                )
-                                            })}
+                                                this.state.bookings.filter((element => element.GeneralType == 'Specialist')).map(
+                                                    
+                                                    
+                                                    (input, index) => {
+                                                    
+                                                    var showButton = 'none';
+                                                    if (input.BookingStatus == 'New') {
+                                                        showButton = 'block';
+                                                    }
+                                                    console.log(this.state.bookings)
+                                                    if (input.GeneralType == 'General Practionar') {
+                                                    }
+                                                    return (
+                                                        <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                            <Text.Body>
+                                                                <ul>
+                                                                    <li>
+                                                                        <b>Citizen Name :</b>  {input.CitizenName}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Name:</b>  {input.ServiceName}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Status:</b>  {input.BookingStatus}
+                                                                    </li>
+                                                                </ul>
+                                                                <div style={{ 'display': showButton }}>
+                                                                    <Button.Default
+                                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                    >Send to Queue</Button.Default>
+                                                                </div>
+
+                                                            </Text.Body>
+                                                        </Accordion.Item>
+                                                    )
+                                                
+                                                
+                                                
+                                                
+                                                })}
                                         </Accordion.Base>
 
                                     </Main>
