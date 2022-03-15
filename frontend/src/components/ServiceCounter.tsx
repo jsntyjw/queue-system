@@ -46,7 +46,11 @@ interface MyState {
     serviceProviderPhone: string,
     serviceStartTime: string,
     serviceProviderLocation: string,
-    bookingStatus: string
+    bookingStatus: string,
+    selectionWork: string,
+    queueName: string,
+    elementNobodyInQueue: string,
+    showCurrentCitizen: string
 }
 
 
@@ -72,7 +76,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
             serviceProviderPhone: "",
             serviceStartTime: "",
             serviceProviderLocation: "",
-            bookingStatus: ""
+            bookingStatus: "",
+            selectionWork: "doctor",
+            queueName: "doctorQueue",
+            elementNobodyInQueue: "none",
+            showCurrentCitizen: "none"
+
+
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -100,25 +110,55 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     </Modal.Box>
                 </Modal.Base>
                 <Layout.Container>
+
+
                     <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' }]} />
 
+
+                    <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px' }}>
+                            <InputSelect
+                                options={[
+                                    { value: "Doctor", label: "Doctor" },
+                                    { value: "Payment", label: "Payment" },
+                                    { value: "Pharmacy", label: "Pharmacy" },
+
+                                ]}
+
+                                valueExtractor={(item) => item.value}
+                                listExtractor={(item) => item.label}
+
+                                displayValueExtractor={(item) => item.label}
+                                placeholder="Select other work"
+                                onSelectItem={(item, selectedValue) => {
+                                    this.setState({ inputValue: selectedValue }, () => {
+                                        this.ddlWorkType(selectedValue)
+                                        
+                                    });
+                                }} />
+
+                        </div>
+
+                        <br></br>
+
+                        Your are selecting as <b>{this.state.selectionWork}</b>
+
+                        <br /><br />
                     <div id='divButtonNextPatient'>
 
-
+                        
                         <Button.Default className='buttonsuccess'
                             onClick={() => this.consumeQueue(this.handle200, "nextPatient")}
-                        >Next Patient</Button.Default>
-
+                        >Next Number</Button.Default>
+                        <p style={{'color': "green", 'fontSize': 30, 'display': this.state.elementNobodyInQueue}}>There is no one in the queue😄</p>
                     </div>
-                    <div id='divCurrentCitizen' style={{ display: 'none' }}>
-
+                    <div id='divCurrentCitizen' style={{ display: this.state.showCurrentCitizen }}>
+                        
                         <Layout.GridContainer className="column2">
                             <div>
                                 <div className='spacer1'></div>
 
                                 <Text.H3>Currently Serving</Text.H3>
 
-                                <Text.H5>Current Queue Number : {this.state.queueNumber}</Text.H5>
                                 <div className='spacer1'></div>
                                 <div className='spacer1'></div>
 
@@ -160,7 +200,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 onSelectItem={(item, selectedValue) => {
 
                                     this.setState({
-                                        inputValue: selectedValue
+                                        selectionWork: selectedValue
                                     })
                                 }}
                             />
@@ -181,6 +221,26 @@ class ServiceCounter extends React.Component<{}, MyState> {
             </StyledSection>
         )
     }
+    ddlWorkType(selectedValue: any) {
+        if (selectedValue == "Doctor") {
+            this.setState({
+                selectionWork: "doctor",
+                showCurrentCitizen: "none"
+            })
+        }
+        else if (selectedValue == "Payment") {
+            this.setState({
+                selectionWork: "payment",
+                showCurrentCitizen: "none"
+            })
+        }
+        else {
+            this.setState({
+                selectionWork: "pharmacy",
+                showCurrentCitizen: "none"
+            })
+        }
+    }
 
 
     handle200(response) {
@@ -194,7 +254,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
 
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=doctorQueue"
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.selectionWork + "Queue"
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=paymentQueue"
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=pharmacyQueue"
+            console.log("testing:" + respectiveURL)
 
         }
         if (buttonSelected == "sendtoNextService") {
@@ -209,9 +272,15 @@ class ServiceCounter extends React.Component<{}, MyState> {
             }
 
             var myJSON = encodeURI(JSON.stringify(queueObject));
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=" + this.state.inputValue + "&bookingDetails=" + myJSON;
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh." + this.state.selectionWork + "&bookingDetails=" + myJSON;
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.payment&bookingDetails=" + myJSON;
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.pharmacy&bookingDetails=" + myJSON;
+
+            console.log("------- testing here -------")
+            console.log(respectiveURL)
 
         }
+
 
 
 
@@ -225,13 +294,19 @@ class ServiceCounter extends React.Component<{}, MyState> {
         xhr.onreadystatechange = () => {
 
             // ignore all readyStates other than "DONE"
-            if (xhr.readyState !== XMLHttpRequest.DONE) { console.log(XMLHttpRequest); return; }
+            if (xhr.readyState !== XMLHttpRequest.DONE) { 
+                
+                // this.setState({
+                //     elementNobodyInQueue : "block"
+                // })
+                
+                 return; }
 
             // call the callback with status
             if (xhr.status === 200) {
+
                 var calledBooking: Booking;
                 if (buttonSelected == "nextPatient") {
-                    console.log(xhr.responseText)
                     this.setState({
                         _bookingId: JSON.parse(xhr.responseText)._id,
                         nric: JSON.parse(xhr.responseText).nric,
@@ -240,6 +315,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         citizenNumber: JSON.parse(xhr.responseText).citizenNumber,
                         citizenSalutation: JSON.parse(xhr.responseText).citizenSalutation,
                         queueNumber: JSON.parse(xhr.responseText).queueNumber,
+                        generalType: JSON.parse(xhr.responseText).generalType,
+
                         serviceName: JSON.parse(xhr.responseText).serviceName,
 
                         serviceProviderEmail: JSON.parse(xhr.responseText).serviceProviderEmail,
@@ -249,6 +326,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         serviceStartTime: JSON.parse(xhr.responseText).serviceStartTime,
                         serviceProviderLocation: JSON.parse(xhr.responseText).serviceProviderLocation,
                         bookingStatus: JSON.parse(xhr.responseText).bookingStatus,
+                        elementNobodyInQueue: "none",
+                        showCurrentCitizen: "block"
                     })
 
 

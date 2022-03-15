@@ -40,7 +40,9 @@ interface MyState {
     showDivider: string,
     showSpecialist: string,
     showGeneralTypeDropDown: string,
-    selected: string
+    selected: string,
+    showDivCitizenAppoinments: string,
+    chooseOtherOptions: boolean
 }
 
 var queueNumberArray: number[] = [];
@@ -65,8 +67,9 @@ class Appointment extends React.Component<{}, MyState> {
             showDivider: 'block',
             showSpecialist: 'block',
             showGeneralTypeDropDown: 'none',
-            selected: 'A'
-
+            selected: 'A',
+            showDivCitizenAppoinments : 'none',
+            chooseOtherOptions: false
         };
         this.loadData = this.loadData.bind(this)
     }
@@ -74,76 +77,81 @@ class Appointment extends React.Component<{}, MyState> {
 
     componentDidMount() {
         this.loadData();
-        setInterval(this.loadData, 10000);
+        // if(this.state.chooseOtherOptions == false){
+            setInterval(this.loadData, 10000);
+        // }
     }
 
     async loadData() {
-        try {
-            var apiURL: string
-            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            // if (searchMethod == "location") {
-            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            //     document.getElementById("divAppointments")!!.style.display = "block";
-
-            // }
-            // else {
-            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
-            //     console.log(apiURL)
-            //     if (this.state.inputValue == '') {
-            //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            //     }
-            //     // document.getElementById("divAppointments")!!.style.display = "block";
-
-            // }
-
-            fetch(apiURL)
-                .then(function (response) {
-
-                    return response.json();
-                })
-                .then((myJson) => {
-                    this.setState({
-                        bookings: []
+        if(this.state.chooseOtherOptions == false){
+            try {
+                var apiURL: string
+                apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+                // if (searchMethod == "location") {
+                //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+                //     document.getElementById("divAppointments")!!.style.display = "block";
+    
+                // }
+                // else {
+                //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+                //     console.log(apiURL)
+                //     if (this.state.inputValue == '') {
+                //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+                //     }
+                //     // document.getElementById("divAppointments")!!.style.display = "block";
+    
+                // }
+    
+                fetch(apiURL)
+                    .then(function (response) {
+    
+                        return response.json();
                     })
-                    myJson.data.forEach(element => {
-                        var eachBooking = new Booking(
-                            element["_id"],
-                            element["nric"],
-                            element["citizenName"],
-                            element["citizenSalutation"],
-                            element["citizenEmail"],
-                            element["citizenNumber"],
-                            element["generalType"],
-                            element["serviceName"],
-                            element["serviceProviderName"],
-                            element["serviceProviderEmail"],
-                            element["serviceProviderPhone"],
-                            element["serviceStartDate"],
-                            element["serviceStartTime"],
-                            element["serviceProviderLocation"],
-                            element["bookingStatus"],
-                            element["queueNumber"]
-                        );
-
-
-                        // const bookings = this.state.bookings.slice(0);
-                        this.state.bookings.push(eachBooking)
-
-
-                        // console.log(bookings)
-
+                    .then((myJson) => {
                         this.setState({
-                            bookings: this.state.bookings,
-                            clicked: 'block'
+                            bookings: []
+                        })
+                        myJson.data.forEach(element => {
+                            var eachBooking = new Booking(
+                                element["_id"],
+                                element["nric"],
+                                element["citizenName"],
+                                element["citizenSalutation"],
+                                element["citizenEmail"],
+                                element["citizenNumber"],
+                                element["generalType"],
+                                element["serviceName"],
+                                element["serviceProviderName"],
+                                element["serviceProviderEmail"],
+                                element["serviceProviderPhone"],
+                                element["serviceStartDate"],
+                                element["serviceStartTime"],
+                                element["serviceProviderLocation"],
+                                element["bookingStatus"],
+                                element["queueNumber"]
+                            );
+    
+    
+                            // const bookings = this.state.bookings.slice(0);
+                            this.state.bookings.push(eachBooking)
+    
+    
+                            // console.log(bookings)
+    
+                            this.setState({
+                                bookings: this.state.bookings,
+                                clicked: 'block'
+                            });
+    
                         });
-
                     });
-                });
-
-            //   console.log(blocks.data)
-        } catch (e) {
-            console.log(e);
+    
+                //   console.log(blocks.data)
+            } catch (e) {
+                console.log(e);
+            }
         }
+        
     }
 
     public async searchByLocation(val: string) {
@@ -174,14 +182,59 @@ class Appointment extends React.Component<{}, MyState> {
             });
 
         }
-        // var apiURL: string
+
+        if(val == "NRIC"){
+            var apiURL: string
+            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+            fetch(apiURL)
+            .then(function (response) {
+
+                return response.json();
+            })
+            .then((myJson) => {
+                this.state.bookings.length = 0;
+                myJson.data.forEach(element => {
+                    var eachBooking = new Booking(
+                        element["_id"],
+                        element["nric"],
+                        element["citizenName"],
+                        element["citizenSalutation"],
+                        element["citizenEmail"],
+                        element["citizenNumber"],
+                        element["generalType"],
+                        element["serviceName"],
+                        element["serviceProviderName"],
+                        element["serviceProviderEmail"],
+                        element["serviceProviderPhone"],
+                        element["serviceStartDate"],
+                        element["serviceStartTime"],
+                        element["serviceProviderLocation"],
+                        element["bookingStatus"],
+                        element["queueNumber"]
+                    );
+
+
+                    // const bookings = this.state.bookings.slice(0);
+                    this.state.bookings.push(eachBooking)
+
+
+                    // console.log(bookings)
+
+                    this.setState({
+                        bookings: this.state.bookings,
+                        clicked: 'block',
+                        showDivCitizenAppoinments: 'block'
+                    });
+
+                });
+            });
+        }
         // if (searchMethod == "location") {
         //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
         //     document.getElementById("divAppointments")!!.style.display = "block";
 
         // }
         // else {
-        //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
         //     console.log(apiURL)
         //     if (this.state.inputValue == '') {
         //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
@@ -190,47 +243,7 @@ class Appointment extends React.Component<{}, MyState> {
 
         // }
 
-        // fetch(apiURL)
-        //     .then(function (response) {
-
-        //         return response.json();
-        //     })
-        //     .then((myJson) => {
-        //         this.state.bookings.length = 0;
-        //         myJson.data.forEach(element => {
-        //             var eachBooking = new Booking(
-        //                 element["_id"],
-        //                 element["nric"],
-        //                 element["citizenName"],
-        //                 element["citizenSalutation"],
-        //                 element["citizenEmail"],
-        //                 element["citizenNumber"],
-        //                 element["generalType"],
-        //                 element["serviceName"],
-        //                 element["serviceProviderName"],
-        //                 element["serviceProviderEmail"],
-        //                 element["serviceProviderPhone"],
-        //                 element["serviceStartDate"],
-        //                 element["serviceStartTime"],
-        //                 element["serviceProviderLocation"],
-        //                 element["bookingStatus"],
-        //                 element["queueNumber"]
-        //             );
-
-
-        //             // const bookings = this.state.bookings.slice(0);
-        //             this.state.bookings.push(eachBooking)
-
-
-        //             // console.log(bookings)
-
-        //             this.setState({
-        //                 bookings: this.state.bookings,
-        //                 clicked: 'block'
-        //             });
-
-        //         });
-        //     });
+        
     }
 
     render() {
@@ -280,7 +293,9 @@ class Appointment extends React.Component<{}, MyState> {
                                         showDivider: 'block',
                                         showGeneralPractioner: 'block',
                                         showNRIC: 'none',
-                                        showGeneralTypeDropDown: 'none'
+                                        showGeneralTypeDropDown: 'none',
+                                        showDivCitizenAppoinments: 'none',
+                                        chooseOtherOptions: false
                                     }
 
                                     );
@@ -295,7 +310,10 @@ class Appointment extends React.Component<{}, MyState> {
                                         showDivider: 'none',
                                         showGeneralPractioner: 'none',
                                         showNRIC: 'block',
-                                        showGeneralTypeDropDown: 'none'
+                                        showGeneralTypeDropDown: 'none',
+                                        showDivCitizenAppoinments: 'none',
+                                        chooseOtherOptions: true
+                                
                                     }
 
                                     );
@@ -311,7 +329,8 @@ class Appointment extends React.Component<{}, MyState> {
                                         showGeneralPractioner: 'none',
                                         showNRIC: 'none',
                                         showGeneralTypeDropDown: 'block',
-
+                                        showDivCitizenAppoinments: 'none',
+                                        chooseOtherOptions: true
                                     });
                                 }} checked={this.state.selected === "C"} />
                                 <Label htmlFor="multiple-options-c">View Appointments by Service Type</Label>
@@ -354,6 +373,7 @@ class Appointment extends React.Component<{}, MyState> {
                                 }} />
 
                         </div>
+
                         {/* <div className="spacer2"></div> 
                          <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
                             <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
@@ -445,34 +465,25 @@ class Appointment extends React.Component<{}, MyState> {
                             </div>
                             <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
 
-
-
-                            <div id='divSpecialist' className='rcorner' style={{ 'display': this.state.showSpecialist }}>
-
-
-                                <StyledContainer>
-                                    <Text.H3>Appointments [Specialist]</Text.H3>
-                                    <Text.Body>Government services appointments</Text.Body>
-                                    <Main>
+                            <div id='divCitizenAppointments' style={{'display': this.state.showDivCitizenAppoinments}}>
+                                <Main>
 
 
 
 
-                                        <Accordion.Base className='base' >
-                                            {
+                                    <Accordion.Base className='base' >
+                                        {
 
-                                                this.state.bookings.filter((element => element.GeneralType == 'Specialist')).map(
-                                                    
-                                                    
-                                                    (input, index) => {
-                                                    
+                                            this.state.bookings.filter((element => element.ServiceProviderLocation == 'Tampines')).map(
+
+
+                                                (input, index) => {
+
                                                     var showButton = 'none';
                                                     if (input.BookingStatus == 'New') {
                                                         showButton = 'block';
                                                     }
-                                                    console.log(this.state.bookings)
-                                                    if (input.GeneralType == 'General Practionar') {
-                                                    }
+                                            
                                                     return (
                                                         <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
                                                             <Text.Body>
@@ -511,11 +522,85 @@ class Appointment extends React.Component<{}, MyState> {
                                                             </Text.Body>
                                                         </Accordion.Item>
                                                     )
-                                                
-                                                
-                                                
-                                                
+
+
+
+
                                                 })}
+                                    </Accordion.Base>
+
+                                </Main>
+                            </div>
+
+                            <div id='divSpecialist' className='rcorner' style={{ 'display': this.state.showSpecialist }}>
+
+
+                                <StyledContainer>
+                                    <Text.H3>Appointments [Specialist]</Text.H3>
+                                    <Text.Body>Government services appointments</Text.Body>
+                                    <Main>
+
+
+
+
+                                        <Accordion.Base className='base' >
+                                            {
+
+                                                this.state.bookings.filter((element => element.GeneralType == 'Specialist')).map(
+
+
+                                                    (input, index) => {
+
+                                                        var showButton = 'none';
+                                                        if (input.BookingStatus == 'New') {
+                                                            showButton = 'block';
+                                                        }
+                                                        console.log(this.state.bookings)
+                                                        if (input.GeneralType == 'General Practionar') {
+                                                        }
+                                                        return (
+                                                            <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                                <Text.Body>
+                                                                    <ul>
+                                                                        <li>
+                                                                            <b>Citizen Name :</b>  {input.CitizenName}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service Name:</b>  {input.ServiceName}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service Status:</b>  {input.BookingStatus}
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div style={{ 'display': showButton }}>
+                                                                        <Button.Default
+                                                                            onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        >Send to Queue</Button.Default>
+                                                                    </div>
+
+                                                                </Text.Body>
+                                                            </Accordion.Item>
+                                                        )
+
+
+
+
+                                                    })}
                                         </Accordion.Base>
 
                                     </Main>
@@ -564,6 +649,7 @@ class Appointment extends React.Component<{}, MyState> {
             "citizenEmail": citizenEmail,
             "citizenNumber": booking.CitizenNumber,
             "citizenSalutation": booking.CitizenSalutation,
+            "generalType": booking.GeneralType,
             "serviceName": booking.ServiceName,
             "serviceProviderEmail": booking.ServiceProviderEmail,
             "serviceProviderName": booking.ServiceProviderName,
@@ -580,7 +666,8 @@ class Appointment extends React.Component<{}, MyState> {
 
         const xhr = new XMLHttpRequest(),
             method = "GET",
-            url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=hospital&bindingKey=doctor&bookingDetails=" + myJSON;
+            url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+
         // initialize a new GET request
         xhr.open(method, url, true);
 

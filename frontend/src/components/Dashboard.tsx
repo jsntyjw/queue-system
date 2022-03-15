@@ -104,7 +104,7 @@ class Dashboard extends React.Component<{}, MyState> {
                         <p>
                             <h4>Current serving:</h4>
                             {/* <h4>{this.state.callingNumber}</h4> */}
-                            <h4 style={{'color': 'red'}}>{this.state.callingNumber}</h4>
+                            <a style={{'color': 'red', 'fontSize': 120}}>{this.state.callingNumber}</a>
 
                         </p>
                     </div>
