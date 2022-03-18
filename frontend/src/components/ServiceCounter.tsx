@@ -29,6 +29,7 @@ const StyledSection = styled(Layout.Section)`
 `;
 
 interface MyState {
+    bookings: Booking[],
     _bookingId: string,
     nric: string,
     citizenName: string,
@@ -59,6 +60,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
     constructor(props) {
         super(props);
         this.state = {
+            bookings: [],
             _bookingId: "",
             nric: "",
             citizenName: "",
@@ -77,8 +79,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
             serviceStartTime: "",
             serviceProviderLocation: "",
             bookingStatus: "",
-            selectionWork: "doctor",
-            queueName: "doctorQueue",
+            selectionWork: "Doctor",
+            queueName: "DoctorQueue",
             elementNobodyInQueue: "none",
             showCurrentCitizen: "none"
 
@@ -88,6 +90,96 @@ class ServiceCounter extends React.Component<{}, MyState> {
         this.consumeQueue = this.consumeQueue.bind(this)
 
     }
+
+    componentDidMount() {
+        this.loadData();
+        // if(this.state.chooseOtherOptions == false){
+        // }
+    }
+
+    async loadData() {
+        // if(this.state.chooseOtherOptions == false){
+        try {
+            var apiURL: string
+            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            console.log(apiURL)
+            // if (searchMethod == "location") {
+            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            //     document.getElementById("divAppointments")!!.style.display = "block";
+
+            // }
+            // else {
+            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+            //     console.log(apiURL)
+            //     if (this.state.inputValue == '') {
+            //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            //     }
+            //     // document.getElementById("divAppointments")!!.style.display = "block";
+
+            // }
+
+            fetch(apiURL)
+                .then(function (response) {
+
+                    return response.json();
+                })
+                .then((myJson) => {
+                    this.setState({
+                        bookings: []
+                    })
+                    myJson.data.forEach(element => {
+                        if (element["bookingStatus"] == this.state.selectionWork) {
+                            var eachBooking = new Booking(
+                                element["_id"],
+                                element["nric"],
+                                element["citizenName"],
+                                element["citizenSalutation"],
+                                element["citizenEmail"],
+                                element["citizenNumber"],
+                                element["generalType"],
+                                element["serviceName"],
+                                element["serviceProviderName"],
+                                element["serviceProviderEmail"],
+                                element["serviceProviderPhone"],
+                                element["serviceStartDate"],
+                                element["serviceStartTime"],
+                                element["serviceProviderLocation"],
+                                element["bookingStatus"],
+                                element["queueNumber"]
+                            );
+
+                            this.state.bookings.push(eachBooking)
+
+                        }
+
+
+
+                        // const bookings = this.state.bookings.slice(0);
+
+
+                        // console.log(bookings)
+
+                        this.setState({
+                            bookings: this.state.bookings,
+                            // clicked: 'block'
+                        });
+
+
+
+
+                    });
+                    console.log(this.state.bookings)
+                });
+
+            //   console.log(blocks.data)
+        } catch (e) {
+            console.log(e);
+        }
+        // }
+
+    }
+
+
 
     render() {
         return (
@@ -116,43 +208,43 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
                     <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px' }}>
-                            <InputSelect
-                                options={[
-                                    { value: "Doctor", label: "Doctor" },
-                                    { value: "Payment", label: "Payment" },
-                                    { value: "Pharmacy", label: "Pharmacy" },
+                        <InputSelect
+                            options={[
+                                { value: "Doctor", label: "Doctor" },
+                                { value: "Payment", label: "Payment" },
+                                { value: "Pharmacy", label: "Pharmacy" },
 
-                                ]}
+                            ]}
 
-                                valueExtractor={(item) => item.value}
-                                listExtractor={(item) => item.label}
+                            valueExtractor={(item) => item.value}
+                            listExtractor={(item) => item.label}
 
-                                displayValueExtractor={(item) => item.label}
-                                placeholder="Select other work"
-                                onSelectItem={(item, selectedValue) => {
-                                    this.setState({ inputValue: selectedValue }, () => {
-                                        this.ddlWorkType(selectedValue)
-                                        
-                                    });
-                                }} />
+                            displayValueExtractor={(item) => item.label}
+                            placeholder="Select other work"
+                            onSelectItem={(item, selectedValue) => {
+                                this.setState({ inputValue: selectedValue }, () => {
+                                    this.ddlWorkType(selectedValue)
 
-                        </div>
+                                });
+                            }} />
 
-                        <br></br>
+                    </div>
 
-                        Your are selecting as <b>{this.state.selectionWork}</b>
+                    <br></br>
 
-                        <br /><br />
+                    Your are selecting as <b>{this.state.selectionWork}</b>
+
+                    <br /><br />
                     <div id='divButtonNextPatient'>
 
-                        
+
                         <Button.Default className='buttonsuccess'
                             onClick={() => this.consumeQueue(this.handle200, "nextPatient")}
                         >Next Number</Button.Default>
-                        <p style={{'color': "green", 'fontSize': 30, 'display': this.state.elementNobodyInQueue}}>There is no one in the queue😄</p>
+                        <p style={{ 'color': "green", 'fontSize': 30, 'display': this.state.elementNobodyInQueue }}>There is no one in the queue😄</p>
                     </div>
                     <div id='divCurrentCitizen' style={{ display: this.state.showCurrentCitizen }}>
-                        
+
                         <Layout.GridContainer className="column2">
                             <div>
                                 <div className='spacer1'></div>
@@ -191,8 +283,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             <InputSelect
                                 placeholder="Select"
                                 options={[
-                                    { value: "payment", label: "Payment" },
-                                    { value: "pharmacy", label: "Pharmacy" }
+                                    { value: "Payment", label: "Payment" },
+                                    { value: "Pharmacy", label: "Pharmacy" }
                                 ]}
                                 valueExtractor={(item) => item.value}
                                 listExtractor={(item) => item.label}
@@ -224,19 +316,19 @@ class ServiceCounter extends React.Component<{}, MyState> {
     ddlWorkType(selectedValue: any) {
         if (selectedValue == "Doctor") {
             this.setState({
-                selectionWork: "doctor",
+                selectionWork: "Doctor",
                 showCurrentCitizen: "none"
             })
         }
         else if (selectedValue == "Payment") {
             this.setState({
-                selectionWork: "payment",
+                selectionWork: "Payment",
                 showCurrentCitizen: "none"
             })
         }
         else {
             this.setState({
-                selectionWork: "pharmacy",
+                selectionWork: "Pharmacy",
                 showCurrentCitizen: "none"
             })
         }
@@ -254,9 +346,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
 
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.selectionWork + "Queue"
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=paymentQueue"
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=pharmacyQueue"
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.selectionWork.toString() + "Queue"
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=PaymentQueue"
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=PharmacyQueue"
             console.log("testing:" + respectiveURL)
 
         }
@@ -272,9 +364,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
             }
 
             var myJSON = encodeURI(JSON.stringify(queueObject));
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh." + this.state.selectionWork + "&bookingDetails=" + myJSON;
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.payment&bookingDetails=" + myJSON;
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.pharmacy&bookingDetails=" + myJSON;
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=sgh." + this.state.selectionWork + "&bookingDetails=" + myJSON;
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Payment&bookingDetails=" + myJSON;
+            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Pharmacy&bookingDetails=" + myJSON;
 
             console.log("------- testing here -------")
             console.log(respectiveURL)
@@ -294,13 +386,14 @@ class ServiceCounter extends React.Component<{}, MyState> {
         xhr.onreadystatechange = () => {
 
             // ignore all readyStates other than "DONE"
-            if (xhr.readyState !== XMLHttpRequest.DONE) { 
-                
+            if (xhr.readyState !== XMLHttpRequest.DONE) {
+                // console.log("placeHolder1")     
                 // this.setState({
                 //     elementNobodyInQueue : "block"
                 // })
-                
-                 return; }
+
+                return;
+            }
 
             // call the callback with status
             if (xhr.status === 200) {
