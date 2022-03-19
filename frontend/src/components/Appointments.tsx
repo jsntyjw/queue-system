@@ -42,7 +42,10 @@ interface MyState {
     showGeneralTypeDropDown: string,
     selected: string,
     showDivCitizenAppoinments: string,
-    chooseOtherOptions: boolean
+    chooseOtherOptions: boolean,
+    agencySelection: string,
+    showDivHPBView: string,
+    showHospitalView: string,
 }
 
 var queueNumberArray: number[] = [];
@@ -68,8 +71,11 @@ class Appointment extends React.Component<{}, MyState> {
             showSpecialist: 'block',
             showGeneralTypeDropDown: 'none',
             selected: 'A',
-            showDivCitizenAppoinments : 'none',
-            chooseOtherOptions: false
+            showDivCitizenAppoinments: 'none',
+            chooseOtherOptions: false,
+            agencySelection: "HPB",
+            showDivHPBView:"block",
+            showHospitalView: "none"
         };
         this.loadData = this.loadData.bind(this)
     }
@@ -78,19 +84,19 @@ class Appointment extends React.Component<{}, MyState> {
     componentDidMount() {
         this.loadData();
         // if(this.state.chooseOtherOptions == false){
-            setInterval(this.loadData, 10000);
+        // setInterval(this.loadData, 10000);
         // }
     }
 
     async loadData() {
-        if(this.state.chooseOtherOptions == false){
+        if (this.state.chooseOtherOptions == false) {
             try {
                 var apiURL: string
                 apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
                 // if (searchMethod == "location") {
                 //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
                 //     document.getElementById("divAppointments")!!.style.display = "block";
-    
+
                 // }
                 // else {
                 //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
@@ -99,12 +105,12 @@ class Appointment extends React.Component<{}, MyState> {
                 //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
                 //     }
                 //     // document.getElementById("divAppointments")!!.style.display = "block";
-    
+
                 // }
-    
+
                 fetch(apiURL)
                     .then(function (response) {
-    
+
                         return response.json();
                     })
                     .then((myJson) => {
@@ -130,28 +136,28 @@ class Appointment extends React.Component<{}, MyState> {
                                 element["bookingStatus"],
                                 element["queueNumber"]
                             );
-    
-    
+
+
                             // const bookings = this.state.bookings.slice(0);
                             this.state.bookings.push(eachBooking)
-    
-    
+
+
                             // console.log(bookings)
-    
+
                             this.setState({
                                 bookings: this.state.bookings,
                                 clicked: 'block'
                             });
-    
+
                         });
                     });
-    
+
                 //   console.log(blocks.data)
             } catch (e) {
                 console.log(e);
             }
         }
-        
+
     }
 
     public async searchByLocation(val: string) {
@@ -183,51 +189,51 @@ class Appointment extends React.Component<{}, MyState> {
 
         }
 
-        if(val == "NRIC"){
+        if (val == "NRIC") {
             var apiURL: string
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
             fetch(apiURL)
-            .then(function (response) {
+                .then(function (response) {
 
-                return response.json();
-            })
-            .then((myJson) => {
-                this.state.bookings.length = 0;
-                myJson.data.forEach(element => {
-                    var eachBooking = new Booking(
-                        element["_id"],
-                        element["nric"],
-                        element["citizenName"],
-                        element["citizenSalutation"],
-                        element["citizenEmail"],
-                        element["citizenNumber"],
-                        element["generalType"],
-                        element["serviceName"],
-                        element["serviceProviderName"],
-                        element["serviceProviderEmail"],
-                        element["serviceProviderPhone"],
-                        element["serviceStartDate"],
-                        element["serviceStartTime"],
-                        element["serviceProviderLocation"],
-                        element["bookingStatus"],
-                        element["queueNumber"]
-                    );
-
-
-                    // const bookings = this.state.bookings.slice(0);
-                    this.state.bookings.push(eachBooking)
+                    return response.json();
+                })
+                .then((myJson) => {
+                    this.state.bookings.length = 0;
+                    myJson.data.forEach(element => {
+                        var eachBooking = new Booking(
+                            element["_id"],
+                            element["nric"],
+                            element["citizenName"],
+                            element["citizenSalutation"],
+                            element["citizenEmail"],
+                            element["citizenNumber"],
+                            element["generalType"],
+                            element["serviceName"],
+                            element["serviceProviderName"],
+                            element["serviceProviderEmail"],
+                            element["serviceProviderPhone"],
+                            element["serviceStartDate"],
+                            element["serviceStartTime"],
+                            element["serviceProviderLocation"],
+                            element["bookingStatus"],
+                            element["queueNumber"]
+                        );
 
 
-                    // console.log(bookings)
+                        // const bookings = this.state.bookings.slice(0);
+                        this.state.bookings.push(eachBooking)
 
-                    this.setState({
-                        bookings: this.state.bookings,
-                        clicked: 'block',
-                        showDivCitizenAppoinments: 'block'
+
+                        // console.log(bookings)
+
+                        this.setState({
+                            bookings: this.state.bookings,
+                            clicked: 'block',
+                            showDivCitizenAppoinments: 'block'
+                        });
+
                     });
-
                 });
-            });
         }
         // if (searchMethod == "location") {
         //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
@@ -243,7 +249,7 @@ class Appointment extends React.Component<{}, MyState> {
 
         // }
 
-        
+
     }
 
     render() {
@@ -284,206 +290,139 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <Breadcrumb links={[{ title: 'Home', url: '/Home' }, { title: 'Appointments' }]} />
 
-                        <Container>
-                            <OptionContainer>
-                                <RadioButton value="A" id="multiple-options-a" name="multiple-options" onChange={() => {
-                                    this.setState({
-                                        selected: 'A',
-                                        showSpecialist: 'block',
-                                        showDivider: 'block',
-                                        showGeneralPractioner: 'block',
-                                        showNRIC: 'none',
-                                        showGeneralTypeDropDown: 'none',
-                                        showDivCitizenAppoinments: 'none',
-                                        chooseOtherOptions: false
-                                    }
 
-                                    );
-                                }} checked={this.state.selected === "A"} />
-                                <Label htmlFor="multiple-options-a">View All Appointments</Label>
-                            </OptionContainer>
-                            <OptionContainer>
-                                <RadioButton value="B" id="multiple-options-b" name="multiple-options" onChange={() => {
-                                    this.setState({
-                                        selected: 'B',
-                                        showSpecialist: 'none',
-                                        showDivider: 'none',
-                                        showGeneralPractioner: 'none',
-                                        showNRIC: 'block',
-                                        showGeneralTypeDropDown: 'none',
-                                        showDivCitizenAppoinments: 'none',
-                                        chooseOtherOptions: true
-                                
-                                    }
-
-                                    );
-                                }} checked={this.state.selected === "B"} />
-                                <Label htmlFor="multiple-options-b">View appointments by NRIC</Label>
-                            </OptionContainer>
-                            <OptionContainer>
-                                <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
-                                    this.setState({
-                                        selected: 'C',
-                                        showSpecialist: 'none',
-                                        showDivider: 'none',
-                                        showGeneralPractioner: 'none',
-                                        showNRIC: 'none',
-                                        showGeneralTypeDropDown: 'block',
-                                        showDivCitizenAppoinments: 'none',
-                                        chooseOtherOptions: true
-                                    });
-                                }} checked={this.state.selected === "C"} />
-                                <Label htmlFor="multiple-options-c">View Appointments by Service Type</Label>
-                            </OptionContainer>
-                        </Container>
-
-                        <div className="spacer2"></div>
-
-                        <div id='divNRIC' style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showNRIC }}>
-                            <div style={{ 'margin': '5px' }}>
-                                <Text.Body >Search by NRIC: </Text.Body>
-                            </div>
-                            <InputGroup addon={{
-                                type: 'custom'
-                            }} placeholder="Type NRIC here..."
-
-                                onChange={evt => this.updateInputValue(evt)}
-                            />
-
-                            <div style={{ 'padding': '5px' }}></div>
-                            <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
-                        </div>
-
-                        <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
+                        Change Agency View:
+                        <div id='divAgency' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px' }}>
                             <InputSelect
                                 options={[
-                                    { value: "General Practioner", label: "General Practioner" },
-                                    { value: "Specialist", label: "Specialist" },
+                                    { value: "HPB", label: "HPB" },
+                                    { value: "Hospital", label: "Hospital" },
 
                                 ]}
 
                                 valueExtractor={(item) => item.value}
                                 listExtractor={(item) => item.label}
+
                                 displayValueExtractor={(item) => item.label}
-                                placeholder="Select a service type"
+                                placeholder={this.state.agencySelection}
                                 onSelectItem={(item, selectedValue) => {
                                     this.setState({ inputValue: selectedValue }, () => {
-                                        this.searchByLocation(selectedValue)
+                                        this.ddlAgency(selectedValue)
+
                                     });
                                 }} />
 
                         </div>
 
-                        {/* <div className="spacer2"></div> 
-                         <div id="outsideCitizenInfoDiv" style={{ display: 'none' }}>
-                            <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
-                                <div style={{ padding: "2rem", minWidth: "1080px" }}>
-                                    <Layout.GridContainer className="column4">
-                                        <Text.Body weight="semibold">NRIC</Text.Body>
-                                        <Text.Body weight="semibold">Name</Text.Body>
-                                        <Text.Body weight="semibold">Phone Number</Text.Body>
-                                        <Text.Body weight="semibold">Email</Text.Body>
-                                        <Text.Body>{this.state.bookings[0]?.Nric}</Text.Body>
-                                        <Text.Body>{this.state.bookings[0]?.CitizenName}</Text.Body>
-                                        <Text.Body>{this.state.bookings[0]?.CitizenNumber}</Text.Body>
-                                        <Text.Body>{this.state.bookings[0]?.CitizenEmail}</Text.Body>
-                                    </Layout.GridContainer>
+                        <br />
+
+                        <div id='hpbView' style={{display: this.state.showDivHPBView}}>
+
+
+                            <Container>
+                                <OptionContainer>
+                                    <RadioButton value="A" id="multiple-options-a" name="multiple-options" onChange={() => {
+                                        this.setState({
+                                            selected: 'A',
+                                            showSpecialist: 'block',
+                                            showDivider: 'block',
+                                            showGeneralPractioner: 'block',
+                                            showNRIC: 'none',
+                                            showGeneralTypeDropDown: 'none',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: false
+                                        }
+
+                                        );
+
+                                        this.loadData();
+                                    }
+
+                                    } checked={this.state.selected === "A"} />
+                                    <Label htmlFor="multiple-options-a">View All Appointments</Label>
+                                </OptionContainer>
+                                <OptionContainer>
+                                    <RadioButton value="B" id="multiple-options-b" name="multiple-options" onChange={() => {
+                                        this.setState({
+                                            selected: 'B',
+                                            showSpecialist: 'none',
+                                            showDivider: 'none',
+                                            showGeneralPractioner: 'none',
+                                            showNRIC: 'block',
+                                            showGeneralTypeDropDown: 'none',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: true
+
+                                        }
+
+                                        );
+                                    }} checked={this.state.selected === "B"} />
+                                    <Label htmlFor="multiple-options-b">View appointments by NRIC</Label>
+                                </OptionContainer>
+                                
+                            </Container>
+
+                            <div className="spacer2"></div>
+
+                            <div id='divNRIC' style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showNRIC }}>
+                                <div style={{ 'margin': '5px' }}>
+                                    <Text.Body >Search by NRIC: </Text.Body>
                                 </div>
-                            </BoxContainer>
-                        </div> */}
+                                <InputGroup addon={{
+                                    type: 'custom'
+                                }} placeholder="Type NRIC here..."
 
-                        <div className="spacer5"></div>
+                                    onChange={evt => this.updateInputValue(evt)}
+                                />
 
-                        <div id='divAppointments' >
+                                <div style={{ 'padding': '5px' }}></div>
+                                <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
+                            </div>
 
-                            <div id='divGeneralPractioner' className='rcorner2' style={{ 'display': this.state.showGeneralPractioner }}>
+                            <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
+                                <InputSelect
+                                    options={[
+                                        { value: "General Practioner", label: "General Practioner" },
+                                        { value: "Specialist", label: "Specialist" },
 
+                                    ]}
 
-                                <StyledContainer>
-                                    <Text.H3>Appointments [General Practioner]</Text.H3>
-                                    <Text.Body>Government services appointments</Text.Body>
-                                    <Main>
-
-
-
-
-                                        <Accordion.Base className='base' >
-                                            {this.state.bookings.filter((element => element.GeneralType == 'General Practionar')).map((input, index) => {
-                                                var showButton = 'none';
-                                                if (input.BookingStatus == 'New') {
-                                                    showButton = 'block';
-                                                }
-                                                console.log(this.state.bookings)
-                                                return (
-                                                    <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
-                                                        <Text.Body>
-                                                            <ul>
-                                                                <li>
-                                                                    <b>Citizen Name :</b>  {input.CitizenName}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Citizen Number: </b> {input.CitizenNumber}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Citizen Email: </b> {input.CitizenEmail}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service start date:</b>  {input.ServiceStartDate}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service start time:</b>  {input.ServiceStartTime}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service Name:</b>  {input.ServiceName}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
-                                                                </li>
-                                                                <li>
-                                                                    <b>Service Status:</b>  {input.BookingStatus}
-                                                                </li>
-                                                            </ul>
-                                                            <div style={{ 'display': showButton }}>
-                                                                <Button.Default
-                                                                    onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
-                                                                >Send to Queue</Button.Default>
-                                                            </div>
-
-                                                        </Text.Body>
-                                                    </Accordion.Item>
-                                                )
-                                            })}
-                                        </Accordion.Base>
-
-                                    </Main>
-
-
-                                    <div className="spacer3"></div>
-                                </StyledContainer>
-
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    placeholder="Select a service type"
+                                    onSelectItem={(item, selectedValue) => {
+                                        this.setState({ inputValue: selectedValue }, () => {
+                                            this.searchByLocation(selectedValue)
+                                        });
+                                    }} />
 
                             </div>
-                            <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
-
-                            <div id='divCitizenAppointments' style={{'display': this.state.showDivCitizenAppoinments}}>
-                                <Main>
 
 
 
+                            <div className="spacer5"></div>
 
-                                    <Accordion.Base className='base' >
-                                        {
+                            <div id='divAppointments' >
 
-                                            this.state.bookings.filter((element => element.ServiceProviderLocation == 'Tampines')).map(
+                                <div id='divGeneralPractioner' className='rcorner2' style={{ 'display': this.state.showGeneralPractioner }}>
 
 
-                                                (input, index) => {
+                                    <StyledContainer>
+                                        <Text.H3>Appointments [HPB Consultant]</Text.H3>
+                                        <Text.Body>Government services appointments</Text.Body>
+                                        <Main>
 
+
+
+
+                                            <Accordion.Base className='base' >
+                                                {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation')).map((input, index) => {
                                                     var showButton = 'none';
                                                     if (input.BookingStatus == 'New') {
                                                         showButton = 'block';
                                                     }
-                                            
+                                                    console.log(this.state.bookings)
                                                     return (
                                                         <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
                                                             <Text.Body>
@@ -522,22 +461,20 @@ class Appointment extends React.Component<{}, MyState> {
                                                             </Text.Body>
                                                         </Accordion.Item>
                                                     )
-
-
-
-
                                                 })}
-                                    </Accordion.Base>
+                                            </Accordion.Base>
 
-                                </Main>
-                            </div>
-
-                            <div id='divSpecialist' className='rcorner' style={{ 'display': this.state.showSpecialist }}>
+                                        </Main>
 
 
-                                <StyledContainer>
-                                    <Text.H3>Appointments [Specialist]</Text.H3>
-                                    <Text.Body>Government services appointments</Text.Body>
+                                        <div className="spacer3"></div>
+                                    </StyledContainer>
+
+
+                                </div>
+                                <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
+
+                                <div id='divCitizenAppointments' style={{ 'display': this.state.showDivCitizenAppoinments }}>
                                     <Main>
 
 
@@ -546,7 +483,7 @@ class Appointment extends React.Component<{}, MyState> {
                                         <Accordion.Base className='base' >
                                             {
 
-                                                this.state.bookings.filter((element => element.GeneralType == 'Specialist')).map(
+                                                this.state.bookings.filter((element => element.ServiceProviderLocation == 'Tampines')).map(
 
 
                                                     (input, index) => {
@@ -555,9 +492,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                         if (input.BookingStatus == 'New') {
                                                             showButton = 'block';
                                                         }
-                                                        console.log(this.state.bookings)
-                                                        if (input.GeneralType == 'General Practionar') {
-                                                        }
+
                                                         return (
                                                             <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
                                                                 <Text.Body>
@@ -604,18 +539,366 @@ class Appointment extends React.Component<{}, MyState> {
                                         </Accordion.Base>
 
                                     </Main>
+                                </div>
+
+                            
 
 
-                                    <div className="spacer3"></div>
-                                </StyledContainer>
                             </div>
 
+                        </div>
+
+                        <div id='hospitalView' style={{display: this.state.showHospitalView}}>
+
+
+                            <Container>
+                                <OptionContainer>
+                                    <RadioButton value="A" id="multiple-options-a" name="multiple-options" onChange={() => {
+                                        this.setState({
+                                            selected: 'A',
+                                            showSpecialist: 'block',
+                                            showDivider: 'block',
+                                            showGeneralPractioner: 'block',
+                                            showNRIC: 'none',
+                                            showGeneralTypeDropDown: 'none',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: false
+                                        }
+
+                                        );
+
+                                        this.loadData();
+                                    }
+
+                                    } checked={this.state.selected === "A"} />
+                                    <Label htmlFor="multiple-options-a">View All Appointments</Label>
+                                </OptionContainer>
+                                <OptionContainer>
+                                    <RadioButton value="B" id="multiple-options-b" name="multiple-options" onChange={() => {
+                                        this.setState({
+                                            selected: 'B',
+                                            showSpecialist: 'none',
+                                            showDivider: 'none',
+                                            showGeneralPractioner: 'none',
+                                            showNRIC: 'block',
+                                            showGeneralTypeDropDown: 'none',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: true
+
+                                        }
+
+                                        );
+                                    }} checked={this.state.selected === "B"} />
+                                    <Label htmlFor="multiple-options-b">View appointments by NRIC</Label>
+                                </OptionContainer>
+                                <OptionContainer>
+                                    <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
+                                        this.setState({
+                                            selected: 'C',
+                                            showSpecialist: 'none',
+                                            showDivider: 'none',
+                                            showGeneralPractioner: 'none',
+                                            showNRIC: 'none',
+                                            showGeneralTypeDropDown: 'block',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: true
+                                        });
+                                    }} checked={this.state.selected === "C"} />
+                                    <Label htmlFor="multiple-options-c">View Appointments by Service Type</Label>
+                                </OptionContainer>
+                            </Container>
+
+                            <div className="spacer2"></div>
+
+                            <div id='divNRIC' style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showNRIC }}>
+                                <div style={{ 'margin': '5px' }}>
+                                    <Text.Body >Search by NRIC: </Text.Body>
+                                </div>
+                                <InputGroup addon={{
+                                    type: 'custom'
+                                }} placeholder="Type NRIC here..."
+
+                                    onChange={evt => this.updateInputValue(evt)}
+                                />
+
+                                <div style={{ 'padding': '5px' }}></div>
+                                <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
+                            </div>
+
+                            <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
+                                <InputSelect
+                                    options={[
+                                        { value: "General Practioner", label: "General Practioner" },
+                                        { value: "Specialist", label: "Specialist" },
+
+                                    ]}
+
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    placeholder="Select a service type"
+                                    onSelectItem={(item, selectedValue) => {
+                                        this.setState({ inputValue: selectedValue }, () => {
+                                            this.searchByLocation(selectedValue)
+                                        });
+                                    }} />
+
+                            </div>
+
+
+
+                            <div className="spacer5"></div>
+
+                            <div id='divAppointments' >
+
+                                <div id='divGeneralPractioner' className='rcorner2' style={{ 'display': this.state.showGeneralPractioner }}>
+
+
+                                    <StyledContainer>
+                                        <Text.H3>Appointments [General Practioner]</Text.H3>
+                                        <Text.Body>Government services appointments</Text.Body>
+                                        <Main>
+
+
+
+
+                                            <Accordion.Base className='base' >
+                                                {this.state.bookings.filter((element => element.GeneralType == 'General Practionar')).map((input, index) => {
+                                                    var showButton = 'none';
+                                                    if (input.BookingStatus == 'New') {
+                                                        showButton = 'block';
+                                                    }
+                                                    console.log(this.state.bookings)
+                                                    return (
+                                                        <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                            <Text.Body>
+                                                                <ul>
+                                                                    <li>
+                                                                        <b>Citizen Name :</b>  {input.CitizenName}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Name:</b>  {input.ServiceName}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Status:</b>  {input.BookingStatus}
+                                                                    </li>
+                                                                </ul>
+                                                                <div style={{ 'display': showButton }}>
+                                                                    <Button.Default
+                                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                    >Send to Queue</Button.Default>
+                                                                </div>
+
+                                                            </Text.Body>
+                                                        </Accordion.Item>
+                                                    )
+                                                })}
+                                            </Accordion.Base>
+
+                                        </Main>
+
+
+                                        <div className="spacer3"></div>
+                                    </StyledContainer>
+
+
+                                </div>
+                                <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
+
+                                <div id='divCitizenAppointments' style={{ 'display': this.state.showDivCitizenAppoinments }}>
+                                    <Main>
+
+
+
+
+                                        <Accordion.Base className='base' >
+                                            {
+
+                                                this.state.bookings.filter((element => element.ServiceProviderLocation == 'Tampines')).map(
+
+
+                                                    (input, index) => {
+
+                                                        var showButton = 'none';
+                                                        if (input.BookingStatus == 'New') {
+                                                            showButton = 'block';
+                                                        }
+
+                                                        return (
+                                                            <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                                <Text.Body>
+                                                                    <ul>
+                                                                        <li>
+                                                                            <b>Citizen Name :</b>  {input.CitizenName}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service Name:</b>  {input.ServiceName}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                        </li>
+                                                                        <li>
+                                                                            <b>Service Status:</b>  {input.BookingStatus}
+                                                                        </li>
+                                                                    </ul>
+                                                                    <div style={{ 'display': showButton }}>
+                                                                        <Button.Default
+                                                                            onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        >Send to Queue</Button.Default>
+                                                                    </div>
+
+                                                                </Text.Body>
+                                                            </Accordion.Item>
+                                                        )
+
+
+
+
+                                                    })}
+                                        </Accordion.Base>
+
+                                    </Main>
+                                </div>
+
+                                <div id='divSpecialist' className='rcorner' style={{ 'display': this.state.showSpecialist }}>
+
+
+                                    <StyledContainer>
+                                        <Text.H3>Appointments [Specialist]</Text.H3>
+                                        <Text.Body>Government services appointments</Text.Body>
+                                        <Main>
+
+
+
+
+                                            <Accordion.Base className='base' >
+                                                {
+
+                                                    this.state.bookings.filter((element => element.GeneralType == 'Specialist')).map(
+
+
+                                                        (input, index) => {
+
+                                                            var showButton = 'none';
+                                                            if (input.BookingStatus == 'New') {
+                                                                showButton = 'block';
+                                                            }
+                                                            console.log(this.state.bookings)
+                                                            if (input.GeneralType == 'General Practionar') {
+                                                            }
+                                                            return (
+                                                                <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                                    <Text.Body>
+                                                                        <ul>
+                                                                            <li>
+                                                                                <b>Citizen Name :</b>  {input.CitizenName}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Service Name:</b>  {input.ServiceName}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                            </li>
+                                                                            <li>
+                                                                                <b>Service Status:</b>  {input.BookingStatus}
+                                                                            </li>
+                                                                        </ul>
+                                                                        <div style={{ 'display': showButton }}>
+                                                                            <Button.Default
+                                                                                onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                            >Send to Queue</Button.Default>
+                                                                        </div>
+
+                                                                    </Text.Body>
+                                                                </Accordion.Item>
+                                                            )
+
+
+
+
+                                                        })}
+                                            </Accordion.Base>
+
+                                        </Main>
+
+
+                                        <div className="spacer3"></div>
+                                    </StyledContainer>
+                                </div>
+
+
+                            </div>
 
                         </div>
                     </Layout.Container>
                 </StyledSection>
             </div>
         )
+    }
+
+    ddlAgency(selectedValue: any) {
+        if (selectedValue == "HPB") {
+            this.setState({
+                showDivHPBView: "block",
+                showHospitalView: "none"
+                // showCurrentCitizen: "none",
+                // showDivHPBService: "block",
+                // showDIVHospitalservice:"none",
+                // agencySelection: "HPB",
+                // serviceSelection: "communityHealth"
+            })
+        }
+        else {
+            this.setState({
+                showDivHPBView: "none",
+                showHospitalView: "block"
+                // showCurrentCitizen: "none",
+                // showDivHPBService: "none",
+                // showDIVHospitalservice: "block",
+                // agencySelection: "Hospital",
+                // serviceSelection: "Doctor"
+
+            })
+        }
     }
 
     handle200(response) {

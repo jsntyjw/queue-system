@@ -48,10 +48,14 @@ interface MyState {
     serviceStartTime: string,
     serviceProviderLocation: string,
     bookingStatus: string,
-    selectionWork: string,
     queueName: string,
     elementNobodyInQueue: string,
-    showCurrentCitizen: string
+    showCurrentCitizen: string,
+    showDivHPBService: string,
+    showDIVHospitalservice: string,
+    agencySelection: string,
+    serviceSelection: string,
+    routingKey:string
 }
 
 
@@ -79,12 +83,14 @@ class ServiceCounter extends React.Component<{}, MyState> {
             serviceStartTime: "",
             serviceProviderLocation: "",
             bookingStatus: "",
-            selectionWork: "Doctor",
             queueName: "DoctorQueue",
             elementNobodyInQueue: "none",
-            showCurrentCitizen: "none"
-
-
+            showCurrentCitizen: "none",
+            showDivHPBService:"block",
+            showDIVHospitalservice: "none",
+            agencySelection: "HPB",
+            serviceSelection: "communityHealth",
+            routingKey:"chq"
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -128,7 +134,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         bookings: []
                     })
                     myJson.data.forEach(element => {
-                        if (element["bookingStatus"] == this.state.selectionWork) {
+                        if (element["bookingStatus"] == this.state.serviceSelection) {
                             var eachBooking = new Booking(
                                 element["_id"],
                                 element["nric"],
@@ -206,8 +212,58 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' }]} />
 
+                    Agency:
+                    <div id='divAgency' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px' }}>
+                        <InputSelect
+                            options={[
+                                { value: "HPB", label: "HPB" },
+                                { value: "Hospital", label: "Hospital" },
 
-                    <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px' }}>
+                            ]}
+
+                            valueExtractor={(item) => item.value}
+                            listExtractor={(item) => item.label}
+
+                            displayValueExtractor={(item) => item.label}
+                            placeholder={this.state.agencySelection}
+                            onSelectItem={(item, selectedValue) => {
+                                this.setState({ inputValue: selectedValue }, () => {
+                                    this.ddlAgency(selectedValue)
+
+                                });
+                            }} />
+
+                    </div>
+
+
+
+                    <br />
+
+                    Service:
+
+                    <div id='divHPBService' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display:this.state.showDivHPBService }}>
+                        <InputSelect
+                            options={[
+                                { value: "communityHealth", label: "communityHealth" },
+                                { value: "workplaceHealth", label: "workplaceHealth" },
+
+                            ]}
+
+                            valueExtractor={(item) => item.value}
+                            listExtractor={(item) => item.label}
+
+                            displayValueExtractor={(item) => item.label}
+                            placeholder={this.state.serviceSelection}
+                            onSelectItem={(item, selectedValue) => {
+                                this.setState({ inputValue: selectedValue }, () => {
+                                    this.ddlService(selectedValue)
+
+                                });
+                            }} />
+
+                    </div>
+
+                    <div id='divHospitalService' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showDIVHospitalservice }}>
                         <InputSelect
                             options={[
                                 { value: "Doctor", label: "Doctor" },
@@ -220,10 +276,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             listExtractor={(item) => item.label}
 
                             displayValueExtractor={(item) => item.label}
-                            placeholder="Select other work"
+                            placeholder={this.state.serviceSelection}
                             onSelectItem={(item, selectedValue) => {
                                 this.setState({ inputValue: selectedValue }, () => {
-                                    this.ddlWorkType(selectedValue)
+                                    this.ddlService(selectedValue)
 
                                 });
                             }} />
@@ -232,7 +288,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     <br></br>
 
-                    Your are selecting as <b>{this.state.selectionWork}</b>
+                    Your are selecting agency: <b>{this.state.agencySelection},</b> and service as <b>{this.state.serviceSelection}</b>
 
                     <br /><br />
                     <div id='divButtonNextPatient'>
@@ -292,7 +348,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 onSelectItem={(item, selectedValue) => {
 
                                     this.setState({
-                                        selectionWork: selectedValue
+                                        serviceSelection: selectedValue
                                     })
                                 }}
                             />
@@ -313,23 +369,81 @@ class ServiceCounter extends React.Component<{}, MyState> {
             </StyledSection>
         )
     }
-    ddlWorkType(selectedValue: any) {
-        if (selectedValue == "Doctor") {
+    ddlAgency(selectedValue: any) {
+        if (selectedValue == "HPB") {
             this.setState({
-                selectionWork: "Doctor",
-                showCurrentCitizen: "none"
-            })
-        }
-        else if (selectedValue == "Payment") {
-            this.setState({
-                selectionWork: "Payment",
-                showCurrentCitizen: "none"
+                showCurrentCitizen: "none",
+                showDivHPBService: "block",
+                showDIVHospitalservice:"none",
+                agencySelection: "HPB",
+                serviceSelection: "communityHealth"
             })
         }
         else {
             this.setState({
-                selectionWork: "Pharmacy",
-                showCurrentCitizen: "none"
+                showCurrentCitizen: "none",
+                showDivHPBService: "none",
+                showDIVHospitalservice: "block",
+                agencySelection: "Hospital",
+                serviceSelection: "Doctor"
+
+            })
+        }
+    }
+
+    ddlService(selectedValue: any) {
+        if (selectedValue == "communityHealth") {
+            this.setState({
+                showCurrentCitizen: "none",
+                showDivHPBService: "block",
+                showDIVHospitalservice:"none",
+                serviceSelection: "communityHealth",
+                queueName: "communityHealthQueue",
+                routingKey: "hpb.chq"
+            })
+        }
+        else if(selectedValue == "workplaceHealth") {
+            this.setState({
+                showCurrentCitizen: "none",
+                showDivHPBService: "none",
+                showDIVHospitalservice: "block",
+                serviceSelection: "workplaceHealth",
+                queueName: "workplaceHealthQueue",
+                routingKey: "hpb.whq"
+
+            })
+        }
+        else if(selectedValue == "Doctor") {
+            this.setState({
+                showCurrentCitizen: "none",
+                showDivHPBService: "none",
+                showDIVHospitalservice: "block",
+                serviceSelection: "Doctor",
+                queueName: "doctorQueue",
+                routingKey: "sgh.doctor"
+                
+            })
+        }
+        else if(selectedValue == "Payment") {
+            this.setState({
+                showCurrentCitizen: "none",
+                showDivHPBService: "none",
+                showDIVHospitalservice: "block",
+                serviceSelection: "Payment",
+                queueName: "paymentQueue",
+                routingKey: "sgh.payment"
+
+            })
+        }
+        else if(selectedValue == "Pharmacy") {
+            this.setState({
+                showCurrentCitizen: "none",
+                showDivHPBService: "none",
+                showDIVHospitalservice: "block",
+                serviceSelection: "Pharmacy",
+                queueName: "pharmacyQueue",
+                routingKey:"sgh.pharmacy"
+
             })
         }
     }
@@ -345,8 +459,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
-
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.selectionWork.toString() + "Queue"
+        
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.queueName
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=PaymentQueue"
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=PharmacyQueue"
             console.log("testing:" + respectiveURL)
@@ -364,7 +478,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
             }
 
             var myJSON = encodeURI(JSON.stringify(queueObject));
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=sgh." + this.state.selectionWork + "&bookingDetails=" + myJSON;
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=" +  this.state.routingKey + "&bookingDetails=" + myJSON;
+
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Payment&bookingDetails=" + myJSON;
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Pharmacy&bookingDetails=" + myJSON;
 
@@ -428,7 +543,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
-                    calledBooking.BookingStatus = "Doctor"
+                    calledBooking.BookingStatus = this.state.serviceSelection
 
                     BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
 
