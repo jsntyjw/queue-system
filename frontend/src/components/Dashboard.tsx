@@ -110,12 +110,12 @@ class Dashboard extends React.Component<{}, MyState> {
 
                 </div>
 
-                <div >
+                <div style={{display: this.state.showDashboardHospital}}>
                 <DashboardHospital />
 
                 </div>
 
-                <div >
+                <div style={{display: this.state.showDashboardHPB}}>
                 <DashboardHPB />
 
                 </div>

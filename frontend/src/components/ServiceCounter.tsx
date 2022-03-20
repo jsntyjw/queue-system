@@ -142,6 +142,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         bookings: []
                     })
                     myJson.data.forEach(element => {
+                        console.log("hi"+ this.state.serviceSelection)
                         if (element["bookingStatus"] == this.state.serviceSelection) {
                             var eachBooking = new Booking(
                                 element["_id"],
@@ -179,6 +180,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         });
 
                         if(this.state.bookings.length > 0)  {
+
+                            console.log("hello testing here")
                             this.setState({
                                 showCurrentCitizen: "block",
                                 showButtonNextNumber: "none",
@@ -453,7 +456,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDivHPBService: "block",
                 showDIVHospitalservice:"none",
                 agencySelection: "HPB",
-                serviceSelection: "Select a Service"
+                serviceSelection: "communityHealth"
             })
 
             this.loadData();
@@ -465,7 +468,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDivHPBService: "none",
                 showDIVHospitalservice: "block",
                 agencySelection: "Hospital",
-                serviceSelection: "Select a Service"
+                serviceSelection: "Doctor"
 
             })
             this.loadData();
