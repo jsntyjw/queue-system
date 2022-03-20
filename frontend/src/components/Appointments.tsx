@@ -46,6 +46,12 @@ interface MyState {
     agencySelection: string,
     showDivHPBView: string,
     showHospitalView: string,
+    showGeneralTypeDropDownHPB: string,
+    showDIVHPBcomuunityHealth:string,
+    showDIVHPBworkplaceHealth:string,
+    showGeneralServiceDropDown: string,
+    showGeneralServiceDropDownHospital: string,
+    dropDownHint:string
 }
 
 var queueNumberArray: number[] = [];
@@ -75,7 +81,13 @@ class Appointment extends React.Component<{}, MyState> {
             chooseOtherOptions: false,
             agencySelection: "HPB",
             showDivHPBView:"block",
-            showHospitalView: "none"
+            showHospitalView: "none",
+            showGeneralTypeDropDownHPB:"none",
+            showDIVHPBcomuunityHealth: "block",
+            showDIVHPBworkplaceHealth: "block",
+            showGeneralServiceDropDown: "none",
+            showGeneralServiceDropDownHospital: "none",
+            dropDownHint:"Select a service"
         };
         this.loadData = this.loadData.bind(this)
     }
@@ -188,6 +200,42 @@ class Appointment extends React.Component<{}, MyState> {
             });
 
         }
+
+        if (val == "communityHealth") {
+
+            this.setState({
+                showSpecialist: 'none',
+                showDivider: 'none',
+                showGeneralPractioner: 'none',
+                showNRIC: 'none',
+                showGeneralTypeDropDownHPB: 'block',
+                showDIVHPBcomuunityHealth: "block",
+                showDIVHPBworkplaceHealth: "none"
+            });
+
+
+
+
+        }
+
+        if (val == "workplaceHealth") {
+
+            this.setState({
+                showSpecialist: 'none',
+                showDivider: 'none',
+                showGeneralPractioner: 'none',
+                showNRIC: 'none',
+                showGeneralTypeDropDownHPB: 'block',
+                showDIVHPBcomuunityHealth: "none",
+                showDIVHPBworkplaceHealth: "block"
+            });
+
+
+
+
+        }
+
+       
 
         if (val == "NRIC") {
             var apiURL: string
@@ -330,11 +378,15 @@ class Appointment extends React.Component<{}, MyState> {
                                             showNRIC: 'none',
                                             showGeneralTypeDropDown: 'none',
                                             showDivCitizenAppoinments: 'none',
-                                            chooseOtherOptions: false
+                                            chooseOtherOptions: false,
+                                            showGeneralTypeDropDownHPB: "none",
+                                            showDIVHPBcomuunityHealth: "block",
+                                            showDIVHPBworkplaceHealth: "block"
+
                                         }
 
                                         );
-
+                                        
                                         this.loadData();
                                     }
 
@@ -351,13 +403,39 @@ class Appointment extends React.Component<{}, MyState> {
                                             showNRIC: 'block',
                                             showGeneralTypeDropDown: 'none',
                                             showDivCitizenAppoinments: 'none',
-                                            chooseOtherOptions: true
-
+                                            chooseOtherOptions: true,
+                                            showGeneralTypeDropDownHPB: "none",
+                                            showDIVHPBcomuunityHealth: "none",
+                                            showDIVHPBworkplaceHealth: "none"
                                         }
 
                                         );
                                     }} checked={this.state.selected === "B"} />
                                     <Label htmlFor="multiple-options-b">View appointments by NRIC</Label>
+                                </OptionContainer>
+
+
+                                <OptionContainer>
+                                    <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
+                                        this.setState({
+                                            selected: 'C',
+                                            showSpecialist: 'none',
+                                            showDivider: 'none',
+                                            showGeneralPractioner: 'none',
+                                            showNRIC: 'none',
+                                            showGeneralTypeDropDown: 'none',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: true,
+                                            showGeneralTypeDropDownHPB: "block",
+                                            showDIVHPBworkplaceHealth :"none",
+                                            showDIVHPBcomuunityHealth: "none",
+                                            showGeneralServiceDropDownHospital: "block",
+                                            dropDownHint: "Select a service"
+                                        }
+
+                                        );
+                                    }} checked={this.state.selected === "C"} />
+                                    <Label htmlFor="multiple-options-c">View appointments by service</Label>
                                 </OptionContainer>
                                 
                             </Container>
@@ -379,7 +457,28 @@ class Appointment extends React.Component<{}, MyState> {
                                 <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                             </div>
 
-                            <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
+
+                            <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDownHPB }}>
+                                <InputSelect
+                                    options={[
+                                        { value: "communityHealth", label: "communityHealth" },
+                                        { value: "workplaceHealth", label: "workplaceHealth" },
+
+                                    ]}
+
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    placeholder= {this.state.dropDownHint}
+                                    onSelectItem={(item, selectedValue) => {
+                                        this.setState({ inputValue: selectedValue }, () => {
+                                            this.searchByLocation(selectedValue)
+                                        });
+                                    }} />
+
+                            </div>
+
+                            {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
                                 <InputSelect
                                     options={[
                                         { value: "General Practioner", label: "General Practioner" },
@@ -397,7 +496,7 @@ class Appointment extends React.Component<{}, MyState> {
                                         });
                                     }} />
 
-                            </div>
+                            </div> */}
 
 
 
@@ -405,11 +504,11 @@ class Appointment extends React.Component<{}, MyState> {
 
                             <div id='divAppointments' >
 
-                                <div id='divGeneralPractioner' className='rcorner2' style={{ 'display': this.state.showGeneralPractioner }}>
+                                <div id='divGeneralPractioner' className='rcorner2' style={{ 'display': this.state.showDIVHPBcomuunityHealth }}>
 
 
                                     <StyledContainer>
-                                        <Text.H3>Appointments [HPB Consultant]</Text.H3>
+                                        <Text.H3>Appointments [HPB Consultation - communityHealth]</Text.H3>
                                         <Text.Body>Government services appointments</Text.Body>
                                         <Main>
 
@@ -417,7 +516,74 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                             <Accordion.Base className='base' >
-                                                {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation')).map((input, index) => {
+                                                {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - communityHealth')).map((input, index) => {
+                                                    var showButton = 'none';
+                                                    if (input.BookingStatus == 'New') {
+                                                        showButton = 'block';
+                                                    }
+                                                    console.log(this.state.bookings)
+                                                    return (
+                                                        <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                            <Text.Body>
+                                                                <ul>
+                                                                    <li>
+                                                                        <b>Citizen Name :</b>  {input.CitizenName}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Citizen Number: </b> {input.CitizenNumber}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Citizen Email: </b> {input.CitizenEmail}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service start date:</b>  {input.ServiceStartDate}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service start time:</b>  {input.ServiceStartTime}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Name:</b>  {input.ServiceName}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Provider Location:</b>  {input.ServiceProviderLocation}
+                                                                    </li>
+                                                                    <li>
+                                                                        <b>Service Status:</b>  {input.BookingStatus}
+                                                                    </li>
+                                                                </ul>
+                                                                <div style={{ 'display': showButton }}>
+                                                                    <Button.Default
+                                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                    >Send to Queue</Button.Default>
+                                                                </div>
+
+                                                            </Text.Body>
+                                                        </Accordion.Item>
+                                                    )
+                                                })}
+                                            </Accordion.Base>
+
+                                        </Main>
+
+
+                                        <div className="spacer3"></div>
+                                    </StyledContainer>
+                                    </div>
+                                    
+                                    <br />
+                                    
+                                    <div id='divGeneralPractioner' className='rcorner' style={{ 'display': this.state.showDIVHPBworkplaceHealth }}>
+
+                                    <StyledContainer>
+                                        <Text.H3>Appointments [HPB Consultation - workplaceHealth]</Text.H3>
+                                        <Text.Body>Government services appointments</Text.Body>
+                                        <Main>
+
+
+
+
+                                            <Accordion.Base className='base' >
+                                                {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - workplaceHealth')).map((input, index) => {
                                                     var showButton = 'none';
                                                     if (input.BookingStatus == 'New') {
                                                         showButton = 'block';
@@ -470,8 +636,9 @@ class Appointment extends React.Component<{}, MyState> {
                                         <div className="spacer3"></div>
                                     </StyledContainer>
 
+                                    </div>
 
-                                </div>
+                                
                                 <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
 
                                 <div id='divCitizenAppointments' style={{ 'display': this.state.showDivCitizenAppoinments }}>
@@ -560,13 +727,13 @@ class Appointment extends React.Component<{}, MyState> {
                                             showDivider: 'block',
                                             showGeneralPractioner: 'block',
                                             showNRIC: 'none',
-                                            showGeneralTypeDropDown: 'none',
+                                            showGeneralServiceDropDownHospital: 'none',
                                             showDivCitizenAppoinments: 'none',
                                             chooseOtherOptions: false
                                         }
 
                                         );
-
+                                        console.log("testing!!!!1")
                                         this.loadData();
                                     }
 
@@ -581,7 +748,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             showDivider: 'none',
                                             showGeneralPractioner: 'none',
                                             showNRIC: 'block',
-                                            showGeneralTypeDropDown: 'none',
+                                            showGeneralServiceDropDownHospital: 'none',
                                             showDivCitizenAppoinments: 'none',
                                             chooseOtherOptions: true
 
@@ -594,15 +761,17 @@ class Appointment extends React.Component<{}, MyState> {
                                 <OptionContainer>
                                     <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
                                         this.setState({
-                                            selected: 'C',
-                                            showSpecialist: 'none',
-                                            showDivider: 'none',
-                                            showGeneralPractioner: 'none',
-                                            showNRIC: 'none',
-                                            showGeneralTypeDropDown: 'block',
-                                            showDivCitizenAppoinments: 'none',
-                                            chooseOtherOptions: true
+                                            showGeneralServiceDropDownHospital: 'block',
+                                            // selected: 'C',
+                                            // showSpecialist: 'none',
+                                            // showDivider: 'none',
+                                            // showGeneralPractioner: 'none',
+                                            // showNRIC: 'none',
+                                            // showGeneralServiceDropDownHospital: 'block',
+                                            // showDivCitizenAppoinments: 'none',
+                                            // chooseOtherOptions: true
                                         });
+
                                     }} checked={this.state.selected === "C"} />
                                     <Label htmlFor="multiple-options-c">View Appointments by Service Type</Label>
                                 </OptionContainer>
@@ -625,7 +794,7 @@ class Appointment extends React.Component<{}, MyState> {
                                 <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                             </div>
 
-                            <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
+                            <div  className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralServiceDropDownHospital }}>
                                 <InputSelect
                                     options={[
                                         { value: "General Practioner", label: "General Practioner" },
@@ -879,7 +1048,10 @@ class Appointment extends React.Component<{}, MyState> {
         if (selectedValue == "HPB") {
             this.setState({
                 showDivHPBView: "block",
-                showHospitalView: "none"
+                showHospitalView: "none",
+                showDivCitizenAppoinments: "none",
+                dropDownHint: "Select a service"
+
                 // showCurrentCitizen: "none",
                 // showDivHPBService: "block",
                 // showDIVHospitalservice:"none",
@@ -890,7 +1062,10 @@ class Appointment extends React.Component<{}, MyState> {
         else {
             this.setState({
                 showDivHPBView: "none",
-                showHospitalView: "block"
+                showHospitalView: "block",
+                showDivCitizenAppoinments: "none",
+                dropDownHint: "Select a service"
+
                 // showCurrentCitizen: "none",
                 // showDivHPBService: "none",
                 // showDIVHospitalservice: "block",
@@ -946,10 +1121,26 @@ class Appointment extends React.Component<{}, MyState> {
 
         const myJSON = encodeURI(JSON.stringify(queueObject));
 
+        var updatedURL = "";
+
+        if(queueObject.generalType == "HPB Consultation - workplaceHealth"){
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.whq&bookingDetails=" + myJSON;
+        }
+        else if(queueObject.generalType == "HPB Consultation - communityHealth"){
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.chq&bookingDetails=" + myJSON;
+        }
+        else if(queueObject.generalType == "General Practionar"){
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+        }
+        else if(queueObject.generalType == "Specialist"){
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+        }
+
+
 
         const xhr = new XMLHttpRequest(),
             method = "GET",
-            url = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+            url = updatedURL;
 
         // initialize a new GET request
         xhr.open(method, url, true);

@@ -101,7 +101,10 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
 
                         options={[
                             { value: "General Practionar", label: "General Practionar" },
-                            { value: "Specialist", label: "Specialist" },
+                            { value: "Specialist", label: "Specialist" }, 
+                            { value: "HPB Consultation - communityHealth", label: "HPB Consultation - communityHealth" },
+                            { value: "HPB Consultation - workplaceHealth", label: "HPB Consultation - workplaceHealth" },
+
                         ]}
                         valueExtractor={(item) => item.value}
                         listExtractor={(item) => item.label}
@@ -127,6 +130,8 @@ export const BookingForm: React.FunctionComponent<Props> = (props) => {
 
                         options={[
                             { value: "National Polyclinic", label: "National Polyclinic" },
+                            { value: "HPB", label: "HPB" },
+
                         ]}
                         valueExtractor={(item) => item.value}
                         listExtractor={(item) => item.label}
