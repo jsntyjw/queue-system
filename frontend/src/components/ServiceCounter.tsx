@@ -56,7 +56,10 @@ interface MyState {
     agencySelection: string,
     serviceSelection: string,
     routingKey:string,
-    showButtonNextNumber: string
+    showButtonNextNumber: string,
+    showNextServiceHospital: string,
+    showNextServiceHPB: string,
+    nextServiceSelection: string
 }
 
 
@@ -91,8 +94,11 @@ class ServiceCounter extends React.Component<{}, MyState> {
             showDIVHospitalservice: "none",
             agencySelection: "HPB",
             serviceSelection: "communityHealth",
-            routingKey:"chq",
-            showButtonNextNumber: "block"
+            routingKey:"sgh.doctor",
+            showButtonNextNumber: "block",
+            showNextServiceHospital: "none",
+            showNextServiceHPB: "none",
+            nextServiceSelection: ""
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -180,8 +186,19 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 citizenName: this.state.bookings[0].CitizenName,
                                 citizenNumber: this.state.bookings[0].CitizenNumber,
                                 citizenEmail: this.state.bookings[0].CitizenEmail,
-
                             })
+                            if(this.state.agencySelection == "HPB"){
+                                this.setState({
+                                    showNextServiceHospital: "none",
+                                    showNextServiceHPB: "block"
+                                })
+                            }
+                            else{
+                                this.setState({
+                                    showNextServiceHospital: "block",
+                                    showNextServiceHPB: "none"
+                                })
+                            }
                         }
                         else{
                             this.setState({
@@ -355,7 +372,30 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                         </Layout.GridContainer>
 
+                        <div style={{display: this.state.showNextServiceHPB}}>
+                        <Layout.GridContainer className="column4">
 
+                            <InputSelect
+                                placeholder="Select"
+                                options={[
+                                    { value: "Doctor", label: "Doctor" },
+                                ]}
+                                valueExtractor={(item) => item.value}
+                                listExtractor={(item) => item.label}
+                                displayValueExtractor={(item) => item.label}
+                                onSelectItem={(item, selectedValue) => {
+
+                                    this.setState({
+                                        nextServiceSelection: selectedValue,
+                                        routingKey: "sgh.doctor"
+                                    })
+                                }}
+                            />
+                        </Layout.GridContainer>
+
+                        </div>
+
+                        <div style={{display: this.state.showNextServiceHospital}}>
                         <Layout.GridContainer className="column4">
 
                             <InputSelect
@@ -370,13 +410,14 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 onSelectItem={(item, selectedValue) => {
 
                                     this.setState({
-                                        serviceSelection: selectedValue
+                                        nextServiceSelection: selectedValue,
+                                        routingKey: "sgh.doctor"
                                     })
                                 }}
                             />
                         </Layout.GridContainer>
 
-
+                        </div>
                         <div className='spacer1'></div>
 
 
@@ -400,7 +441,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 agencySelection: "HPB",
                 serviceSelection: "Select a Service"
             })
-            
+
             this.loadData();
 
         }
@@ -450,7 +491,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "block",
                 serviceSelection: "Doctor",
                 queueName: "doctorQueue",
-                routingKey: "sgh.doctor"
                 
             })
         }
@@ -461,7 +501,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "block",
                 serviceSelection: "Payment",
                 queueName: "paymentQueue",
-                routingKey: "sgh.payment"
 
             })
             this.loadData();
@@ -474,7 +513,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "block",
                 serviceSelection: "Pharmacy",
                 queueName: "pharmacyQueue",
-                routingKey:"sgh.pharmacy"
 
             })
             this.loadData();
@@ -513,7 +551,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             var myJSON = encodeURI(JSON.stringify(queueObject));
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=" +  this.state.routingKey + "&bookingDetails=" + myJSON;
-
+            console.log("jiawei testing now: " +respectiveURL)
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Payment&bookingDetails=" + myJSON;
             // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Pharmacy&bookingDetails=" + myJSON;
 
@@ -572,6 +610,20 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         showCurrentCitizen: "block"
                     })
 
+                    if(this.state.agencySelection == "HPB"){
+                        this.setState({
+                            showNextServiceHPB: 'block',
+                            showNextServiceHospital: 'none'
+                        })
+                    }
+
+                    if(this.state.agencySelection == "Hospital"){
+                        this.setState({
+                            showNextServiceHPB: 'none',
+                            showNextServiceHospital: 'block'
+                        })
+                    }
+
 
                     calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
 
@@ -606,7 +658,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     document.getElementById("divButtonNextPatient")!!.style.display = "block";
 
 
-                    calledBooking.BookingStatus = "Payment"
+                    calledBooking.BookingStatus = this.state.nextServiceSelection
 
                     BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
 
