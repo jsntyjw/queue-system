@@ -84,11 +84,13 @@ class Dashboard extends React.Component<{}, MyState> {
             const data = blocks.data;
 
             data.forEach(element => {
-                console.log(element)
                 if (element.bookingStatus == 'Doctor' && element.queueNumber != null) {
+                    console.log("testing here! success")
                     this.setState({
                         callingNumberDoctorQueue:element.queueNumber.toString()
                     })
+                    console.log("hi" + this.state.callingNumberDoctorQueue)
+
                 }
                 if (element.bookingStatus == 'Payment' && element.queueNumber != null) {
                     this.setState({
@@ -132,7 +134,6 @@ class Dashboard extends React.Component<{}, MyState> {
 
 
                         <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 100 }}>{this.state.callingNumberDoctorQueue}</b>
-
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Upcoming Number:</a>
                         </div>

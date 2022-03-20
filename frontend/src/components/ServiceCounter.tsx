@@ -182,10 +182,24 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             this.setState({
                                 showCurrentCitizen: "block",
                                 showButtonNextNumber: "none",
+                                
                                 nric: this.state.bookings[0].Nric,
                                 citizenName: this.state.bookings[0].CitizenName,
                                 citizenNumber: this.state.bookings[0].CitizenNumber,
                                 citizenEmail: this.state.bookings[0].CitizenEmail,
+                                citizenSalutation: this.state.bookings[0].CitizenSalutation,
+                                _bookingId: this.state.bookings[0].Id?.toString() || '',
+                                generalType: this.state.bookings[0].GeneralType,
+                                serviceName: this.state.bookings[0].ServiceName,
+                                serviceProviderName: this.state.bookings[0].ServiceProviderName,
+                                serviceProviderEmail: this.state.bookings[0].ServiceProviderEmail,
+                                serviceProviderPhone: this.state.bookings[0].ServiceProviderPhone,
+                                serviceStartDate: this.state.bookings[0].ServiceStartDate,
+                                serviceStartTime: this.state.bookings[0].ServiceStartTime,
+                                serviceProviderLocation: this.state.bookings[0].ServiceProviderLocation,
+                                bookingStatus: this.state.bookings[0].BookingStatus,
+                                queueNumber: this.state.bookings[0].QueueNumber,
+
                             })
                             if(this.state.agencySelection == "HPB"){
                                 this.setState({
@@ -659,6 +673,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
                     calledBooking.BookingStatus = this.state.nextServiceSelection
+
+                    console.log(this.state)
 
                     BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
 
