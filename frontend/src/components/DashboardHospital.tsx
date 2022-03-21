@@ -62,12 +62,12 @@ class Dashboard extends React.Component<{}, MyState> {
     constructor(props) {
         super(props);
         this.state = {
-            callingNumberDoctorQueue: 'None 😁',
-            callingNumberPaymentQueue:  'None 😁',
-            callingNumberPharmacyQueue: 'None 😁',
-            upcomingNumberDoctorQueue:  'None 😁',
-            upcomingNumberPaymentQueue:  'None 😁',
-            upcomingNumberPharmacyQueue:  'None 😁',
+            callingNumberDoctorQueue: '-',
+            callingNumberPaymentQueue:  '-',
+            callingNumberPharmacyQueue: '-',
+            upcomingNumberDoctorQueue:  '-',
+            upcomingNumberPaymentQueue:  '-',
+            upcomingNumberPharmacyQueue:  '-',
 
         };
         this.loadData = this.loadData.bind(this)
@@ -171,7 +171,7 @@ class Dashboard extends React.Component<{}, MyState> {
                         desktop: 'https://img.pixers.pics/pho_wat(s3:700/FO/53/85/12/47/700_FO53851247_4fa5696a1fd03408f927d1e7a2f0fcaa.jpg,700,601,cms:2018/10/5bd1b6b8d04b8_220x50-watermark.png,over,480,551,jpg)/posters-wavy-dots-abstract-white-background.jpg.jpg',
                         mobile: 'https://img.pixers.pics/pho_wat(s3:700/FO/53/85/12/47/700_FO53851247_4fa5696a1fd03408f927d1e7a2f0fcaa.jpg,700,601,cms:2018/10/5bd1b6b8d04b8_220x50-watermark.png,over,480,551,jpg)/posters-wavy-dots-abstract-white-background.jpg.jpg '
                     }}>
-                        Medication Queue
+                        Pharmacy Queue
                     </Banner>
 
                         <div>

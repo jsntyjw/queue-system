@@ -28,10 +28,10 @@ class Dashboard extends React.Component<{}, MyState> {
     constructor(props) {
         super(props);
         this.state = {
-            callingQueueNumberCommunityHealth: 'None 😁',
-            callingQueueNumberWorkplaceHealth: 'None 😁',
-            upcomingQueueNumberCommunityHealth: 'None 😁',
-            upcomingQueuenumberWorkplaceHealth: 'None 😁',
+            callingQueueNumberCommunityHealth: '-',
+            callingQueueNumberWorkplaceHealth: '-',
+            upcomingQueueNumberCommunityHealth: '-',
+            upcomingQueuenumberWorkplaceHealth: '-',
         };
         this.loadData = this.loadData.bind(this)
     }
