@@ -195,23 +195,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 showButtonNextNumber: "block",
                             })
                         }
-
-                        
-
-
-
-
                     });
                 });
 
         } catch (e) {
             console.log(e);
         }
-        // }
-
     }
-
-
 
     render() {
         return (
@@ -519,9 +509,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
         if (buttonSelected == "nextPatient") {
         
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.queueName
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=PaymentQueue"
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=PharmacyQueue"
-            console.log("testing:" + respectiveURL)
 
         }
         if (buttonSelected == "sendtoNextService") {
@@ -537,12 +524,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             var myJSON = encodeURI(JSON.stringify(queueObject));
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=" +  this.state.routingKey + "&bookingDetails=" + myJSON;
-            console.log("jiawei testing now: " +respectiveURL)
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Payment&bookingDetails=" + myJSON;
-            // respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.Pharmacy&bookingDetails=" + myJSON;
-
-            console.log("------- testing here -------")
-            console.log(respectiveURL)
 
         }
 
@@ -560,11 +541,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             // ignore all readyStates other than "DONE"
             if (xhr.readyState !== XMLHttpRequest.DONE) {
-                // console.log("placeHolder1")     
-                // this.setState({
-                //     elementNobodyInQueue : "block"
-                // })
-
                 return;
             }
 

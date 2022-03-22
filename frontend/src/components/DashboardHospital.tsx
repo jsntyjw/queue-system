@@ -1,50 +1,9 @@
 import React from 'react';
 import '../App.css';
 import {
-    Text,
-    Button,
-    Layout,
-    Breadcrumb,
-    Accordion,
     Banner
 } from 'react-lifesg-design-system';
-import styled from "styled-components";
 
-interface Props {
-    onChange: (fieldName: string, value: string) => void;
-    onSave: () => void;
-}
-
-const StyledContainer = styled(Layout.GridContainer)`
-    grid-template-rows: 1fr;
-    grid-template-columns: 12fr;
-    grid-template-areas:
-        "title"
-        "button "
-        "queue";
-    grid-gap: 0.25rem;
-    margin-bottom: 20px;
-`;
-
-const StyledSection = styled(Layout.Section)`
-    margin-top: 8%;
-    min-height: 600px;
-`;
-
-
-const Title = styled.div`
-  grid-area: title;
-  padding: 0.25rem;
-`;
-const Buttons = styled.div`
-  grid-area: button;
-  padding: 0.25rem;
-`;
-const Main = styled.main`
-  color: white;
-  grid-area: queue;
-  padding: 0.25rem;
-`;
 
 interface MyState {
     callingNumberDoctorQueue: string,
@@ -106,9 +65,6 @@ class Dashboard extends React.Component<{}, MyState> {
 
             });
 
-           
-
-            //   console.log(blocks.data)
         } catch (e) {
             console.log(e);
         }
@@ -130,16 +86,10 @@ class Dashboard extends React.Component<{}, MyState> {
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Current Serving:</a>
                         </div>
 
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
-
                         <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 100 }}>{this.state.callingNumberDoctorQueue}</b>
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Upcoming Number:</a>
                         </div>
-
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
 
                         <b style={{ 'color': 'orange', 'fontSize': 100 }}>{this.state.upcomingNumberDoctorQueue}</b>
                     </div>
@@ -153,17 +103,11 @@ class Dashboard extends React.Component<{}, MyState> {
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Current Serving:</a>
                         </div>
 
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
-
                         <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 100 }}>{this.state.callingNumberPaymentQueue}</b>
 
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Upcoming Number:</a>
                         </div>
-
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
 
                         <b style={{ 'color': 'orange', 'fontSize': 100 }}>{this.state.upcomingNumberPaymentQueue}</b>
                     </div>
@@ -178,7 +122,6 @@ class Dashboard extends React.Component<{}, MyState> {
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Current Serving:</a>
                         </div>
 
-                        {/* <h4>{this.state.callingNumber}</h4> */}
 
 
                         <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 100 }}>{this.state.callingNumberPharmacyQueue}</b>
@@ -186,9 +129,6 @@ class Dashboard extends React.Component<{}, MyState> {
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 40 }}>Upcoming Number:</a>
                         </div>
-
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
 
                         <b style={{ 'color': 'orange', 'fontSize': 100 }}>{this.state.upcomingNumberPharmacyQueue}</b></div>
                 </div>

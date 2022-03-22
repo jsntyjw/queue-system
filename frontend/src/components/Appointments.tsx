@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../App.css';
 import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, RadioButton, LinkList, } from 'react-lifesg-design-system';
 import styled from "styled-components";
@@ -132,13 +132,7 @@ class Appointment extends React.Component<{}, MyState> {
                                 element["queueNumber"]
                             );
 
-
-                            // const bookings = this.state.bookings.slice(0);
                             this.state.bookings.push(eachBooking)
-
-
-                            // console.log(bookings)
-
                             this.setState({
                                 bookings: this.state.bookings,
                                 clicked: 'block'
@@ -147,7 +141,6 @@ class Appointment extends React.Component<{}, MyState> {
                         });
                     });
 
-                //   console.log(blocks.data)
             } catch (e) {
                 console.log(e);
             }
@@ -168,9 +161,6 @@ class Appointment extends React.Component<{}, MyState> {
                 showNRIC: 'none',
                 showGeneralTypeDropDown: 'block'
             });
-
-
-
 
         }
         if (val == "Specialist") {
