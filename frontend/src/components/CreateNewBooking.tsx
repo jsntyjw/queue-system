@@ -23,14 +23,6 @@ interface IState {
 }
 
 
-// var sessionResult = sessionStorage.getItem('data') || '{}'
-//     var obj = JSON.parse(sessionResult);
-//     console.log(sessionResult)
-    
-//     var nric = obj.NRIC
-
-
-
 export default class Create extends  React.Component<IProps, IState> {
     
     constructor(props:IProps) {

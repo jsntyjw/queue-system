@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Booking from "../models/booking";
 
 import { Container, Label, ModalContent, OptionContainer } from "../models/doc-elements";
-import BaseService from '../service/base.service';
 
 
 const StyledContainer = styled(Layout.GridContainer)`
@@ -1109,25 +1108,3 @@ class Appointment extends React.Component<{}, MyState> {
 }
 
 export default Appointment;
-
-
-
-
-
-var pad = function (num) {
-    var str = String(num++);
-    while (str.length < 4) str = "0" + str;
-    return str;
-};
-
-
-// function closeModalFn(): (() => void) | undefined { 
-//     throw new Error('Function not implemented.');
-// }
-// const [show, setShow ] = useState(false)
-// function closeModal(): (() => void) | undefined {
-//     document.getElementById("divModal")!!.style.display = "none";
-//     throw new Error('Function not implemented.');
-// }
-// call checkPage once
-

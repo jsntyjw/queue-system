@@ -1,18 +1,6 @@
 import React from 'react';
 import '../App.css';
-import {
-    Text,
-    Button,
-    Layout,
-    Breadcrumb,
-    Accordion,
-    Banner
-} from 'react-lifesg-design-system';
-import styled from "styled-components";
-
-
-
-
+import { Banner } from 'react-lifesg-design-system';
 
 interface MyState {
     callingQueueNumberCommunityHealth: string,
@@ -20,8 +8,6 @@ interface MyState {
     upcomingQueueNumberCommunityHealth: string,
     upcomingQueuenumberWorkplaceHealth: string
 }
-
-
 
 class Dashboard extends React.Component<{}, MyState> {
 
@@ -35,6 +21,7 @@ class Dashboard extends React.Component<{}, MyState> {
         };
         this.loadData = this.loadData.bind(this)
     }
+
     componentDidMount() {
         this.loadData();
         setInterval(this.loadData, 3000);
@@ -45,8 +32,6 @@ class Dashboard extends React.Component<{}, MyState> {
             const res = await fetch(process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking');
             const blocks = await res.json();
             const data = blocks.data;
-
-
 
             data.forEach(element => {
                 console.log(element)
@@ -62,10 +47,6 @@ class Dashboard extends React.Component<{}, MyState> {
                 }
             });
 
-
-
-
-            //   console.log(blocks.data)
         } catch (e) {
             console.log(e);
         }
@@ -86,18 +67,10 @@ class Dashboard extends React.Component<{}, MyState> {
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 60 }}>Current Serving:</a>
                         </div>
-
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
-
                         <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 120 }}>{this.state.callingQueueNumberCommunityHealth}</b>
-
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 60 }}>Upcoming Number:</a>
                         </div>
-
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
 
                         <b style={{ 'color': 'orange', 'fontSize': 120 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
                     </div>
@@ -107,30 +80,20 @@ class Dashboard extends React.Component<{}, MyState> {
                     }}>
                         WorkplaceHealth Queue
                     </Banner>
-
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 60 }}>Current Serving:</a>
                         </div>
-
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
-
                         <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 120 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
 
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 60 }}>Upcoming Number:</a>
                         </div>
 
-                        {/* <h4>{this.state.callingNumber}</h4> */}
-
-
                         <b style={{ 'color': 'orange', 'fontSize': 120 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
                     </div>
 
                 </div>
             </div>
-
-
 
         )
     }
