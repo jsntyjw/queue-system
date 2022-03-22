@@ -18,10 +18,6 @@ import { ModalContent } from "../models/doc-elements";
 import BaseService from '../service/base.service';
 
 
-interface Props {
-    onChange: (fieldName: string, value: string) => void;
-    onSave: () => void;
-}
 
 const StyledSection = styled(Layout.Section)`
     margin-top: 8%;
@@ -107,30 +103,14 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
     componentDidMount() {
         this.loadData();
-        // if(this.state.chooseOtherOptions == false){
-        // }
+
     }
 
     async loadData() {
-        // if(this.state.chooseOtherOptions == false){
         try {
             var apiURL: string
             apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
             console.log(apiURL)
-            // if (searchMethod == "location") {
-            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            //     document.getElementById("divAppointments")!!.style.display = "block";
-
-            // }
-            // else {
-            //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
-            //     console.log(apiURL)
-            //     if (this.state.inputValue == '') {
-            //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-            //     }
-            //     // document.getElementById("divAppointments")!!.style.display = "block";
-
-            // }
 
             fetch(apiURL)
                 .then(function (response) {
@@ -167,16 +147,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                         }
 
-
-
-                        // const bookings = this.state.bookings.slice(0);
-
-
-                        // console.log(bookings)
-
                         this.setState({
                             bookings: this.state.bookings,
-                            // clicked: 'block'
                         });
 
                         if(this.state.bookings.length > 0)  {
@@ -230,10 +202,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
                     });
-                    console.log(this.state.bookings)
                 });
 
-            //   console.log(blocks.data)
         } catch (e) {
             console.log(e);
         }
@@ -251,7 +221,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     show={this.state.showModal}
                     animationFrom="bottom"
                     enableOverlayClick={true}
-                // onOverlayClick={closeModal()}
                 >
                     <Modal.Box onClose={() => {
                         this.setState({

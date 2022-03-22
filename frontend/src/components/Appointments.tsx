@@ -95,9 +95,7 @@ class Appointment extends React.Component<{}, MyState> {
 
     componentDidMount() {
         this.loadData();
-        // if(this.state.chooseOtherOptions == false){
-        // setInterval(this.loadData, 10000);
-        // }
+
     }
 
     async loadData() {
@@ -105,20 +103,6 @@ class Appointment extends React.Component<{}, MyState> {
             try {
                 var apiURL: string
                 apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-                // if (searchMethod == "location") {
-                //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-                //     document.getElementById("divAppointments")!!.style.display = "block";
-
-                // }
-                // else {
-                //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
-                //     console.log(apiURL)
-                //     if (this.state.inputValue == '') {
-                //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-                //     }
-                //     // document.getElementById("divAppointments")!!.style.display = "block";
-
-                // }
 
                 fetch(apiURL)
                     .then(function (response) {
@@ -283,20 +267,7 @@ class Appointment extends React.Component<{}, MyState> {
                     });
                 });
         }
-        // if (searchMethod == "location") {
-        //     apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-        //     document.getElementById("divAppointments")!!.style.display = "block";
-
-        // }
-        // else {
-        //     console.log(apiURL)
-        //     if (this.state.inputValue == '') {
-        //         apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
-        //     }
-        //     // document.getElementById("divAppointments")!!.style.display = "block";
-
-        // }
-
+ 
 
     }
 
@@ -477,27 +448,6 @@ class Appointment extends React.Component<{}, MyState> {
                                     }} />
 
                             </div>
-
-                            {/* <div id='divLocation' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralTypeDropDown }}>
-                                <InputSelect
-                                    options={[
-                                        { value: "General Practioner", label: "General Practioner" },
-                                        { value: "Specialist", label: "Specialist" },
-
-                                    ]}
-
-                                    valueExtractor={(item) => item.value}
-                                    listExtractor={(item) => item.label}
-                                    displayValueExtractor={(item) => item.label}
-                                    placeholder="Select a service type"
-                                    onSelectItem={(item, selectedValue) => {
-                                        this.setState({ inputValue: selectedValue }, () => {
-                                            this.searchByLocation(selectedValue)
-                                        });
-                                    }} />
-
-                            </div> */}
-
 
 
                             <div className="spacer5"></div>
@@ -762,14 +712,6 @@ class Appointment extends React.Component<{}, MyState> {
                                     <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
                                         this.setState({
                                             showGeneralServiceDropDownHospital: 'block',
-                                            // selected: 'C',
-                                            // showSpecialist: 'none',
-                                            // showDivider: 'none',
-                                            // showGeneralPractioner: 'none',
-                                            // showNRIC: 'none',
-                                            // showGeneralServiceDropDownHospital: 'block',
-                                            // showDivCitizenAppoinments: 'none',
-                                            // chooseOtherOptions: true
                                         });
 
                                     }} checked={this.state.selected === "C"} />
@@ -1052,11 +994,6 @@ class Appointment extends React.Component<{}, MyState> {
                 showDivCitizenAppoinments: "none",
                 dropDownHint: "Select a service"
 
-                // showCurrentCitizen: "none",
-                // showDivHPBService: "block",
-                // showDIVHospitalservice:"none",
-                // agencySelection: "HPB",
-                // serviceSelection: "communityHealth"
             })
         }
         else {
@@ -1066,11 +1003,6 @@ class Appointment extends React.Component<{}, MyState> {
                 showDivCitizenAppoinments: "none",
                 dropDownHint: "Select a service"
 
-                // showCurrentCitizen: "none",
-                // showDivHPBService: "none",
-                // showDIVHospitalservice: "block",
-                // agencySelection: "Hospital",
-                // serviceSelection: "Doctor"
 
             })
         }
@@ -1083,11 +1015,8 @@ class Appointment extends React.Component<{}, MyState> {
     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
         this.state.bookings.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
 
-        console.log("test!!" + queueNumberArray)
 
         var num = Math.max.apply(null, queueNumberArray) + 1;
-
-        console.log(num);
 
         var str = String(num);
 
@@ -1096,7 +1025,6 @@ class Appointment extends React.Component<{}, MyState> {
         str = "H" + str;
         booking.QueueNumber = str;
 
-        console.log(str)
 
 
 
