@@ -27,6 +27,8 @@ const BOOKING = new Schema({
     next();
 });
 
+
+
 exports.SCHEMAS = {
     BOOKING: BOOKING
 };
