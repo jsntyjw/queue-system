@@ -47,6 +47,7 @@ class QueueController extends BaseController {
                 appointmentId: req.body.AppointmentId,
                 currentService: req.body.CurrentService,
                 queueDate: req.body.QueueDate,
+                missedQueue: req.body.MissedQueue
             };
  
             let data = await this._facade.addQueue(queue);
@@ -74,7 +75,9 @@ class QueueController extends BaseController {
                 queueNumber: req.body.QueueNumber,
                 appointmentId: req.body.AppointmentId,
                 currentService: req.body.CurrentService,
-                queueDate: req.body.QueueDate
+                queueDate: req.body.QueueDate,
+                missedQueue: req.body.MissedQueue
+
             };
 
             let data = await this._facade.updateQueue(queue.id, queue);

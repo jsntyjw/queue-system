@@ -44,7 +44,6 @@ export default class Create extends  React.Component<IProps, IState> {
                 ServiceStartTime : '',
                 ServiceProviderLocation : '',
                 BookingStatus : 'New',
-                QueueNumber : '',
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
@@ -86,7 +85,6 @@ export default class Create extends  React.Component<IProps, IState> {
                             ServiceProviderLocation : '',
                             BookingStatus : 'New',
                             Id: '',
-                            QueueNumber: '',
                         }
                     });
                      

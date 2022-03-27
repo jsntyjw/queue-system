@@ -19,7 +19,6 @@ const BOOKING = new Schema({
 
     serviceProviderLocation : String,
     bookingStatus : String,
-    queueNumber: String,
 
 
 }).pre('save', (next) => {

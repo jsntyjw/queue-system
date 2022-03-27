@@ -99,7 +99,6 @@ class BookingController extends BaseController {
 
                 serviceProviderLocation: req.body.ServiceProviderLocation,
                 bookingStatus: req.body.BookingStatus,       
-                queueNumber: req.body.QueueNumber,
          
             };
  
@@ -139,7 +138,6 @@ class BookingController extends BaseController {
                 serviceStartTime: req.body.ServiceStartTime,
                 serviceProviderLocation: req.body.ServiceProviderLocation,
                 bookingStatus: req.body.BookingStatus,
-                queueNumber: req.body.QueueNumber,
 
             };
 

@@ -8,6 +8,7 @@ const QUEUE = new Schema({
     appointmentId : String,
     queueDate: String,
     currentService : String,
+    missedQueue: Boolean
 
 
 }).pre('save', (next) => {

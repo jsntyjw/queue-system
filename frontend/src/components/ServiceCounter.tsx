@@ -140,7 +140,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 element["serviceStartTime"],
                                 element["serviceProviderLocation"],
                                 element["bookingStatus"],
-                                element["queueNumber"]
                             );
 
                             this.state.bookings.push(eachBooking)
@@ -173,7 +172,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 serviceStartTime: this.state.bookings[0].ServiceStartTime,
                                 serviceProviderLocation: this.state.bookings[0].ServiceProviderLocation,
                                 bookingStatus: this.state.bookings[0].BookingStatus,
-                                queueNumber: this.state.bookings[0].QueueNumber,
 
                             })
                             if(this.state.agencySelection == "HPB"){
@@ -284,6 +282,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 { value: "Doctor", label: "Doctor" },
                                 { value: "Payment", label: "Payment" },
                                 { value: "Pharmacy", label: "Pharmacy" },
+                                { value: "Missed Queue", label: "Missed Queue" }
 
                             ]}
 
@@ -355,6 +354,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 placeholder="Select"
                                 options={[
                                     { value: "Doctor", label: "Doctor" },
+                                    { value: "Missed Queue", label: "Missed Queue" }
+
                                 ]}
                                 valueExtractor={(item) => item.value}
                                 listExtractor={(item) => item.label}
@@ -589,7 +590,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     }
 
 
-                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus);
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
@@ -615,7 +616,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         showModal: true
                     });
 
-                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus);
 
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "none";

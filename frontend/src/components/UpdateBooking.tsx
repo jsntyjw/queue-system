@@ -49,7 +49,6 @@ export default class Edit extends React.Component<IProps, IState> {
                 BookingStatus : '',
 
                 Id: '',
-                QueueNumber: ''
             }
         }
         this.onFieldValueChange = this.onFieldValueChange.bind(this);
@@ -94,7 +93,6 @@ export default class Edit extends React.Component<IProps, IState> {
                         booking.serviceProviderLocation,
 
                         booking.bookingStatus,
-                        booking.queueNumber
                         
                         )});
                 } else {

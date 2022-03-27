@@ -98,6 +98,7 @@ class Appointment extends React.Component<{}, MyState> {
                 AppointmentId: '',
                 QueueDate: '',
                 CurrentService: '',
+                MissedQueue: false
             }
         };
         this.loadData = this.loadData.bind(this);
@@ -143,7 +144,6 @@ class Appointment extends React.Component<{}, MyState> {
                                 element["serviceStartTime"],
                                 element["serviceProviderLocation"],
                                 element["bookingStatus"],
-                                element["queueNumber"]
                             );
 
                             this.state.bookings.push(eachBooking)
@@ -284,7 +284,6 @@ class Appointment extends React.Component<{}, MyState> {
                             element["serviceStartTime"],
                             element["serviceProviderLocation"],
                             element["bookingStatus"],
-                            element["queueNumber"]
                         );
 
 
@@ -1065,7 +1064,6 @@ class Appointment extends React.Component<{}, MyState> {
         while (str.length < 4) str = "0" + str;
 
         str = "H" + str;
-        booking.QueueNumber = str;
 
         var date = new Date().toISOString().split('T')[0]
 
@@ -1075,7 +1073,8 @@ class Appointment extends React.Component<{}, MyState> {
                 QueueNumber: str,
                 AppointmentId: booking.Id!!.toString(),
                 QueueDate: date.toString(),
-                CurrentService: booking.BookingStatus
+                CurrentService: booking.BookingStatus,
+                MissedQueue: false
             }
         });
 
@@ -1098,7 +1097,6 @@ class Appointment extends React.Component<{}, MyState> {
             "serviceStartTime": booking.ServiceStartTime,
             "serviceProviderLocation": booking.ServiceProviderLocation,
             "bookingStatus": booking.BookingStatus,
-            "queueNumber": str,
         }
 
         const myJSON = encodeURI(JSON.stringify(queueObject));
@@ -1209,7 +1207,8 @@ class Appointment extends React.Component<{}, MyState> {
                             element["queueNumber"],
                             element["appointmentId"],
                             element["currentService"],
-                            element["queueDate"]
+                            element["queueDate"],
+                            element["missedQueue"]
                         
                         );
 

@@ -4,6 +4,8 @@ export default class Queues {
     AppointmentId : string;
     QueueDate: string;
     CurrentService : string;
+    MissedQueue: boolean
+
 
     // DynamicFields: string;
 
@@ -13,12 +15,13 @@ export default class Queues {
         appointmentId : string,
         queueDate: string,
         currentService : string,
+        missedQueue: boolean
         ) {
         this.Id = id;
         this.QueueNumber = queueNumber;
         this.AppointmentId = appointmentId;
         this.QueueDate = queueDate;
         this.CurrentService = currentService;
-       
+        this.MissedQueue = missedQueue
     } 
 }
