@@ -1,6 +1,12 @@
 import React from 'react';
 import '../App.css';
-import { Banner } from 'react-lifesg-design-system';
+import { Banner, Layout } from 'react-lifesg-design-system';
+import styled from "styled-components";
+
+const StyledSection = styled(Layout.Section)`
+    min-height: 400px;
+`;
+
 
 interface MyState {
     callingQueueNumberCommunityHealth: string,
@@ -55,46 +61,47 @@ class Dashboard extends React.Component<{}, MyState> {
 
     render() {
         return (
+            <StyledSection>
             <div>
 
                 <div className="row">
-                    <div className="columnHalf rcorner"><Banner aria-label="career-advice" imgset={{
+                    <div className="columnHalf rcorner" style={{ 'zIndex': '-1' }}><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://media.istockphoto.com/vectors/abstract-wavy-halftone-dots-background-vector-id1225681170?k=20&m=1225681170&s=612x612&w=0&h=qFzphEqIRbzXBdzL3kqcfwS2ULgmOpIRFYi_2WSgCto=',
                         mobile: 'https://media.istockphoto.com/vectors/abstract-wavy-halftone-dots-background-vector-id1225681170?k=20&m=1225681170&s=612x612&w=0&h=qFzphEqIRbzXBdzL3kqcfwS2ULgmOpIRFYi_2WSgCto='
                     }}>
-                        CommunityHealth Queue
+                        <span style={{ 'margin': 'auto' }}>CommunityHealth</span>
                     </Banner>
                         <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 60 }}>Current Serving:</a>
+                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
                         </div>
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 120 }}>{this.state.callingQueueNumberCommunityHealth}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingQueueNumberCommunityHealth}</b>
                         <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 60 }}>Upcoming Number:</a>
+                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 120 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
+                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
                     </div>
                     <div className="columnHalf rcorner"><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
                         mobile: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg'
                     }}>
-                        WorkplaceHealth Queue
+                        <span style={{ 'margin': 'auto' }}>WorkplaceHealth</span>
                     </Banner>
                         <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 60 }}>Current Serving:</a>
+                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
                         </div>
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 120 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
 
                         <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 60 }}>Upcoming Number:</a>
+                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 120 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
+                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
                     </div>
 
                 </div>
             </div>
-
+            </StyledSection>
         )
     }
 
