@@ -112,7 +112,7 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
     async loadData() {
-        if (this.state.chooseOtherOptions == false) {
+        // if (this.state.chooseOtherOptions == false) {
             try {
                 var apiURL: string
                 apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
@@ -158,7 +158,7 @@ class Appointment extends React.Component<{}, MyState> {
             } catch (e) {
                 console.log(e);
             }
-        }
+        // }
 
         this.loadQueues()
 
@@ -168,31 +168,46 @@ class Appointment extends React.Component<{}, MyState> {
 
     public async searchByLocation(val: string) {
 
+   
+
         console.log(val)
 
         if (val == "General Practioner") {
+            this.loadData();
 
             this.setState({
                 showSpecialist: 'none',
                 showDivider: 'none',
                 showGeneralPractioner: 'block',
                 showNRIC: 'none',
-                showGeneralTypeDropDown: 'block'
+                showGeneralTypeDropDown: 'block',
+                showGeneralServiceDropDownHospital: 'none'
             });
+
+
 
         }
         if (val == "Specialist") {
+            this.loadData();
+
             this.setState({
                 showSpecialist: 'block',
                 showDivider: 'none',
                 showGeneralPractioner: 'none',
                 showNRIC: 'none',
-                showGeneralTypeDropDown: 'block'
+                showGeneralTypeDropDown: 'block',
+                showGeneralServiceDropDownHospital: 'none'
+
             });
+            window.location.reload()
+
+            this.loadData();
+
 
         }
 
         if (val == "communityHealth") {
+            this.loadData();
 
             this.setState({
                 showSpecialist: 'none',
@@ -201,15 +216,17 @@ class Appointment extends React.Component<{}, MyState> {
                 showNRIC: 'none',
                 showGeneralTypeDropDownHPB: 'block',
                 showDIVHPBcomuunityHealth: "block",
-                showDIVHPBworkplaceHealth: "none"
-            });
+                showDIVHPBworkplaceHealth: "none",
+                showGeneralServiceDropDownHospital: 'none'
 
+            });
 
 
 
         }
 
         if (val == "workplaceHealth") {
+            this.loadData();
 
             this.setState({
                 showSpecialist: 'none',
@@ -218,7 +235,9 @@ class Appointment extends React.Component<{}, MyState> {
                 showNRIC: 'none',
                 showGeneralTypeDropDownHPB: 'block',
                 showDIVHPBcomuunityHealth: "none",
-                showDIVHPBworkplaceHealth: "block"
+                showDIVHPBworkplaceHealth: "block",
+                showGeneralServiceDropDownHospital: 'none'
+
             });
 
 
@@ -229,6 +248,16 @@ class Appointment extends React.Component<{}, MyState> {
 
 
         if (val == "NRIC") {
+            this.loadData();
+
+            this.setState({
+                showGeneralServiceDropDownHospital: 'none'
+            })
+            
+            if(this.state.inputValue == '' || this.state.inputValue == null ){
+                return;
+            }
+
             var apiURL: string
             apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
             fetch(apiURL)
