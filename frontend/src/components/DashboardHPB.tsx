@@ -4,7 +4,7 @@ import { Banner, Layout } from 'react-lifesg-design-system';
 import styled from "styled-components";
 
 const StyledSection = styled(Layout.Section)`
-    min-height: 400px;
+    min-height: 600px;
 `;
 
 
@@ -74,12 +74,12 @@ class Dashboard extends React.Component<{}, MyState> {
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
                         </div>
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingQueueNumberCommunityHealth}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingQueueNumberCommunityHealth}</b>
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
+                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
                     </div>
                     <div className="columnHalf rcorner"><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
@@ -90,13 +90,13 @@ class Dashboard extends React.Component<{}, MyState> {
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
                         </div>
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
 
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
+                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
                     </div>
 
                 </div>
