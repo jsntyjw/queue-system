@@ -34,6 +34,7 @@ const Main = styled.main`
 
 interface MyState {
     bookings: Booking[],
+    queues: Queue[],
     inputValue: string,
     clicked: string,
     showModal: boolean,
@@ -49,11 +50,11 @@ interface MyState {
     showDivHPBView: string,
     showHospitalView: string,
     showGeneralTypeDropDownHPB: string,
-    showDIVHPBcomuunityHealth:string,
-    showDIVHPBworkplaceHealth:string,
+    showDIVHPBcomuunityHealth: string,
+    showDIVHPBworkplaceHealth: string,
     showGeneralServiceDropDown: string,
     showGeneralServiceDropDownHospital: string,
-    dropDownHint:string,
+    dropDownHint: string,
     queue: Queue
 }
 
@@ -71,6 +72,7 @@ class Appointment extends React.Component<{}, MyState> {
         super(props);
         this.state = {
             bookings: [],
+            queues: [],
             inputValue: '',
             clicked: 'none',
             showModal: false,
@@ -83,28 +85,30 @@ class Appointment extends React.Component<{}, MyState> {
             showDivCitizenAppoinments: 'none',
             chooseOtherOptions: false,
             agencySelection: "HPB",
-            showDivHPBView:"block",
+            showDivHPBView: "block",
             showHospitalView: "none",
-            showGeneralTypeDropDownHPB:"none",
+            showGeneralTypeDropDownHPB: "none",
             showDIVHPBcomuunityHealth: "block",
             showDIVHPBworkplaceHealth: "block",
             showGeneralServiceDropDown: "none",
             showGeneralServiceDropDownHospital: "none",
-            dropDownHint:"Select a service",
+            dropDownHint: "Select a service",
             queue: {
-                QueueNumber : '',
-                AppointmentId : '',
+                QueueNumber: '',
+                AppointmentId: '',
                 QueueDate: '',
-                CurrentService : '',
+                CurrentService: '',
             }
         };
-        this.loadData = this.loadData.bind(this)
+        this.loadData = this.loadData.bind(this);
+        this.loadQueues = this.loadQueues.bind(this);
+
     }
 
 
     componentDidMount() {
         this.loadData();
-
+        // setInterval(this.loadData, 1000);
     }
 
     async loadData() {
@@ -156,7 +160,11 @@ class Appointment extends React.Component<{}, MyState> {
             }
         }
 
+        this.loadQueues()
+
     }
+
+    
 
     public async searchByLocation(val: string) {
 
@@ -218,7 +226,7 @@ class Appointment extends React.Component<{}, MyState> {
 
         }
 
-       
+
 
         if (val == "NRIC") {
             var apiURL: string
@@ -266,12 +274,13 @@ class Appointment extends React.Component<{}, MyState> {
                     });
                 });
         }
- 
+
 
     }
 
     render() {
 
+        console.log(this.state.queues)
 
         return (
 
@@ -334,7 +343,7 @@ class Appointment extends React.Component<{}, MyState> {
 
                         <br />
 
-                        <div id='hpbView' style={{display: this.state.showDivHPBView}}>
+                        <div id='hpbView' style={{ display: this.state.showDivHPBView }}>
 
 
                             <Container>
@@ -356,7 +365,7 @@ class Appointment extends React.Component<{}, MyState> {
                                         }
 
                                         );
-                                        
+
                                         this.loadData();
                                     }
 
@@ -397,7 +406,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             showDivCitizenAppoinments: 'none',
                                             chooseOtherOptions: true,
                                             showGeneralTypeDropDownHPB: "block",
-                                            showDIVHPBworkplaceHealth :"none",
+                                            showDIVHPBworkplaceHealth: "none",
                                             showDIVHPBcomuunityHealth: "none",
                                             showGeneralServiceDropDownHospital: "block",
                                             dropDownHint: "Select a service"
@@ -407,7 +416,7 @@ class Appointment extends React.Component<{}, MyState> {
                                     }} checked={this.state.selected === "C"} />
                                     <Label htmlFor="multiple-options-c">View appointments by service</Label>
                                 </OptionContainer>
-                                
+
                             </Container>
 
                             <div className="spacer2"></div>
@@ -439,7 +448,7 @@ class Appointment extends React.Component<{}, MyState> {
                                     valueExtractor={(item) => item.value}
                                     listExtractor={(item) => item.label}
                                     displayValueExtractor={(item) => item.label}
-                                    placeholder= {this.state.dropDownHint}
+                                    placeholder={this.state.dropDownHint}
                                     onSelectItem={(item, selectedValue) => {
                                         this.setState({ inputValue: selectedValue }, () => {
                                             this.searchByLocation(selectedValue)
@@ -517,11 +526,11 @@ class Appointment extends React.Component<{}, MyState> {
 
                                         <div className="spacer3"></div>
                                     </StyledContainer>
-                                    </div>
-                                    
-                                    <br />
-                                    
-                                    <div id='divGeneralPractioner' className='rcorner' style={{ 'display': this.state.showDIVHPBworkplaceHealth }}>
+                                </div>
+
+                                <br />
+
+                                <div id='divGeneralPractioner' className='rcorner' style={{ 'display': this.state.showDIVHPBworkplaceHealth }}>
 
                                     <StyledContainer>
                                         <Text.H3>Appointments [HPB Consultation - workplaceHealth]</Text.H3>
@@ -585,9 +594,9 @@ class Appointment extends React.Component<{}, MyState> {
                                         <div className="spacer3"></div>
                                     </StyledContainer>
 
-                                    </div>
+                                </div>
 
-                                
+
                                 <div id='divDivider' className="spacer5" style={{ 'display': this.state.showDivider }}></div>
 
                                 <div id='divCitizenAppointments' style={{ 'display': this.state.showDivCitizenAppoinments }}>
@@ -657,14 +666,14 @@ class Appointment extends React.Component<{}, MyState> {
                                     </Main>
                                 </div>
 
-                            
+
 
 
                             </div>
 
                         </div>
 
-                        <div id='hospitalView' style={{display: this.state.showHospitalView}}>
+                        <div id='hospitalView' style={{ display: this.state.showHospitalView }}>
 
 
                             <Container>
@@ -735,7 +744,7 @@ class Appointment extends React.Component<{}, MyState> {
                                 <Button.Default onClick={() => this.searchByLocation("NRIC")} >Search</Button.Default>
                             </div>
 
-                            <div  className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralServiceDropDownHospital }}>
+                            <div className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showGeneralServiceDropDownHospital }}>
                                 <InputSelect
                                     options={[
                                         { value: "General Practioner", label: "General Practioner" },
@@ -1012,12 +1021,15 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
-        
-        
-        this.state.bookings.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
+        this.loadData()
 
+        this.state.queues.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
+
+        console.log("queue number arrary" + queueNumberArray);
 
         var num = Math.max.apply(null, queueNumberArray) + 1;
+
+        console.log("max number: "+ num)
 
         var str = String(num);
 
@@ -1031,22 +1043,12 @@ class Appointment extends React.Component<{}, MyState> {
 
         this.setState({
             queue: {
-                QueueNumber : str,
-                AppointmentId : booking.Id!!.toString(),
+                QueueNumber: str,
+                AppointmentId: booking.Id!!.toString(),
                 QueueDate: date.toString(),
-                CurrentService : booking.BookingStatus
+                CurrentService: booking.BookingStatus
             }
         });
-
-
-        
-
-
-
-
-
-
-        
 
 
 
@@ -1074,17 +1076,17 @@ class Appointment extends React.Component<{}, MyState> {
 
         var updatedURL = "";
 
-        if(queueObject.generalType == "HPB Consultation - workplaceHealth"){
+        if (queueObject.generalType == "HPB Consultation - workplaceHealth") {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.whq&bookingDetails=" + myJSON;
         }
-        else if(queueObject.generalType == "HPB Consultation - communityHealth"){
+        else if (queueObject.generalType == "HPB Consultation - communityHealth") {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.chq&bookingDetails=" + myJSON;
-        console.log(updatedURL)
+            console.log(updatedURL)
         }
-        else if(queueObject.generalType == "General Practionar"){
+        else if (queueObject.generalType == "General Practionar") {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
         }
-        else if(queueObject.generalType == "Specialist"){
+        else if (queueObject.generalType == "Specialist") {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
         }
 
@@ -1105,21 +1107,19 @@ class Appointment extends React.Component<{}, MyState> {
 
             // call the callback with status
             if (xhr.status === 200) {
-                this.setState({
-                    showModal: true
-                });
+                
 
                 BaseService.create<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/create", this.state.queue).then(
                     (rp) => {
                         if (rp.Status) {
                             // toastr.success('Booking saved.'); 
-        
+
                             // console.log("testing 27:"+ booking.Id)
                             // console.log("testing 27:"+ date.getDate().toString())
                             // console.log("testing 27:"+ booking.BookingStatus)
-        
-                            
-                             
+
+
+
                         } else {
                             toastr.error(rp.Messages);
                             console.log("Messages: " + rp.Messages);
@@ -1127,6 +1127,14 @@ class Appointment extends React.Component<{}, MyState> {
                         }
                     }
                 );
+
+                this.setState({
+                    showModal: true,
+                    queues: this.state.queues
+                });
+
+                this.loadData()
+
                 return callback(xhr.status);
             }
 
@@ -1150,9 +1158,49 @@ class Appointment extends React.Component<{}, MyState> {
 
     }
 
-    onSendPeopleClick(){
-       
+    async loadQueues() {
+        try {
+            var apiURL: string
+            var date = new Date().toISOString().split('T')[0].toString()
+
+            apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/todayQueue/'+ date;
+            console.log(apiURL);
+            fetch(apiURL)
+                .then(function (response) {
+
+                    return response.json();
+                })
+                .then((myJson) => {
+                    this.setState({
+                        queues: []
+                    })
+                    myJson.data.forEach(element => {
+                        var eachQueue = new Queue(
+                            element["_id"],
+                            element["queueNumber"],
+                            element["appointmentId"],
+                            element["currentService"],
+                            element["queueDate"]
+                        
+                        );
+
+                        this.state.queues.push(eachQueue)
+                        this.setState({
+                            queues: this.state.queues,
+                            clicked: 'block'
+                        });
+
+                    });
+                });
+
+                console.log(this.state.queues)
+
+        } catch (e) {
+            console.log(e);
+        }
     }
+
+
 }
 
 export default Appointment;
