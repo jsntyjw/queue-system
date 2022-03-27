@@ -1051,7 +1051,14 @@ class Appointment extends React.Component<{}, MyState> {
     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
         this.loadData()
 
-        this.state.queues.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
+        if(this.state.queues.length == 0){
+            queueNumberArray.push(1)
+        }
+        else{
+            this.state.queues.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
+
+        }
+
 
         console.log("queue number arrary" + queueNumberArray);
 

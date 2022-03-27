@@ -65,7 +65,6 @@ class ViewAllBookings extends React.Component<{}, MyState> {
             element["serviceStartTime"],
             element["serviceProviderLocation"],
             element["bookingStatus"],
-            element["queueNumber"]
           );
 
 

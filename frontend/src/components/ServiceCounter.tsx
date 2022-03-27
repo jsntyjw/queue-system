@@ -12,6 +12,7 @@ import {
 import styled from "styled-components";
 
 import Booking from "../models/booking";
+import Queue from "../models/queue";
 
 
 import { ModalContent } from "../models/doc-elements";
@@ -55,7 +56,9 @@ interface MyState {
     showButtonNextNumber: string,
     showNextServiceHospital: string,
     showNextServiceHPB: string,
-    nextServiceSelection: string
+    nextServiceSelection: string,
+    queue: Queue
+
 }
 
 
@@ -94,7 +97,14 @@ class ServiceCounter extends React.Component<{}, MyState> {
             showButtonNextNumber: "block",
             showNextServiceHospital: "none",
             showNextServiceHPB: "none",
-            nextServiceSelection: ""
+            nextServiceSelection: "",
+            queue: {
+                QueueNumber: '',
+                AppointmentId: '',
+                QueueDate: '',
+                CurrentService: '',
+                MissedQueue: false
+            }
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -108,6 +118,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
     async loadData() {
         try {
+
             var apiURL: string
             apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
             console.log(apiURL)
@@ -151,7 +162,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         });
 
                         if(this.state.bookings.length > 0)  {
-
+                        
                             console.log("hello testing here")
                             this.setState({
                                 showCurrentCitizen: "block",
@@ -174,6 +185,11 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 bookingStatus: this.state.bookings[0].BookingStatus,
 
                             })
+
+                            console.log("testing here!!! : " + this.state.bookings[0].Id)
+
+                            this.getQueue(this.state.bookings[0].Id!!.toString())
+
                             if(this.state.agencySelection == "HPB"){
                                 this.setState({
                                     showNextServiceHospital: "none",
@@ -503,6 +519,59 @@ class ServiceCounter extends React.Component<{}, MyState> {
     handle200(response) {
         console.log('handle200 has received:', response);
     }
+
+
+    async getQueue(appointmentId: string) {
+        try {
+            var apiURL: string
+
+            apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/appointment/'+ appointmentId;
+            console.log(apiURL);
+            fetch(apiURL)
+                .then(function (response) {
+
+                    return response.json();
+                })
+                .then((myJson) => {
+
+                    console.log("this myJson is"  + myJson.data[0]["queueNumber"])
+                    this.setState({
+                        queue:  {
+                            QueueNumber: myJson.data[0]["queueNumber"],
+                            AppointmentId: myJson.data[0]["appointmentId"],
+                            QueueDate: myJson.data[0]["queueDate"],
+                            CurrentService: myJson.data[0]["currentService"],
+                            MissedQueue: myJson.data[0]["missedQueue"]
+                        }
+                    })
+                    // myJson.data.forEach(element => {
+                    //     var eachQueue = new Queue(
+                    //         element["_id"],
+                    //         element["queueNumber"],
+                    //         element["appointmentId"],
+                    //         element["currentService"],
+                    //         element["queueDate"],
+                    //         element["missedQueue"]
+                        
+                    //     );
+
+                    //     this.state.queue.push(eachQueue)
+                    //     this.setState({
+                    //         queues: this.state.queues,
+                    //         clicked: 'block'
+                    //     });
+
+                    // });
+                    console.log(this.state.queue)
+
+                });
+
+
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
 
 
 
