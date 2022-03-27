@@ -4,7 +4,7 @@ import { Banner, Layout } from 'react-lifesg-design-system';
 import styled from "styled-components";
 
 const StyledSection = styled(Layout.Section)`
-    min-height: 600px;
+    min-height: 700px;
 `;
 
 
@@ -12,7 +12,9 @@ interface MyState {
     callingQueueNumberCommunityHealth: string,
     callingQueueNumberWorkplaceHealth: string,
     upcomingQueueNumberCommunityHealth: string,
-    upcomingQueuenumberWorkplaceHealth: string
+    upcomingQueuenumberWorkplaceHealth: string,
+    MissedNumberCommunityHealth: string,
+    MissedNumberWorkplaceHealth: string
 }
 
 class Dashboard extends React.Component<{}, MyState> {
@@ -24,6 +26,8 @@ class Dashboard extends React.Component<{}, MyState> {
             callingQueueNumberWorkplaceHealth: '-',
             upcomingQueueNumberCommunityHealth: '-',
             upcomingQueuenumberWorkplaceHealth: '-',
+            MissedNumberCommunityHealth: '-',
+            MissedNumberWorkplaceHealth: '-'
         };
         this.loadData = this.loadData.bind(this)
     }
@@ -80,6 +84,12 @@ class Dashboard extends React.Component<{}, MyState> {
                         </div>
 
                         <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
+
+                        <div>
+                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Missed Queue:</a>
+                        </div>
+
+                        <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberCommunityHealth}</b>
                     </div>
                     <div className="columnHalf rcorner"><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
@@ -97,6 +107,12 @@ class Dashboard extends React.Component<{}, MyState> {
                         </div>
 
                         <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
+
+                        <div>
+                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Missed Queue:</a>
+                        </div>
+
+                        <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberWorkplaceHealth}</b>
                     </div>
 
                 </div>
