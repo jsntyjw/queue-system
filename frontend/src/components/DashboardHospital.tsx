@@ -6,7 +6,7 @@ import {
 import styled from "styled-components";
 
 const StyledSection = styled(Layout.Section)`
-    min-height: 400px;
+    min-height: 600px;
 `;
 
 
@@ -92,12 +92,12 @@ class Dashboard extends React.Component<{}, MyState> {
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
                         </div>
 
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingNumberDoctorQueue}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingNumberDoctorQueue}</b>
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingNumberDoctorQueue}</b>
+                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingNumberDoctorQueue}</b>
                     </div>
                     <div className="column rcorner"><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
@@ -109,13 +109,13 @@ class Dashboard extends React.Component<{}, MyState> {
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
                         </div>
 
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingNumberPaymentQueue}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingNumberPaymentQueue}</b>
 
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingNumberPaymentQueue}</b>
+                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingNumberPaymentQueue}</b>
                     </div>
                     <div className="column rcorner"><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://img.pixers.pics/pho_wat(s3:700/FO/53/85/12/47/700_FO53851247_4fa5696a1fd03408f927d1e7a2f0fcaa.jpg,700,601,cms:2018/10/5bd1b6b8d04b8_220x50-watermark.png,over,480,551,jpg)/posters-wavy-dots-abstract-white-background.jpg.jpg',
@@ -130,13 +130,13 @@ class Dashboard extends React.Component<{}, MyState> {
 
 
 
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 18 }}>{this.state.callingNumberPharmacyQueue}</b>
+                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingNumberPharmacyQueue}</b>
 
                         <div>
                             <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 18 }}>{this.state.upcomingNumberPharmacyQueue}</b></div>
+                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingNumberPharmacyQueue}</b></div>
                 </div>
             </div>
             </StyledSection>
