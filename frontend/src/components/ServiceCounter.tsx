@@ -450,8 +450,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
         else if(selectedValue == "workplaceHealth") {
             this.setState({
                 showCurrentCitizen: "none",
-                showDivHPBService: "none",
-                showDIVHospitalservice: "block",
+                showDivHPBService: "block",
+                showDIVHospitalservice: "none",
                 serviceSelection: "workplaceHealth",
                 queueName: "workplaceHealthQueue",
                 routingKey: "hpb.whq"
@@ -469,6 +469,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "doctorQueue",
                 
             })
+            this.loadData();
+
         }
         else if(selectedValue == "Payment") {
             this.setState({
