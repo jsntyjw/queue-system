@@ -30,8 +30,9 @@ class Dashboard extends React.Component<{}, MyState> {
 
             <div>
                
-                <div id='divHospitalService' className="inlinecontent" style={{  maxWidth: '400px', margin: '50px' }}>
-                Current View: {this.state.currentView}
+               <span style={{ fontSize: '20px' }}>Current View: <b>{this.state.currentView}</b></span>
+                <div id='divHospitalService' className="inlinecontent" style={{  maxWidth: '400px', margin: '40px 0', 'zIndex': '1' }}>
+                
                     <InputSelect
                         options={[
                             { value: "HPB", label: "HPB" },
@@ -58,8 +59,7 @@ class Dashboard extends React.Component<{}, MyState> {
                                     currentView: 'Hospital'
                                 })
                             }
-
-                        }} />
+                    }} />
 
                 </div>
 
