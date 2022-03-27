@@ -450,7 +450,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
         else if(selectedValue == "workplaceHealth") {
             this.setState({
                 showCurrentCitizen: "none",
-                showDivHPBService: "none",
+                showDivHPBService: "block",
                 showDIVHospitalservice: "none",
                 serviceSelection: "workplaceHealth",
                 queueName: "workplaceHealthQueue",
