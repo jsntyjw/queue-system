@@ -14,4 +14,13 @@ describe("Testing", () => {
     it("Visit Dashboard Page", () => {
         cy.visit('http://localhost:3000/Dashboard')
     })
+
+    it("Click Dropdown List", () => {
+        cy.get('.sc-avest > .sgds-icon').click();
+    })
+
+    it("Navigate to Hospital View", () => {
+        cy.get(':nth-child(2) > [data-testid="list-item"] > .sc-pVTFL').click();    
+    })
+
 })
