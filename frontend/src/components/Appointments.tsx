@@ -747,7 +747,14 @@ class Appointment extends React.Component<{}, MyState> {
                                 <OptionContainer>
                                     <RadioButton value="C" id="multiple-options-c" name="multiple-options" onChange={() => {
                                         this.setState({
+                                            selected: 'C',
+                                            showSpecialist: 'none',
+                                            showDivider: 'none',
+                                            showGeneralPractioner: 'none',
+                                            showNRIC: 'none',
                                             showGeneralServiceDropDownHospital: 'block',
+                                            showDivCitizenAppoinments: 'none',
+                                            chooseOtherOptions: true
                                         });
 
                                     }} checked={this.state.selected === "C"} />

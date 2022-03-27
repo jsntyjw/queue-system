@@ -184,7 +184,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 serviceProviderLocation: this.state.bookings[0].ServiceProviderLocation,
                                 bookingStatus: this.state.bookings[0].BookingStatus,
 
-                            })
+                            })                                      
 
                             console.log("testing here!!! : " + this.state.bookings[0].Id)
 
