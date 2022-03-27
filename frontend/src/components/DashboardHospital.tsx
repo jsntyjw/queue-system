@@ -38,7 +38,7 @@ class Dashboard extends React.Component<{}, MyState> {
 
     async loadData() {
         try {
-            const res = await fetch(process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking');
+            const res = await fetch(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking');
             const blocks = await res.json();
             const data = blocks.data;
 

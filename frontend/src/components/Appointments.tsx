@@ -3,8 +3,11 @@ import '../App.css';
 import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, RadioButton, LinkList, } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import Booking from "../models/booking";
+import Queue from "../models/queue";
+
 
 import { Container, Label, ModalContent, OptionContainer } from "../models/doc-elements";
+import BaseService from '../service/base.service';
 
 
 const StyledContainer = styled(Layout.GridContainer)`
@@ -50,7 +53,8 @@ interface MyState {
     showDIVHPBworkplaceHealth:string,
     showGeneralServiceDropDown: string,
     showGeneralServiceDropDownHospital: string,
-    dropDownHint:string
+    dropDownHint:string,
+    queue: Queue
 }
 
 var queueNumberArray: number[] = [];
@@ -86,7 +90,13 @@ class Appointment extends React.Component<{}, MyState> {
             showDIVHPBworkplaceHealth: "block",
             showGeneralServiceDropDown: "none",
             showGeneralServiceDropDownHospital: "none",
-            dropDownHint:"Select a service"
+            dropDownHint:"Select a service",
+            queue: {
+                QueueNumber : '',
+                AppointmentId : '',
+                QueueDate: '',
+                CurrentService : '',
+            }
         };
         this.loadData = this.loadData.bind(this)
     }
@@ -101,7 +111,7 @@ class Appointment extends React.Component<{}, MyState> {
         if (this.state.chooseOtherOptions == false) {
             try {
                 var apiURL: string
-                apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+                apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
 
                 fetch(apiURL)
                     .then(function (response) {
@@ -212,7 +222,7 @@ class Appointment extends React.Component<{}, MyState> {
 
         if (val == "NRIC") {
             var apiURL: string
-            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+            apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
             fetch(apiURL)
                 .then(function (response) {
 
@@ -1002,6 +1012,8 @@ class Appointment extends React.Component<{}, MyState> {
     }
 
     checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
+        
+        
         this.state.bookings.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
 
 
@@ -1013,6 +1025,28 @@ class Appointment extends React.Component<{}, MyState> {
 
         str = "H" + str;
         booking.QueueNumber = str;
+
+        var date = new Date().toISOString().split('T')[0]
+
+
+        this.setState({
+            queue: {
+                QueueNumber : str,
+                AppointmentId : booking.Id!!.toString(),
+                QueueDate: date.toString(),
+                CurrentService : booking.BookingStatus
+            }
+        });
+
+
+        
+
+
+
+
+
+
+        
 
 
 
@@ -1045,6 +1079,7 @@ class Appointment extends React.Component<{}, MyState> {
         }
         else if(queueObject.generalType == "HPB Consultation - communityHealth"){
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.chq&bookingDetails=" + myJSON;
+        console.log(updatedURL)
         }
         else if(queueObject.generalType == "General Practionar"){
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
@@ -1073,6 +1108,25 @@ class Appointment extends React.Component<{}, MyState> {
                 this.setState({
                     showModal: true
                 });
+
+                BaseService.create<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/create", this.state.queue).then(
+                    (rp) => {
+                        if (rp.Status) {
+                            // toastr.success('Booking saved.'); 
+        
+                            // console.log("testing 27:"+ booking.Id)
+                            // console.log("testing 27:"+ date.getDate().toString())
+                            // console.log("testing 27:"+ booking.BookingStatus)
+        
+                            
+                             
+                        } else {
+                            toastr.error(rp.Messages);
+                            console.log("Messages: " + rp.Messages);
+                            console.log("Exception: " + rp.Exception);
+                        }
+                    }
+                );
                 return callback(xhr.status);
             }
 
@@ -1094,6 +1148,10 @@ class Appointment extends React.Component<{}, MyState> {
 
 
 
+    }
+
+    onSendPeopleClick(){
+       
     }
 }
 

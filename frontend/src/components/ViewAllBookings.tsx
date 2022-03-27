@@ -38,7 +38,7 @@ class ViewAllBookings extends React.Component<{}, MyState> {
     console.log("test!")
     var apiURL: string
 
-    apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/citizen/' + nric;
+    apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/citizen/' + nric;
 
 
     fetch(apiURL)

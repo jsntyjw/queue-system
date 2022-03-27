@@ -14,8 +14,8 @@ class QueueController extends BaseController {
         this.list = this.list.bind(this);
         this.create = this.create.bind(this);
         this.update = this.update.bind(this);
-        this.appointmentIdFiltering = this.appointmentIdFiltering.bind(this)
-
+        this.appointmentIdFiltering = this.appointmentIdFiltering.bind(this);
+        this.todayQueueFiltering = this.todayQueueFiltering.bind(this);
     }
 
 
@@ -46,7 +46,7 @@ class QueueController extends BaseController {
                 queueNumber: req.body.QueueNumber,
                 appointmentId: req.body.AppointmentId,
                 currentService: req.body.CurrentService,
-         
+                queueDate: req.body.QueueDate,
             };
  
             let data = await this._facade.addQueue(queue);
@@ -74,7 +74,7 @@ class QueueController extends BaseController {
                 queueNumber: req.body.QueueNumber,
                 appointmentId: req.body.AppointmentId,
                 currentService: req.body.CurrentService,
-
+                queueDate: req.body.QueueDate
             };
 
             let data = await this._facade.updateQueue(queue.id, queue);
@@ -90,6 +90,21 @@ class QueueController extends BaseController {
         try {
             let apptId = req.params.appointmentId;
             let data = await this._facade.getListQueueByAppointmentId(apptId);
+
+            return this._handleResult(data, res);
+
+
+        } catch (error) {
+            this._handleError(error.message, res);
+        }
+
+    }
+
+
+    async todayQueueFiltering(req, res) {
+        try {
+            let todayDate = req.params.todayDate;
+            let data = await this._facade.getListQueueByDate(todayDate);
 
             return this._handleResult(data, res);
 

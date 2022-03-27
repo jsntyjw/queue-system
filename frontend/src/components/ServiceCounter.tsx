@@ -109,7 +109,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
     async loadData() {
         try {
             var apiURL: string
-            apiURL = process.env.REACT_APP_MY_EC2_API_ADDRESS + 'api/booking/location/Tampines';
+            apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
             console.log(apiURL)
 
             fetch(apiURL)
@@ -593,7 +593,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
                     calledBooking.BookingStatus = this.state.serviceSelection
 
-                    BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
+                    BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
                         (rp) => {
                             if (rp.Status) {
@@ -624,7 +624,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     console.log(this.state)
 
-                    BaseService.update<Booking>("/booking/update/", this.state._bookingId, calledBooking).then(
+                    BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
                         (rp) => {
                             if (rp.Status) {

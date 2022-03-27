@@ -31,6 +31,11 @@ class QueueEntity extends BaseEntityMongoDb {
     }
 
 
+    getListQueueByDate(todayDateInput){
+        return this._model.find({queueDate : todayDateInput}).sort([['_id', -1]]);
+    }
+
+
 
     update(id, fieldObj) {
         return this._model.findByIdAndUpdate(id, {

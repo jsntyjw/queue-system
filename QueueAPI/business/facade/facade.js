@@ -30,6 +30,12 @@ class Facade extends BaseCore {
     }
 
 
+     async getListQueueByDate(todayDate) {
+        return this._queueComponent.getListQueueByDate(todayDate);
+    }
+    
+
+
 
 }
 

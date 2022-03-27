@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const QUEUE = new Schema({
     queueNumber : String,
     appointmentId : String,
+    queueDate: String,
     currentService : String,
 
 

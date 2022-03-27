@@ -2,13 +2,12 @@ import Response from "../models/response";
 import axios from "axios";
 
 
-export default class BaseService {
+export default class BaseService  {
 
-    private static baseURL: string = process.env.REACT_APP_MY_EC2_API_ADDRESS + "api";
 
 
     public static async getAll<T>(url: string): Promise<Response> {
-        let res = await axios.get<Array<T>>(this.baseURL + url)
+        let res = await axios.get<Array<T>>(url)
             .then((response: any) => {
                 const result = response.data;
                 if(result && result.success){
@@ -26,7 +25,7 @@ export default class BaseService {
     }
 
     public static get<T>(url: string, param: any): Promise<Response> {
-        let res = axios.get<T>(this.baseURL + url + param)
+        let res = axios.get<T>(url + param)
             .then((response: any) => {
                 const result = response.data;
                 if(result && result.success){
@@ -44,7 +43,7 @@ export default class BaseService {
     public static delete(url: string, param: any): Promise<Response> {
         console.log(param);
         
-        let res = axios.delete(this.baseURL + url , { data: param })
+        let res = axios.delete(url , { data: param })
             .then(response => { 
                 const result = response.data;
                 if(result && result.success){
@@ -61,7 +60,7 @@ export default class BaseService {
     }
     public static create<T>(url: string, obj: T): Promise<Response> {
 
-        let res = axios.post(this.baseURL + url ,obj)
+        let res = axios.post(url ,obj)
             .then(response => {
                 const result = response.data;
                 if(result && result.success){
@@ -78,7 +77,7 @@ export default class BaseService {
     }
     public static update<T>(url: string, param: any, obj: T): Promise<Response> {
 
-        let res = axios.post(this.baseURL + url + param, obj)
+        let res = axios.post(url + param, obj)
             .then(response => {
                 const result = response.data;
                 if(result && result.success){

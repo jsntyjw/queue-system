@@ -72,7 +72,7 @@ export default class Edit extends React.Component<IProps, IState> {
     }
 
     public componentDidMount() { 
-        BaseService.get<Booking>('/booking/edit/', this.props.match.params.id).then(
+        BaseService.get<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/edit/', this.props.match.params.id).then(
             (rp) => {
                 if (rp.Status) {
                     const booking = rp.Data;
@@ -111,7 +111,7 @@ export default class Edit extends React.Component<IProps, IState> {
     private onSave = () => {
 
         console.log(this.state.booking);
-        BaseService.update<Booking>("/booking/update/", this.props.match.params.id,this.state.booking).then(
+        BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.props.match.params.id,this.state.booking).then(
             (rp) => {
                 if (rp.Status) {
                     toastr.success('Booking saved.');

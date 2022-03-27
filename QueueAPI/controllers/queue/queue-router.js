@@ -11,6 +11,7 @@ router.get("/", controller.list);
 router.post("/create", controller.create);
 router.post("/update/:id", controller.update);
 router.get("/appointment/:appointmentId", controller.appointmentIdFiltering)
+router.get("/todayQueue/:todayDate", controller.todayQueueFiltering)
 
 
 module.exports = router;

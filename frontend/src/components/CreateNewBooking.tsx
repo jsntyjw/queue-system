@@ -62,7 +62,7 @@ export default class Create extends  React.Component<IProps, IState> {
         this.setState(nextState);
     }
     private onSave = () => { 
-        BaseService.create<Booking>("/booking/create", this.state.booking).then(
+        BaseService.create<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/create", this.state.booking).then(
             (rp) => {
                 if (rp.Status) {
                     toastr.success('Booking saved.'); 

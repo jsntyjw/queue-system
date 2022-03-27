@@ -21,6 +21,12 @@ class QueueComponent extends BaseCore {
         let queues = await this._queueEntity.getListQueueByAppointmentId(apptId);
         return queues;
     }
+    
+    
+    async getListQueueByDate(todayDate){
+        let queues = await this._queueEntity.getListQueueByDate(todayDate);
+        return queues;
+    }
 
     async getDetailQueue(id) {
         if (!id) {
