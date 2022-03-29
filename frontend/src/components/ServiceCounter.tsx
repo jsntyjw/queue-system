@@ -52,9 +52,11 @@ interface MyState {
     showDIVHospitalservice: string,
     agencySelection: string,
     serviceSelection: string,
-    routingKey:string,
+    routingKey: string,
     showButtonNextNumber: string,
-    showNextServiceHospital: string,
+    showNextServiceHospitalDoctor: string,
+    showNextServiceHospitalPharmacy: string,
+    showNextServiceHospitalPayment: string,
     showNextServiceHPB: string,
     nextServiceSelection: string,
     queue: Queue
@@ -89,16 +91,19 @@ class ServiceCounter extends React.Component<{}, MyState> {
             queueName: "communityHealthQueue",
             elementNobodyInQueue: "none",
             showCurrentCitizen: "none",
-            showDivHPBService:"block",
+            showDivHPBService: "block",
             showDIVHospitalservice: "none",
             agencySelection: "HPB",
             serviceSelection: "communityHealth",
-            routingKey:"sgh.doctor",
+            routingKey: "sgh.doctor",
             showButtonNextNumber: "block",
-            showNextServiceHospital: "none",
+            showNextServiceHospitalDoctor: "block",
+            showNextServiceHospitalPharmacy: "block",
+            showNextServiceHospitalPayment: "block",
             showNextServiceHPB: "none",
             nextServiceSelection: "",
             queue: {
+                Id: '',
                 QueueNumber: '',
                 AppointmentId: '',
                 QueueDate: '',
@@ -121,7 +126,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             var apiURL: string
             apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
-            console.log(apiURL)
 
             fetch(apiURL)
                 .then(function (response) {
@@ -132,9 +136,11 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     this.setState({
                         bookings: []
                     })
+                    console.log(myJson)
                     myJson.data.forEach(element => {
-                        console.log("hi"+ this.state.serviceSelection)
-                        if (element["bookingStatus"] == this.state.serviceSelection) {
+
+                        if (element["bookingStatus"] == this.state.serviceSelection + "-Calling") {
+                            console.log("have")
                             var eachBooking = new Booking(
                                 element["_id"],
                                 element["nric"],
@@ -161,13 +167,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             bookings: this.state.bookings,
                         });
 
-                        if(this.state.bookings.length > 0)  {
-                        
+                        if (this.state.bookings.length > 0) {
+
                             console.log("hello testing here")
                             this.setState({
                                 showCurrentCitizen: "block",
                                 showButtonNextNumber: "none",
-                                
+
                                 nric: this.state.bookings[0].Nric,
                                 citizenName: this.state.bookings[0].CitizenName,
                                 citizenNumber: this.state.bookings[0].CitizenNumber,
@@ -184,26 +190,56 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 serviceProviderLocation: this.state.bookings[0].ServiceProviderLocation,
                                 bookingStatus: this.state.bookings[0].BookingStatus,
 
-                            })                                      
+                            })
 
                             console.log("testing here!!! : " + this.state.bookings[0].Id)
 
-                            this.getQueue(this.state.bookings[0].Id!!.toString())
 
-                            if(this.state.agencySelection == "HPB"){
+                            if (this.state.agencySelection == "HPB") {
                                 this.setState({
-                                    showNextServiceHospital: "none",
+                                    showNextServiceHospitalDoctor: "none",
+                                    showNextServiceHospitalPharmacy: "none",
+                                    showNextServiceHospitalPayment: "none",
                                     showNextServiceHPB: "block"
                                 })
                             }
-                            else{
+                            else {
                                 this.setState({
-                                    showNextServiceHospital: "block",
+                                    showNextServiceHospitalDoctor: "none",
+                                    showNextServiceHospitalPharmacy: "none",
+                                    showNextServiceHospitalPayment: "none",
                                     showNextServiceHPB: "none"
                                 })
+
+                                if(this.state.serviceSelection == "Doctor"){
+                                    this.setState({
+                                        showNextServiceHospitalDoctor: "block",
+                                        showNextServiceHospitalPharmacy: "none",
+                                        showNextServiceHospitalPayment: "none",
+                                        showNextServiceHPB: "none"
+                                    })
+                                }
+
+                                else if(this.state.serviceSelection == "Payment"){
+                                    this.setState({
+                                        showNextServiceHospitalDoctor: "none",
+                                        showNextServiceHospitalPharmacy: "none",
+                                        showNextServiceHospitalPayment: "block",
+                                        showNextServiceHPB: "none"
+                                    })
+                                }
+
+                                else{
+                                    this.setState({
+                                        showNextServiceHospitalDoctor: "none",
+                                        showNextServiceHospitalPharmacy: "block",
+                                        showNextServiceHospitalPayment: "none",
+                                        showNextServiceHPB: "none"
+                                    })
+                                }
                             }
                         }
-                        else{
+                        else {
                             this.setState({
                                 showCurrentCitizen: "none",
                                 showButtonNextNumber: "block",
@@ -270,14 +306,14 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     Service:
 
-                    <div id='divHPBService' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display:this.state.showDivHPBService }}>
+                    <div id='divHPBService' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showDivHPBService }}>
                         <InputSelect
                             options={[
                                 { value: "communityHealth", label: "communityHealth" },
                                 { value: "workplaceHealth", label: "workplaceHealth" },
 
                             ]}
-                            
+
                             valueExtractor={(item) => item.value}
                             listExtractor={(item) => item.label}
 
@@ -297,8 +333,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             options={[
                                 { value: "Doctor", label: "Doctor" },
                                 { value: "Payment", label: "Payment" },
-                                { value: "Pharmacy", label: "Pharmacy" },
-                                { value: "Missed Queue", label: "Missed Queue" }
+                                { value: "Pharmacy", label: "Pharmacy" }
 
                             ]}
 
@@ -321,7 +356,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     Your are selecting agency: <b>{this.state.agencySelection},</b> and service as <b>{this.state.serviceSelection}</b>
 
                     <br /><br />
-                    <div id='divButtonNextPatient' style={{display: this.state.showButtonNextNumber}}>
+                    <div id='divButtonNextPatient' style={{ display: this.state.showButtonNextNumber }}>
 
 
                         <Button.Default className='buttonsuccess'
@@ -363,59 +398,162 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                         </Layout.GridContainer>
 
-                        <div style={{display: this.state.showNextServiceHPB}}>
-                        <Layout.GridContainer className="column4">
+                        <div style={{ display: this.state.showNextServiceHPB }}>
+                            <Layout.GridContainer className="column4">
 
-                            <InputSelect
-                                placeholder="Select"
-                                options={[
-                                    { value: "Doctor", label: "Doctor" },
-                                    { value: "Missed Queue", label: "Missed Queue" }
+                                <InputSelect
+                                    placeholder="Select"
+                                    options={[
+                                        { value: "Doctor", label: "Doctor" },
+                                        { value: "Missed Queue", label: "Missed Queue" }
 
-                                ]}
-                                valueExtractor={(item) => item.value}
-                                listExtractor={(item) => item.label}
-                                displayValueExtractor={(item) => item.label}
-                                onSelectItem={(item, selectedValue) => {
+                                    ]}
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    onSelectItem={(item, selectedValue) => {
 
-                                    this.setState({
-                                        nextServiceSelection: selectedValue,
-                                        routingKey: "sgh.doctor"
-                                    })
-                                }}
-                            />
-                        </Layout.GridContainer>
+                                        if (selectedValue != "Missed Queue") {
+                                            this.setState({
+                                                routingKey: "sgh.doctor"
+                                            })
+                                        }
+
+                                        this.setState({
+                                            nextServiceSelection: selectedValue,
+                                        })
+
+
+                                    }}
+                                />
+                            </Layout.GridContainer>
+
+                        </div>
+
+                        <div style={{ display: this.state.showNextServiceHospitalDoctor }}>
+                            <Layout.GridContainer className="column4">
+
+                                <InputSelect
+                                    placeholder="Select"
+                                    options={[
+                                        { value: "Payment", label: "Payment" },
+                                        { value: "Pharmacy", label: "Pharmacy" },
+                                        { value: "Missed Queue", label: "Missed Queue" }
+
+                                    ]}
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    onSelectItem={(item, selectedValue) => {
+                                        if (selectedValue == "Payment") {
+                                            this.setState({
+                                                routingKey: "sgh.payment"
+                                            })
+                                        }
+                                        else if (selectedValue == "Pharmacy") {
+                                            this.setState({
+                                                routingKey: "sgh.pharmacy"
+                                            })
+                                        }
+                                        else {
+                                            this.getQueue(this.state._bookingId, selectedValue, true);
+                                        }
+                                        this.setState({
+                                            nextServiceSelection: selectedValue,
+                                        })
+                                    }}
+                                />
+                            </Layout.GridContainer>
 
                         </div>
 
-                        <div style={{display: this.state.showNextServiceHospital}}>
-                        <Layout.GridContainer className="column4">
 
-                            <InputSelect
-                                placeholder="Select"
-                                options={[
-                                    { value: "Payment", label: "Payment" },
-                                    { value: "Pharmacy", label: "Pharmacy" }
-                                ]}
-                                valueExtractor={(item) => item.value}
-                                listExtractor={(item) => item.label}
-                                displayValueExtractor={(item) => item.label}
-                                onSelectItem={(item, selectedValue) => {
+                        <div style={{ display: this.state.showNextServiceHospitalPayment }}>
+                            <Layout.GridContainer className="column4">
 
-                                    this.setState({
-                                        nextServiceSelection: selectedValue,
-                                        routingKey: "sgh.doctor"
-                                    })
-                                }}
-                            />
-                        </Layout.GridContainer>
+                                <InputSelect
+                                    placeholder="Select"
+                                    options={[
+                                        { value: "Pharmacy", label: "Pharmacy" },
+                                        { value: "Missed Queue", label: "Missed Queue" }
+
+                                    ]}
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    onSelectItem={(item, selectedValue) => {
+                                        if (selectedValue == "Pharmacy") {
+                                            this.setState({
+                                                routingKey: "sgh.pharmacy"
+                                            })
+                                        }
+                                        else {
+                                            this.getQueue(this.state._bookingId, selectedValue, true);
+                                        }
+                                        this.setState({
+                                            nextServiceSelection: selectedValue,
+                                        })
+                                    }}
+                                />
+                            </Layout.GridContainer>
 
                         </div>
+
+
+                        <div style={{ display: this.state.showNextServiceHospitalPharmacy }}>
+                            <Layout.GridContainer className="column4">
+
+                                <InputSelect
+                                    placeholder="Select"
+                                    options={[
+                                        { value: "Completed", label: "Completed" },
+                                        { value: "Missed Queue", label: "Missed Queue" }
+
+                                    ]}
+                                    valueExtractor={(item) => item.value}
+                                    listExtractor={(item) => item.label}
+                                    displayValueExtractor={(item) => item.label}
+                                    onSelectItem={(item, selectedValue) => {
+                                        if (selectedValue == "Missed Queue") {
+                                            this.getQueue(this.state._bookingId, selectedValue, true);
+                                        }
+                                        else{
+                                            this.getQueue(this.state._bookingId, selectedValue, false);
+                                        }
+
+                                        this.setState({
+                                            nextServiceSelection: selectedValue,
+                                        })
+                                    }}
+                                />
+                            </Layout.GridContainer>
+
+                        </div>
+
                         <div className='spacer1'></div>
 
 
                         <Button.Default
-                            onClick={() => this.consumeQueue(this.handle200, "sendtoNextService", this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenEmail, this.state.citizenNumber, this.state.queueNumber)}
+                            onClick={() => this.consumeQueue(this.handle200, "sendtoNextService",
+                                this.state._bookingId,
+                                this.state.nric,
+                                this.state.citizenName,
+                                this.state.citizenSalutation,
+                                this.state.citizenEmail,
+                                this.state.citizenNumber,
+                                this.state.generalType,
+                                this.state.serviceName,
+                                this.state.serviceProviderName,
+                                this.state.serviceProviderEmail,
+                                this.state.serviceProviderPhone,
+                                this.state.serviceStartDate,
+                                this.state.serviceStartTime,
+                                this.state.serviceProviderLocation,
+                                this.state.bookingStatus
+
+
+
+                            )}
 
                         >Send to next service</Button.Default>
 
@@ -430,7 +568,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "block",
-                showDIVHospitalservice:"none",
+                showDIVHospitalservice: "none",
                 agencySelection: "HPB",
                 serviceSelection: "communityHealth"
             })
@@ -457,39 +595,37 @@ class ServiceCounter extends React.Component<{}, MyState> {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "block",
-                showDIVHospitalservice:"none",
+                showDIVHospitalservice: "none",
                 serviceSelection: "communityHealth",
                 queueName: "communityHealthQueue",
-                routingKey: "hpb.chq"
             })
-            this.loadData();
+
+            this.loadData()
         }
-        else if(selectedValue == "workplaceHealth") {
+        else if (selectedValue == "workplaceHealth") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "block",
                 showDIVHospitalservice: "none",
                 serviceSelection: "workplaceHealth",
                 queueName: "workplaceHealthQueue",
-                routingKey: "hpb.whq"
 
             })
-            this.loadData();
+            this.loadData()
 
         }
-        else if(selectedValue == "Doctor") {
+        else if (selectedValue == "Doctor") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
                 showDIVHospitalservice: "block",
                 serviceSelection: "Doctor",
                 queueName: "doctorQueue",
-                
             })
-            this.loadData();
+            this.loadData()
 
         }
-        else if(selectedValue == "Payment") {
+        else if (selectedValue == "Payment") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -498,10 +634,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "paymentQueue",
 
             })
-            this.loadData();
+            this.loadData()
 
         }
-        else if(selectedValue == "Pharmacy") {
+        else if (selectedValue == "Pharmacy") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -510,7 +646,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "pharmacyQueue",
 
             })
-            this.loadData();
+            this.loadData()
 
         }
     }
@@ -521,11 +657,11 @@ class ServiceCounter extends React.Component<{}, MyState> {
     }
 
 
-    async getQueue(appointmentId: string) {
+    async getQueue(appointmentId: string, calledService: string, missedQueueSend: boolean) {
         try {
             var apiURL: string
 
-            apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/appointment/'+ appointmentId;
+            apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/appointment/' + appointmentId;
             console.log(apiURL);
             fetch(apiURL)
                 .then(function (response) {
@@ -534,9 +670,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 })
                 .then((myJson) => {
 
-                    console.log("this myJson is"  + myJson.data[0]["queueNumber"])
+                    console.log("this myJson is" + myJson.data[0])
                     this.setState({
-                        queue:  {
+                        queue: {
+                            Id: myJson.data[0]["_id"],
                             QueueNumber: myJson.data[0]["queueNumber"],
                             AppointmentId: myJson.data[0]["appointmentId"],
                             QueueDate: myJson.data[0]["queueDate"],
@@ -544,25 +681,32 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             MissedQueue: myJson.data[0]["missedQueue"]
                         }
                     })
-                    // myJson.data.forEach(element => {
-                    //     var eachQueue = new Queue(
-                    //         element["_id"],
-                    //         element["queueNumber"],
-                    //         element["appointmentId"],
-                    //         element["currentService"],
-                    //         element["queueDate"],
-                    //         element["missedQueue"]
-                        
-                    //     );
 
-                    //     this.state.queue.push(eachQueue)
-                    //     this.setState({
-                    //         queues: this.state.queues,
-                    //         clicked: 'block'
-                    //     });
+                    var calledQueue: Queue;
+                    if (missedQueueSend == true) {
+                        calledQueue = new Queue(this.state.queue.Id!!, this.state.queue.QueueNumber, this.state.queue.AppointmentId, this.state.queue.QueueDate, calledService, true);
+                    }
+                    else {
+                        calledQueue = new Queue(this.state.queue.Id!!, this.state.queue.QueueNumber, this.state.queue.AppointmentId, this.state.queue.QueueDate, calledService, false);
+                    }
 
-                    // });
-                    console.log(this.state.queue)
+
+                    BaseService.update<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/update/", this.state.queue.Id, calledQueue).then(
+
+                        (rp) => {
+                            if (rp.Status) {
+                                console.log('Queue updated.');
+                            } else {
+                                console.log(rp.Messages);
+                                console.log("Messages: " + rp.Messages);
+                                console.log("Exception: " + rp.Exception);
+                            }
+                        }
+                    );
+
+
+
+                    // console.log(this.state.queue)
 
                 });
 
@@ -575,28 +719,98 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
 
-    consumeQueue(callback, buttonSelected: string, bookingId?: string, nric?: string, citizenName?: string, citizenEmail?: string, citizenNumber?: string, queueNumber?: string) {
+
+    
+
+
+
+
+    consumeQueue(callback, buttonSelected: string,
+        bookingId?: string,
+        nric?: string,
+        citizenName?: string,
+        citizenSalutation?: string,
+        citizenEmail?: string,
+        citizenNumber?: string,
+        generalType?: string,
+        serviceName?: string,
+        serviceProviderName?: string,
+        serviceProviderEmail?: string,
+        serviceProviderPhone?: string,
+        serviceStartDate?: string,
+        serviceStartTime?: string,
+        serviceProviderLocation?: string,
+        bookingStatus?: string,
+
+    ) {
 
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
-        
+
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.queueName
 
         }
         if (buttonSelected == "sendtoNextService") {
 
+            if(this.state.nextServiceSelection == "Missed"){
+                toastr.success('Saved successfully.'); 
+                this.setState({
+                    showCurrentCitizen: "none",
+                    showNextServiceHPB: "none",
+                    showButtonNextNumber: "block",
+                    showDivHPBService: "none",
+                    showNextServiceHospitalDoctor: "none",
+                    showNextServiceHospitalPayment: "none",
+                    showNextServiceHospitalPharmacy: "none",
+                    showDIVHospitalservice: "block",
+                
+                    
+                })
+                return; 
+            }
+
+            if(this.state.nextServiceSelection == "Completed"){
+                toastr.success('Save successfully.'); 
+                this.setState({
+                    showCurrentCitizen: "none",
+                    showNextServiceHPB: "none",
+                    showButtonNextNumber: "block",
+                    showDivHPBService: "none",
+                    showNextServiceHospitalDoctor: "none",
+                    showNextServiceHospitalPayment: "none",
+                    showNextServiceHospitalPharmacy: "none",
+                    showDIVHospitalservice: "block",
+                
+                    
+                })
+                return;
+            }
+
             const queueObject = {
                 "_id": bookingId,
                 "nric": nric,
                 "citizenName": citizenName,
+                "citizenSalutation": citizenSalutation,
                 "citizenEmail": citizenEmail,
                 "citizenNumber": citizenNumber,
-                "queueNumber": queueNumber,
+
+                "generalType": generalType,
+                "serviceName": serviceName,
+                "serviceProviderName": serviceProviderName,
+                "serviceProviderEmail": serviceProviderEmail,
+                "serviceProviderPhone": serviceProviderPhone,
+                "serviceStartDate": serviceStartDate,
+                "serviceStartTime": serviceStartTime,
+                "serviceProviderLocation": serviceProviderLocation,
+                "bookingStatus": bookingStatus,
+
             }
 
-            var myJSON = encodeURI(JSON.stringify(queueObject));
-            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=" +  this.state.routingKey + "&bookingDetails=" + myJSON;
+            console.log(queueObject)
 
+            var myJSON = encodeURI(JSON.stringify(queueObject));
+            respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=" + this.state.routingKey + "&bookingDetails=" + myJSON;
+            console.log("testing payment: " + respectiveURL)
         }
 
 
@@ -610,7 +824,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
         // respond to every readyState change
         xhr.onreadystatechange = () => {
-
             // ignore all readyStates other than "DONE"
             if (xhr.readyState !== XMLHttpRequest.DONE) {
                 return;
@@ -618,7 +831,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             // call the callback with status
             if (xhr.status === 200) {
-
+                console.log(xhr.responseText)
+                if(xhr.responseText == "fk you jiawei"){
+                    this.setState({
+                        elementNobodyInQueue: "block"
+                    })
+                    return;
+                }
                 var calledBooking: Booking;
                 if (buttonSelected == "nextPatient") {
                     this.setState({
@@ -644,26 +863,58 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         showCurrentCitizen: "block"
                     })
 
-                    if(this.state.agencySelection == "HPB"){
+                    if (this.state.agencySelection == "HPB") {
                         this.setState({
-                            showNextServiceHPB: 'block',
-                            showNextServiceHospital: 'none'
+                            showNextServiceHospitalDoctor: "none",
+                            showNextServiceHospitalPharmacy: "none",
+                            showNextServiceHospitalPayment: "none",
+                            showNextServiceHPB: "block"
                         })
                     }
-
-                    if(this.state.agencySelection == "Hospital"){
+                    else {
                         this.setState({
-                            showNextServiceHPB: 'none',
-                            showNextServiceHospital: 'block'
+                            showNextServiceHospitalDoctor: "none",
+                            showNextServiceHospitalPharmacy: "none",
+                            showNextServiceHospitalPayment: "none",
+                            showNextServiceHPB: "none"
                         })
-                    }
 
+                        if(this.state.serviceSelection == "Doctor"){
+                            this.setState({
+                                showNextServiceHospitalDoctor: "block",
+                                showNextServiceHospitalPharmacy: "none",
+                                showNextServiceHospitalPayment: "none",
+                                showNextServiceHPB: "none"
+                            })
+                        }
+
+                        else if(this.state.serviceSelection == "Payment"){
+                            this.setState({
+                                showNextServiceHospitalDoctor: "none",
+                                showNextServiceHospitalPharmacy: "none",
+                                showNextServiceHospitalPayment: "block",
+                                showNextServiceHPB: "none"
+                            })
+                        }
+
+                        else{
+                            this.setState({
+                                showNextServiceHospitalDoctor: "none",
+                                showNextServiceHospitalPharmacy: "block",
+                                showNextServiceHospitalPayment: "none",
+                                showNextServiceHPB: "none"
+                            })
+                        }
+                    }
 
                     calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus);
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
-                    calledBooking.BookingStatus = this.state.serviceSelection
+                    calledBooking.BookingStatus = this.state.serviceSelection + "-Calling"
+
+                    this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Calling", false);
+
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
@@ -677,6 +928,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             }
                         }
                     );
+
+
 
                 }
 
@@ -692,9 +945,20 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     document.getElementById("divButtonNextPatient")!!.style.display = "block";
 
 
-                    calledBooking.BookingStatus = this.state.nextServiceSelection
 
                     console.log(this.state)
+
+                    if (this.state.nextServiceSelection == "Missed Queue") {
+                        this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Missed", true);
+                        calledBooking.BookingStatus = this.state.serviceSelection + "-Missed"
+
+                    }
+                    else {
+                        this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Queued", false);
+                        calledBooking.BookingStatus = this.state.serviceSelection + "-Queued"
+
+                    }
+
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 

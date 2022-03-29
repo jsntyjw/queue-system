@@ -504,7 +504,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             <Accordion.Base className='base' >
                                                 {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - communityHealth')).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New') {
+                                                    if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -539,7 +539,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                 </ul>
                                                                 <div style={{ 'display': showButton }}>
                                                                     <Button.Default
-                                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        onClick={() => this.checkPage(this.handle200, "communityHealth", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                                     >Send to Queue</Button.Default>
                                                                 </div>
 
@@ -571,7 +571,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             <Accordion.Base className='base' >
                                                 {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - workplaceHealth')).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New') {
+                                                    if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -606,7 +606,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                 </ul>
                                                                 <div style={{ 'display': showButton }}>
                                                                     <Button.Default
-                                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        onClick={() => this.checkPage(this.handle200, "workplaceHealth", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                                     >Send to Queue</Button.Default>
                                                                 </div>
 
@@ -642,7 +642,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if (input.BookingStatus == 'New') {
+                                                        if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
                                                             showButton = 'block';
                                                         }
 
@@ -677,7 +677,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                     </ul>
                                                                     <div style={{ 'display': showButton }}>
                                                                         <Button.Default
-                                                                            onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                            onClick={() => this.checkPage(this.handle200,"individual", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                                         >Send to Queue</Button.Default>
                                                                     </div>
 
@@ -819,7 +819,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             <Accordion.Base className='base' >
                                                 {this.state.bookings.filter((element => element.GeneralType == 'General Practionar')).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New') {
+                                                    if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -854,7 +854,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                 </ul>
                                                                 <div style={{ 'display': showButton }}>
                                                                     <Button.Default
-                                                                        onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        onClick={() => this.checkPage(this.handle200, "Doctor", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                                     >Send to Queue</Button.Default>
                                                                 </div>
 
@@ -889,7 +889,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if (input.BookingStatus == 'New') {
+                                                        if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
                                                             showButton = 'block';
                                                         }
 
@@ -924,7 +924,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                     </ul>
                                                                     <div style={{ 'display': showButton }}>
                                                                         <Button.Default
-                                                                            onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                            onClick={() => this.checkPage(this.handle200, "individual", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                                         >Send to Queue</Button.Default>
                                                                     </div>
 
@@ -961,7 +961,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                         (input, index) => {
 
                                                             var showButton = 'none';
-                                                            if (input.BookingStatus == 'New') {
+                                                            if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
                                                                 showButton = 'block';
                                                             }
                                                             console.log(this.state.bookings)
@@ -998,7 +998,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                         </ul>
                                                                         <div style={{ 'display': showButton }}>
                                                                             <Button.Default
-                                                                                onClick={() => this.checkPage(this.handle200, input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                                onClick={() => this.checkPage(this.handle200, "Doctor", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
                                                                             >Send to Queue</Button.Default>
                                                                         </div>
 
@@ -1055,7 +1055,7 @@ class Appointment extends React.Component<{}, MyState> {
         console.log('handle200 has received:', response);
     }
 
-    checkPage(callback, bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
+    checkPage(callback, service: string,  bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
         this.loadData()
 
         if(this.state.queues.length == 0){
@@ -1153,12 +1153,35 @@ class Appointment extends React.Component<{}, MyState> {
                 BaseService.create<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/create", this.state.queue).then(
                     (rp) => {
                         if (rp.Status) {
-                            // toastr.success('Booking saved.'); 
+                          
+                            if(service != "individual"){
+                                booking.BookingStatus = service + "-Queued";
+                            }
+                            else{
+                                if(booking.GeneralType.includes("workplaceHealth")){
+                                    booking.BookingStatus = "workplaceHealth-Queued";
+                                }
+                                else if(booking.GeneralType.includes("workplaceHealth")){
+                                    booking.BookingStatus = "communityHealth-Queued";
+                                }
+                                else{
+                                    booking.BookingStatus = "Doctor-Queued";
 
-                            // console.log("testing 27:"+ booking.Id)
-                            // console.log("testing 27:"+ date.getDate().toString())
-                            // console.log("testing 27:"+ booking.BookingStatus)
+                                }
+                            }
 
+                            BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", booking.Id, booking).then(
+
+                                (rp) => {
+                                    if (rp.Status) {
+                                        console.log('Booking saved.');
+                                    } else {
+                                        console.log(rp.Messages);
+                                        console.log("Messages: " + rp.Messages);
+                                        console.log("Exception: " + rp.Exception);
+                                    }
+                                }
+                            );
 
 
                         } else {

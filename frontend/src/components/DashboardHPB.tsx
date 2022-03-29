@@ -17,6 +17,13 @@ interface MyState {
     MissedNumberWorkplaceHealth: string
 }
 
+
+var numberInQueueArrayCommunityHealth: string[] = [];
+var numberInQueueArrayWorkplaceHealth: string[] = [];
+
+var numberMissedArrayCommunityHealth: string[] = [];
+var numberMissedArrayWorkplaceHealth: string[] = [];
+
 class Dashboard extends React.Component<{}, MyState> {
 
     constructor(props) {
@@ -39,22 +46,101 @@ class Dashboard extends React.Component<{}, MyState> {
 
     async loadData() {
         try {
-            const res = await fetch(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking');
+            const res = await fetch(process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue');
             const blocks = await res.json();
             const data = blocks.data;
 
+            var communityHealthIsCalling = false;
+            var workplaceHealthIsCalling = false;
+
+            if(communityHealthIsCalling== false){
+                this.setState({
+                    callingQueueNumberCommunityHealth: '-'
+                })
+            }
+
+            if(workplaceHealthIsCalling== false){
+                this.setState({
+                    callingQueueNumberWorkplaceHealth: '-'
+                })
+            }
+
+
             data.forEach(element => {
                 console.log(element)
-                if (element.bookingStatus == 'communityHealth' && element.queueNumber != null) {
+                if (element.currentService == 'communityHealth-Calling' ) {
                     this.setState({
                         callingQueueNumberCommunityHealth: element.queueNumber.toString()
                     })
                 }
-                if (element.bookingStatus == 'workplaceHealth' && element.queueNumber != null) {
+                if (element.currentService == 'workplaceHealth-Calling' ) {
                     this.setState({
                         callingQueueNumberWorkplaceHealth: element.queueNumber.toString()
                     })
                 }
+
+
+
+                if (element.currentService == 'CommunityHealth-Queued' ) {
+                    numberInQueueArrayCommunityHealth.push(element.queueNumber.toString())
+                }
+                if (element.currentService == 'WorkplaceHealth-Queued' ) {
+                    numberInQueueArrayWorkplaceHealth.push(element.queueNumber.toString())
+                }
+               
+                
+                if (element.currentService == 'CommunityHealth-Missed' ) {
+                    numberMissedArrayCommunityHealth.push(element.queueNumber.toString())
+                }
+                if (element.currentService == 'WorkplaceHealth-Missed' ) {
+                    numberMissedArrayWorkplaceHealth.push(element.queueNumber.toString())
+                }
+       
+
+
+                if(numberInQueueArrayCommunityHealth.length != 0){
+                    this.setState({
+                        upcomingQueueNumberCommunityHealth: numberInQueueArrayCommunityHealth[0]
+                    })
+                }
+                if(numberInQueueArrayWorkplaceHealth.length != 0){
+                    this.setState({
+                        upcomingQueuenumberWorkplaceHealth: numberInQueueArrayWorkplaceHealth[0]
+                    })
+                }
+  
+
+
+                if(numberInQueueArrayCommunityHealth.length != 0){
+                    this.setState({
+                        upcomingQueueNumberCommunityHealth: numberInQueueArrayCommunityHealth[0]
+                    })
+                }
+                if(numberInQueueArrayWorkplaceHealth.length != 0){
+                    this.setState({
+                        upcomingQueuenumberWorkplaceHealth: numberInQueueArrayWorkplaceHealth[0]
+                    })
+                }
+                if(numberMissedArrayCommunityHealth.length != 0){
+                    this.setState({
+                        MissedNumberCommunityHealth: numberMissedArrayCommunityHealth[0]
+                    })
+                }
+                if(numberMissedArrayWorkplaceHealth.length != 0){
+                    this.setState({
+                        MissedNumberWorkplaceHealth: numberMissedArrayWorkplaceHealth[0]
+                    })
+                }
+
+
+
+
+
+
+
+
+
+
             });
 
         } catch (e) {
