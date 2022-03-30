@@ -16,6 +16,7 @@ export default class Bookings {
 
     ServiceProviderLocation: string;
     BookingStatus: string;
+    QueueNumber: string;
 
     // DynamicFields: string;
 
@@ -37,6 +38,7 @@ export default class Bookings {
         serviceProviderLocation: string,
 
         bookingStatus: string,
+        queueNumber: string
         ) {
         this.Id = id;
         this.Nric = nric;
@@ -56,5 +58,6 @@ export default class Bookings {
         this.ServiceProviderLocation = serviceProviderLocation;
 
         this.BookingStatus = bookingStatus;
+        this.QueueNumber = queueNumber;
     } 
 }

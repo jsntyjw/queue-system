@@ -31,7 +31,6 @@ var numberMissedArrayPayment: string[] = [];
 var numberMissedArrayPharmacy: string[] = [];
 
 
-
 class Dashboard extends React.Component<{}, MyState> {
 
     constructor(props) {
@@ -55,14 +54,23 @@ class Dashboard extends React.Component<{}, MyState> {
     }
 
     async loadData() {
+
+       
+
         try {
-            const res = await fetch(process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue');
+            const res = await fetch(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking');
             const blocks = await res.json();
             const data = blocks.data;
 
             var doctorIsCalling = false;
             var paymentIsCalling = false;
             var pharmacyIsCalling = false;
+            var pharmacyMissingDisplay = false;
+            var paymentMissingDisplay = false;
+            var doctorMissingDisplay = false;
+            var doctorQueueingDisplay = false;
+            var pharmacyQueueingDisplay = false;
+            var paymentQueueingDisplay = false;
 
             if(doctorIsCalling== false){
                 this.setState({
@@ -81,11 +89,53 @@ class Dashboard extends React.Component<{}, MyState> {
                     callingNumberPharmacyQueue: '-'
                 })
             }
+            if(pharmacyMissingDisplay== false){
+                this.setState({
+                    MissedNumberPharmacyQueue: '-'
+                })
+            }
+
+            if(paymentMissingDisplay== false){
+                this.setState({
+                    MissedNumberPaymentQueue: '-'
+                })
+            }
+
+            if(doctorMissingDisplay== false){
+                this.setState({
+                    MissedNumberDoctorQueue: '-'
+                })
+            }
+            if(doctorQueueingDisplay== false){
+                this.setState({
+                    upcomingNumberDoctorQueue: '-'
+                })
+            }
+
+            if(pharmacyQueueingDisplay== false){
+                this.setState({
+                    upcomingNumberPharmacyQueue: '-'
+                })
+            }
+
+            if(paymentQueueingDisplay== false){
+                this.setState({
+                    upcomingNumberPaymentQueue: '-'
+                })
+            }
+
+            numberInQueueArrayDoctor.length = 0
+            numberInQueueArrayPayment.length = 0
+            numberInQueueArrayPharmacy.length = 0
+
+            numberMissedArrayDoctor.length = 0
+            numberMissedArrayPayment.length = 0
+            numberMissedArrayPharmacy.length = 0
 
             
 
             data.forEach(element => {
-                if (element.currentService == 'Doctor-Calling' ) {
+                if (element.bookingStatus == 'Doctor-Calling' ) {
                     console.log("testing here! success")
                     this.setState({
                         callingNumberDoctorQueue:element.queueNumber.toString()
@@ -93,68 +143,74 @@ class Dashboard extends React.Component<{}, MyState> {
                     console.log("hi" + this.state.callingNumberDoctorQueue)
                     doctorIsCalling = true;
                 }
-                if (element.currentService == 'Payment-Calling' ) {
+                if (element.bookingStatus == 'Payment-Calling' ) {
                     this.setState({
                         callingNumberPaymentQueue:element.queueNumber.toString()
                     })
                     paymentIsCalling = true;
                 }
-                if (element.currentService == 'Pharmacy-Calling' ) {
+                if (element.bookingStatus == 'Pharmacy-Calling' ) {
                     this.setState({
                         callingNumberPharmacyQueue :element.queueNumber.toString()
                     })
                     pharmacyIsCalling = true;
                 }
 
-                if (element.currentService == 'Pharmacy-Queued' ) {
+                if (element.bookingStatus == 'Pharmacy-Queued' ) {
+                    pharmacyQueueingDisplay = true;
                     numberInQueueArrayPharmacy.push(element.queueNumber.toString())
                 }
-                if (element.currentService == 'Payment-Queued' ) {
+                if (element.bookingStatus == 'Payment-Queued' ) {
+                    paymentQueueingDisplay = true;
                     numberInQueueArrayPayment.push(element.queueNumber.toString())
                 }
-                if (element.currentService == 'Doctor-Queued' ) {
+                if (element.bookingStatus == 'Doctor-Queued' ) {
+                    doctorQueueingDisplay = true;
                     numberInQueueArrayDoctor.push(element.queueNumber.toString())
                 }
                 
-                if (element.currentService == 'Pharmacy-Missed' ) {
+                if (element.bookingStatus == 'Pharmacy-Missed' ) {
+                    pharmacyMissingDisplay = true;
                     numberMissedArrayPharmacy.push(element.queueNumber.toString())
                 }
-                if (element.currentService == 'Payment-Missed' ) {
+                if (element.bookingStatus == 'Payment-Missed') {
+                    paymentMissingDisplay = true;
                     numberMissedArrayPayment.push(element.queueNumber.toString())
                 }
-                if (element.currentService == 'Doctor-Missed' ) {
+                if (element.bookingStatus == 'Doctor-Missed' ) {
+                    doctorMissingDisplay = true;
                     numberMissedArrayDoctor.push(element.queueNumber.toString())
                 }
 
 
-                if(numberInQueueArrayDoctor.length != 0){
+                if(numberInQueueArrayDoctor.length != 0 &&  doctorQueueingDisplay == true){
                     this.setState({
                         upcomingNumberDoctorQueue: numberInQueueArrayDoctor[0]
                     })
                 }
-                if(numberInQueueArrayPayment.length != 0){
+                if(numberInQueueArrayPayment.length != 0 &&  paymentQueueingDisplay == true){
                     this.setState({
                         upcomingNumberPaymentQueue: numberInQueueArrayPayment[0]
                     })
                 }
-                if(numberInQueueArrayPharmacy.length != 0){
+                if(numberInQueueArrayPharmacy.length != 0 &&  pharmacyQueueingDisplay == true ){
                     this.setState({
                         upcomingNumberPharmacyQueue: numberInQueueArrayPharmacy[0]
                     })
                 }
 
 
-                if(numberMissedArrayDoctor.length != 0){
+                if(numberMissedArrayDoctor.length != 0  &&  doctorMissingDisplay == true){
                     this.setState({
                         MissedNumberDoctorQueue: numberMissedArrayDoctor[0]
                     })
                 }
-                if(numberMissedArrayPayment.length != 0){
+                if(numberMissedArrayPayment.length != 0   &&  paymentMissingDisplay == true){
                     this.setState({
                         MissedNumberPaymentQueue: numberMissedArrayPayment[0]
                     })
                 }
-                if(numberMissedArrayPharmacy.length != 0){
+                if(numberMissedArrayPharmacy.length != 0 &&  pharmacyMissingDisplay == true){
                     this.setState({
                         MissedNumberPharmacyQueue: numberMissedArrayPharmacy[0]
                     })

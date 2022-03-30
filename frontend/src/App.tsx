@@ -4,7 +4,6 @@ import { Route, Switch,withRouter } from "react-router-dom";
 import './App.css';
 import './index.css';
 import 'toastr/build/toastr.min.css';
-import Edit from './components/UpdateBooking';
 import Create from './components/CreateNewBooking';
 import Home from './components/Home'
 import Appointments from './components/Appointments'
@@ -16,7 +15,6 @@ import { Footer, Layout } from "react-lifesg-design-system";
 
 import { Navbar } from 'react-lifesg-design-system'
 import { INavbarItems } from 'react-lifesg-design-system/components/navbar/types';
-import ViewAllBookings from './components/ViewAllBookings';
 
 interface CustomType {
     isExternal?: boolean;
@@ -77,13 +75,11 @@ const App = () => {
                     <div>
                         <Switch>
                             <Route exact path='/' component={Home} />
-                            <Route path='/edit/:id' component={Edit} />
                             <Route path='/Home' component={Home} />
                             <Route path='/Create' component={Create} />
                             <Route path='/Appointments' component={Appointments} />
                             <Route path='/Dashboard' component={Dashboard} />
                             <Route path='/ServiceCounter' component={ServiceCounter} />
-                            <Route path='/ViewAllBookings' component={ViewAllBookings} />
                         </Switch>
                     </div>
 

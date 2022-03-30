@@ -12,7 +12,6 @@ import {
 import styled from "styled-components";
 
 import Booking from "../models/booking";
-import Queue from "../models/queue";
 
 
 import { ModalContent } from "../models/doc-elements";
@@ -59,7 +58,6 @@ interface MyState {
     showNextServiceHospitalPayment: string,
     showNextServiceHPB: string,
     nextServiceSelection: string,
-    queue: Queue
 
 }
 
@@ -102,14 +100,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
             showNextServiceHospitalPayment: "block",
             showNextServiceHPB: "none",
             nextServiceSelection: "",
-            queue: {
-                Id: '',
-                QueueNumber: '',
-                AppointmentId: '',
-                QueueDate: '',
-                CurrentService: '',
-                MissedQueue: false
-            }
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -157,6 +147,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 element["serviceStartTime"],
                                 element["serviceProviderLocation"],
                                 element["bookingStatus"],
+                                element["queueNumber"]
                             );
 
                             this.state.bookings.push(eachBooking)
@@ -189,7 +180,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 serviceStartTime: this.state.bookings[0].ServiceStartTime,
                                 serviceProviderLocation: this.state.bookings[0].ServiceProviderLocation,
                                 bookingStatus: this.state.bookings[0].BookingStatus,
-
+                                queueNumber: this.state.bookings[0].QueueNumber
                             })
 
                             console.log("testing here!!! : " + this.state.bookings[0].Id)
@@ -456,7 +447,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                             })
                                         }
                                         else {
-                                            this.getQueue(this.state._bookingId, selectedValue, true);
                                         }
                                         this.setState({
                                             nextServiceSelection: selectedValue,
@@ -488,7 +478,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                             })
                                         }
                                         else {
-                                            this.getQueue(this.state._bookingId, selectedValue, true);
                                         }
                                         this.setState({
                                             nextServiceSelection: selectedValue,
@@ -515,10 +504,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                     displayValueExtractor={(item) => item.label}
                                     onSelectItem={(item, selectedValue) => {
                                         if (selectedValue == "Missed Queue") {
-                                            this.getQueue(this.state._bookingId, selectedValue, true);
                                         }
                                         else{
-                                            this.getQueue(this.state._bookingId, selectedValue, false);
                                         }
 
                                         this.setState({
@@ -549,8 +536,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 this.state.serviceStartDate,
                                 this.state.serviceStartTime,
                                 this.state.serviceProviderLocation,
-                                this.state.bookingStatus
-
+                                this.state.bookingStatus,
+                                this.state.queueNumber
 
 
                             )}
@@ -657,73 +644,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
     }
 
 
-    async getQueue(appointmentId: string, calledService: string, missedQueueSend: boolean) {
-        try {
-            var apiURL: string
-
-            apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/appointment/' + appointmentId;
-            console.log(apiURL);
-            fetch(apiURL)
-                .then(function (response) {
-
-                    return response.json();
-                })
-                .then((myJson) => {
-
-                    console.log("this myJson is" + myJson.data[0])
-                    this.setState({
-                        queue: {
-                            Id: myJson.data[0]["_id"],
-                            QueueNumber: myJson.data[0]["queueNumber"],
-                            AppointmentId: myJson.data[0]["appointmentId"],
-                            QueueDate: myJson.data[0]["queueDate"],
-                            CurrentService: myJson.data[0]["currentService"],
-                            MissedQueue: myJson.data[0]["missedQueue"]
-                        }
-                    })
-
-                    var calledQueue: Queue;
-                    if (missedQueueSend == true) {
-                        calledQueue = new Queue(this.state.queue.Id!!, this.state.queue.QueueNumber, this.state.queue.AppointmentId, this.state.queue.QueueDate, calledService, true);
-                    }
-                    else {
-                        calledQueue = new Queue(this.state.queue.Id!!, this.state.queue.QueueNumber, this.state.queue.AppointmentId, this.state.queue.QueueDate, calledService, false);
-                    }
-
-
-                    BaseService.update<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/update/", this.state.queue.Id, calledQueue).then(
-
-                        (rp) => {
-                            if (rp.Status) {
-                                console.log('Queue updated.');
-                            } else {
-                                console.log(rp.Messages);
-                                console.log("Messages: " + rp.Messages);
-                                console.log("Exception: " + rp.Exception);
-                            }
-                        }
-                    );
-
-
-
-                    // console.log(this.state.queue)
-
-                });
-
-
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-
-
-
-
-    
-
-
-
 
     consumeQueue(callback, buttonSelected: string,
         bookingId?: string,
@@ -741,50 +661,20 @@ class ServiceCounter extends React.Component<{}, MyState> {
         serviceStartTime?: string,
         serviceProviderLocation?: string,
         bookingStatus?: string,
-
+        queueNumber?:string
     ) {
 
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
 
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.queueName
-
+            console.log(respectiveURL)
         }
         if (buttonSelected == "sendtoNextService") {
 
-            if(this.state.nextServiceSelection == "Missed"){
-                toastr.success('Saved successfully.'); 
-                this.setState({
-                    showCurrentCitizen: "none",
-                    showNextServiceHPB: "none",
-                    showButtonNextNumber: "block",
-                    showDivHPBService: "none",
-                    showNextServiceHospitalDoctor: "none",
-                    showNextServiceHospitalPayment: "none",
-                    showNextServiceHospitalPharmacy: "none",
-                    showDIVHospitalservice: "block",
-                
-                    
-                })
-                return; 
-            }
+ 
 
-            if(this.state.nextServiceSelection == "Completed"){
-                toastr.success('Save successfully.'); 
-                this.setState({
-                    showCurrentCitizen: "none",
-                    showNextServiceHPB: "none",
-                    showButtonNextNumber: "block",
-                    showDivHPBService: "none",
-                    showNextServiceHospitalDoctor: "none",
-                    showNextServiceHospitalPayment: "none",
-                    showNextServiceHospitalPharmacy: "none",
-                    showDIVHospitalservice: "block",
-                
-                    
-                })
-                return;
-            }
+
 
             const queueObject = {
                 "_id": bookingId,
@@ -803,7 +693,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 "serviceStartTime": serviceStartTime,
                 "serviceProviderLocation": serviceProviderLocation,
                 "bookingStatus": bookingStatus,
-
+                "queueNumber": queueNumber
             }
 
             console.log(queueObject)
@@ -832,7 +722,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             // call the callback with status
             if (xhr.status === 200) {
                 console.log(xhr.responseText)
-                if(xhr.responseText == "fk you jiawei"){
+                if(xhr.responseText == "there is no one in the queue"){
                     this.setState({
                         elementNobodyInQueue: "block"
                     })
@@ -841,24 +731,24 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 var calledBooking: Booking;
                 if (buttonSelected == "nextPatient") {
                     this.setState({
-                        _bookingId: JSON.parse(xhr.responseText)._id,
-                        nric: JSON.parse(xhr.responseText).nric,
-                        citizenName: JSON.parse(xhr.responseText).citizenName,
-                        citizenEmail: JSON.parse(xhr.responseText).citizenEmail,
-                        citizenNumber: JSON.parse(xhr.responseText).citizenNumber,
-                        citizenSalutation: JSON.parse(xhr.responseText).citizenSalutation,
-                        queueNumber: JSON.parse(xhr.responseText).queueNumber,
-                        generalType: JSON.parse(xhr.responseText).generalType,
+                        _bookingId: JSON.parse(xhr.responseText).Id,
+                        nric: JSON.parse(xhr.responseText).Nric,
+                        citizenName: JSON.parse(xhr.responseText).CitizenName,
+                        citizenEmail: JSON.parse(xhr.responseText).CitizenEmail,
+                        citizenNumber: JSON.parse(xhr.responseText).CitizenNumber,
+                        citizenSalutation: JSON.parse(xhr.responseText).CitizenSalutation,
+                        generalType: JSON.parse(xhr.responseText).GeneralType,
 
-                        serviceName: JSON.parse(xhr.responseText).serviceName,
+                        serviceName: JSON.parse(xhr.responseText).ServiceName,
 
-                        serviceProviderEmail: JSON.parse(xhr.responseText).serviceProviderEmail,
-                        serviceProviderName: JSON.parse(xhr.responseText).serviceProviderName,
-                        serviceStartDate: JSON.parse(xhr.responseText).serviceStartDate,
-                        serviceProviderPhone: JSON.parse(xhr.responseText).serviceProviderPhone,
-                        serviceStartTime: JSON.parse(xhr.responseText).serviceStartTime,
-                        serviceProviderLocation: JSON.parse(xhr.responseText).serviceProviderLocation,
-                        bookingStatus: JSON.parse(xhr.responseText).bookingStatus,
+                        serviceProviderEmail: JSON.parse(xhr.responseText).ServiceProviderEmail,
+                        serviceProviderName: JSON.parse(xhr.responseText).ServiceProviderName,
+                        serviceStartDate: JSON.parse(xhr.responseText).ServiceStartDate,
+                        serviceProviderPhone: JSON.parse(xhr.responseText).ServiceProviderPhone,
+                        serviceStartTime: JSON.parse(xhr.responseText).ServiceStartTime,
+                        serviceProviderLocation: JSON.parse(xhr.responseText).ServiceProviderLocation,
+                        bookingStatus: JSON.parse(xhr.responseText).BookingStatus,
+                        queueNumber : JSON.parse(xhr.responseText).QueueNumber,
                         elementNobodyInQueue: "none",
                         showCurrentCitizen: "block"
                     })
@@ -907,14 +797,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         }
                     }
 
-                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus);
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
                     calledBooking.BookingStatus = this.state.serviceSelection + "-Calling"
 
-                    this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Calling", false);
-
+                    console.log("called booking: " + calledBooking)
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
@@ -938,26 +827,39 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         showModal: true
                     });
 
-                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus);
+                    calledBooking = new Booking(this.state._bookingId, this.state.nric, this.state.citizenName, this.state.citizenSalutation, this.state.citizenEmail, this.state.citizenNumber, this.state.generalType, this.state.serviceName, this.state.serviceProviderName, this.state.serviceProviderEmail, this.state.serviceProviderPhone, this.state.serviceStartDate, this.state.serviceStartTime, this.state.serviceProviderLocation, this.state.bookingStatus, this.state.queueNumber);
 
-
+                    
                     document.getElementById("divCurrentCitizen")!!.style.display = "none";
                     document.getElementById("divButtonNextPatient")!!.style.display = "block";
 
 
 
-                    console.log(this.state)
+                    // console.log(this.state)
 
                     if (this.state.nextServiceSelection == "Missed Queue") {
-                        this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Missed", true);
+                    //     this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Missed", true);
                         calledBooking.BookingStatus = this.state.serviceSelection + "-Missed"
 
                     }
-                    else {
-                        this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Queued", false);
-                        calledBooking.BookingStatus = this.state.serviceSelection + "-Queued"
+
+                    else if (this.state.nextServiceSelection == "Completed") {
+                        calledBooking.BookingStatus = "Completed"
 
                     }
+                    else if (this.state.nextServiceSelection != this.state.serviceSelection && this.state.nextServiceSelection != "Missed Queue" && this.state.nextServiceSelection != "Completed") {
+                    //     this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Queued", false);
+                        calledBooking.BookingStatus = this.state.nextServiceSelection + "-Queued"
+
+                    }
+                    else{
+                        calledBooking.BookingStatus = this.state.serviceSelection + "-Calling"
+
+                    }
+
+                    
+
+                    console.log(calledBooking)
 
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(

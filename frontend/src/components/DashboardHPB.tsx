@@ -45,13 +45,21 @@ class Dashboard extends React.Component<{}, MyState> {
     }
 
     async loadData() {
+
+
         try {
-            const res = await fetch(process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue');
+            const res = await fetch(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking');
             const blocks = await res.json();
             const data = blocks.data;
 
             var communityHealthIsCalling = false;
             var workplaceHealthIsCalling = false;
+
+            var communityHealthMissingDisplay = false;
+            var workplaceHealthMissingDisplay = false;
+
+            var communityHealthQueueingDisplay = false;
+            var workplaceHealthQueueingDisplay = false;
 
             if(communityHealthIsCalling== false){
                 this.setState({
@@ -64,16 +72,43 @@ class Dashboard extends React.Component<{}, MyState> {
                     callingQueueNumberWorkplaceHealth: '-'
                 })
             }
+            if(communityHealthMissingDisplay== false){
+                this.setState({
+                    MissedNumberCommunityHealth: '-'
+                })
+            }
 
+            if(workplaceHealthMissingDisplay== false){
+                this.setState({
+                    MissedNumberWorkplaceHealth: '-'
+                })
+            }
+            if(communityHealthQueueingDisplay== false){
+                this.setState({
+                    upcomingQueueNumberCommunityHealth: '-'
+                })
+            }
+
+            if(workplaceHealthQueueingDisplay== false){
+                this.setState({
+                    upcomingQueuenumberWorkplaceHealth: '-'
+                })
+            }
+
+        numberInQueueArrayCommunityHealth.length = 0
+        numberInQueueArrayWorkplaceHealth.length = 0
+
+        numberMissedArrayCommunityHealth.length = 0
+        numberMissedArrayWorkplaceHealth.length = 0
 
             data.forEach(element => {
                 console.log(element)
-                if (element.currentService == 'communityHealth-Calling' ) {
+                if (element.bookingStatus == 'communityHealth-Calling' ) {
                     this.setState({
                         callingQueueNumberCommunityHealth: element.queueNumber.toString()
                     })
                 }
-                if (element.currentService == 'workplaceHealth-Calling' ) {
+                if (element.bookingStatus == 'workplaceHealth-Calling' ) {
                     this.setState({
                         callingQueueNumberWorkplaceHealth: element.queueNumber.toString()
                     })
@@ -81,52 +116,48 @@ class Dashboard extends React.Component<{}, MyState> {
 
 
 
-                if (element.currentService == 'CommunityHealth-Queued' ) {
+                if (element.bookingStatus == 'communityHealth-Queued' ) {
+                    communityHealthQueueingDisplay = true;
                     numberInQueueArrayCommunityHealth.push(element.queueNumber.toString())
                 }
-                if (element.currentService == 'WorkplaceHealth-Queued' ) {
+                if (element.bookingStatus == 'workplaceHealth-Queued' ) {
+                    workplaceHealthQueueingDisplay = true;
                     numberInQueueArrayWorkplaceHealth.push(element.queueNumber.toString())
                 }
                
                 
-                if (element.currentService == 'CommunityHealth-Missed' ) {
+                if (element.bookingStatus == 'communityHealth-Missed' ) {
+                    console.log(element.queueNumber.toString())
+                    communityHealthMissingDisplay = true;
                     numberMissedArrayCommunityHealth.push(element.queueNumber.toString())
                 }
-                if (element.currentService == 'WorkplaceHealth-Missed' ) {
+                if (element.bookingStatus == 'workplaceHealth-Missed' ) {
+                    workplaceHealthMissingDisplay = true;
                     numberMissedArrayWorkplaceHealth.push(element.queueNumber.toString())
                 }
        
 
 
-                if(numberInQueueArrayCommunityHealth.length != 0){
-                    this.setState({
-                        upcomingQueueNumberCommunityHealth: numberInQueueArrayCommunityHealth[0]
-                    })
-                }
-                if(numberInQueueArrayWorkplaceHealth.length != 0){
-                    this.setState({
-                        upcomingQueuenumberWorkplaceHealth: numberInQueueArrayWorkplaceHealth[0]
-                    })
-                }
+           
   
 
 
-                if(numberInQueueArrayCommunityHealth.length != 0){
+                if(numberInQueueArrayCommunityHealth.length != 0 && communityHealthQueueingDisplay == true){
                     this.setState({
                         upcomingQueueNumberCommunityHealth: numberInQueueArrayCommunityHealth[0]
                     })
                 }
-                if(numberInQueueArrayWorkplaceHealth.length != 0){
+                if(numberInQueueArrayWorkplaceHealth.length != 0 && workplaceHealthQueueingDisplay == true ){
                     this.setState({
                         upcomingQueuenumberWorkplaceHealth: numberInQueueArrayWorkplaceHealth[0]
                     })
                 }
-                if(numberMissedArrayCommunityHealth.length != 0){
+                if(numberMissedArrayCommunityHealth.length != 0 && communityHealthMissingDisplay == true){
                     this.setState({
                         MissedNumberCommunityHealth: numberMissedArrayCommunityHealth[0]
                     })
                 }
-                if(numberMissedArrayWorkplaceHealth.length != 0){
+                if(numberMissedArrayWorkplaceHealth.length != 0 && workplaceHealthMissingDisplay == true){
                     this.setState({
                         MissedNumberWorkplaceHealth: numberMissedArrayWorkplaceHealth[0]
                     })

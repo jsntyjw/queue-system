@@ -3,7 +3,6 @@ import '../App.css';
 import { Text, Button, Layout, BoxContainer, Breadcrumb, InputGroup, Accordion, InputSelect, Modal, RadioButton, LinkList, } from 'react-lifesg-design-system';
 import styled from "styled-components";
 import Booking from "../models/booking";
-import Queue from "../models/queue";
 
 
 import { Container, Label, ModalContent, OptionContainer } from "../models/doc-elements";
@@ -34,7 +33,7 @@ const Main = styled.main`
 
 interface MyState {
     bookings: Booking[],
-    queues: Queue[],
+    // booking: Booking,    
     inputValue: string,
     clicked: string,
     showModal: boolean,
@@ -55,7 +54,7 @@ interface MyState {
     showGeneralServiceDropDown: string,
     showGeneralServiceDropDownHospital: string,
     dropDownHint: string,
-    queue: Queue
+    generatedNumber: string,
 }
 
 var queueNumberArray: number[] = [];
@@ -72,7 +71,6 @@ class Appointment extends React.Component<{}, MyState> {
         super(props);
         this.state = {
             bookings: [],
-            queues: [],
             inputValue: '',
             clicked: 'none',
             showModal: false,
@@ -93,16 +91,10 @@ class Appointment extends React.Component<{}, MyState> {
             showGeneralServiceDropDown: "none",
             showGeneralServiceDropDownHospital: "none",
             dropDownHint: "Select a service",
-            queue: {
-                QueueNumber: '',
-                AppointmentId: '',
-                QueueDate: '',
-                CurrentService: '',
-                MissedQueue: false
-            }
+            generatedNumber: "",
+
         };
         this.loadData = this.loadData.bind(this);
-        this.loadQueues = this.loadQueues.bind(this);
 
     }
 
@@ -114,61 +106,61 @@ class Appointment extends React.Component<{}, MyState> {
 
     async loadData() {
         // if (this.state.chooseOtherOptions == false) {
-            try {
-                var apiURL: string
-                apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
+        try {
+            var apiURL: string
+            apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
 
-                fetch(apiURL)
-                    .then(function (response) {
+            fetch(apiURL)
+                .then(function (response) {
 
-                        return response.json();
+                    return response.json();
+                })
+                .then((myJson) => {
+                    this.setState({
+                        bookings: []
                     })
-                    .then((myJson) => {
+                    myJson.data.forEach(element => {
+                        var eachBooking = new Booking(
+                            element["_id"],
+                            element["nric"],
+                            element["citizenName"],
+                            element["citizenSalutation"],
+                            element["citizenEmail"],
+                            element["citizenNumber"],
+                            element["generalType"],
+                            element["serviceName"],
+                            element["serviceProviderName"],
+                            element["serviceProviderEmail"],
+                            element["serviceProviderPhone"],
+                            element["serviceStartDate"],
+                            element["serviceStartTime"],
+                            element["serviceProviderLocation"],
+                            element["bookingStatus"],
+                            element["queueNumber"]
+                        );
+
+                        this.state.bookings.push(eachBooking)
                         this.setState({
-                            bookings: []
-                        })
-                        myJson.data.forEach(element => {
-                            var eachBooking = new Booking(
-                                element["_id"],
-                                element["nric"],
-                                element["citizenName"],
-                                element["citizenSalutation"],
-                                element["citizenEmail"],
-                                element["citizenNumber"],
-                                element["generalType"],
-                                element["serviceName"],
-                                element["serviceProviderName"],
-                                element["serviceProviderEmail"],
-                                element["serviceProviderPhone"],
-                                element["serviceStartDate"],
-                                element["serviceStartTime"],
-                                element["serviceProviderLocation"],
-                                element["bookingStatus"],
-                            );
-
-                            this.state.bookings.push(eachBooking)
-                            this.setState({
-                                bookings: this.state.bookings,
-                                clicked: 'block'
-                            });
-
+                            bookings: this.state.bookings,
+                            clicked: 'block'
                         });
-                    });
 
-            } catch (e) {
-                console.log(e);
-            }
+                    });
+                });
+
+        } catch (e) {
+            console.log(e);
+        }
         // }
 
-        this.loadQueues()
 
     }
 
-    
+
 
     public async searchByLocation(val: string) {
 
-   
+
 
         console.log(val)
 
@@ -253,8 +245,8 @@ class Appointment extends React.Component<{}, MyState> {
             this.setState({
                 showGeneralServiceDropDownHospital: 'none'
             })
-            
-            if(this.state.inputValue == '' || this.state.inputValue == null ){
+
+            if (this.state.inputValue == '' || this.state.inputValue == null) {
                 return;
             }
 
@@ -284,6 +276,7 @@ class Appointment extends React.Component<{}, MyState> {
                             element["serviceStartTime"],
                             element["serviceProviderLocation"],
                             element["bookingStatus"],
+                            element["queueNumber"]
                         );
 
 
@@ -308,7 +301,6 @@ class Appointment extends React.Component<{}, MyState> {
 
     render() {
 
-        console.log(this.state.queues)
 
         return (
 
@@ -334,7 +326,8 @@ class Appointment extends React.Component<{}, MyState> {
 
                         }}>
                             <ModalContent>
-                                <span>Send to queue succesfully</span>
+                                Send to queue successfully
+                                <b> {this.state.generatedNumber}</b>
                             </ModalContent>
                         </Modal.Box>
                     </Modal.Base>
@@ -539,7 +532,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                 </ul>
                                                                 <div style={{ 'display': showButton }}>
                                                                     <Button.Default
-                                                                        onClick={() => this.checkPage(this.handle200, "communityHealth", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        onClick={() => this.checkPage(this.handle200, input)}
                                                                     >Send to Queue</Button.Default>
                                                                 </div>
 
@@ -606,7 +599,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                 </ul>
                                                                 <div style={{ 'display': showButton }}>
                                                                     <Button.Default
-                                                                        onClick={() => this.checkPage(this.handle200, "workplaceHealth", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        onClick={() => this.checkPage(this.handle200, input)}
                                                                     >Send to Queue</Button.Default>
                                                                 </div>
 
@@ -677,7 +670,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                     </ul>
                                                                     <div style={{ 'display': showButton }}>
                                                                         <Button.Default
-                                                                            onClick={() => this.checkPage(this.handle200,"individual", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                            onClick={() => this.checkPage(this.handle200, input)}
                                                                         >Send to Queue</Button.Default>
                                                                     </div>
 
@@ -854,7 +847,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                 </ul>
                                                                 <div style={{ 'display': showButton }}>
                                                                     <Button.Default
-                                                                        onClick={() => this.checkPage(this.handle200, "Doctor", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                        onClick={() => this.checkPage(this.handle200, input)}
                                                                     >Send to Queue</Button.Default>
                                                                 </div>
 
@@ -924,7 +917,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                     </ul>
                                                                     <div style={{ 'display': showButton }}>
                                                                         <Button.Default
-                                                                            onClick={() => this.checkPage(this.handle200, "individual", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                            onClick={() => this.checkPage(this.handle200, input)}
                                                                         >Send to Queue</Button.Default>
                                                                     </div>
 
@@ -961,14 +954,17 @@ class Appointment extends React.Component<{}, MyState> {
                                                         (input, index) => {
 
                                                             var showButton = 'none';
-                                                            if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
-                                                                showButton = 'block';
+                                                            if (input.BookingStatus.toString().includes("Calling") || input.BookingStatus.toString().includes("Completed") ) {
+                                                                showButton = 'none';
+                                                            }
+                                                            else{
+                                                                showButton = 'block'
                                                             }
                                                             console.log(this.state.bookings)
                                                             if (input.GeneralType == 'General Practionar') {
                                                             }
                                                             return (
-                                                                <Accordion.Item title={input.CitizenName} key={index} expanded={false}>
+                                                                <Accordion.Item title={input.CitizenName + " - "  + input.QueueNumber} key={index} expanded={false}>
                                                                     <Text.Body>
                                                                         <ul>
                                                                             <li>
@@ -998,7 +994,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                                         </ul>
                                                                         <div style={{ 'display': showButton }}>
                                                                             <Button.Default
-                                                                                onClick={() => this.checkPage(this.handle200, "Doctor", input.Id!!, input.Nric, input.CitizenName, input.CitizenEmail, input.CitizenNumber, input)}
+                                                                                onClick={() => this.checkPage(this.handle200, input)}
                                                                             >Send to Queue</Button.Default>
                                                                         </div>
 
@@ -1055,82 +1051,56 @@ class Appointment extends React.Component<{}, MyState> {
         console.log('handle200 has received:', response);
     }
 
-    checkPage(callback, service: string,  bookingId: string, nric: string, citizenName: string, citizenEmail: string, citizenNumber: string, booking: Booking) {
+    checkPage(callback, booking: Booking) {
         this.loadData()
 
-        if(this.state.queues.length == 0){
-            queueNumberArray.push(1)
-        }
-        else{
-            this.state.queues.forEach(element => queueNumberArray.push(Number(element.QueueNumber.slice(1))));
-
-        }
-
+        queueNumberArray.push(0)
 
         console.log("queue number arrary" + queueNumberArray);
-
         var num = Math.max.apply(null, queueNumberArray) + 1;
+        queueNumberArray.push(num)
 
-        console.log("max number: "+ num)
-
+        console.log("max number: " + num)
         var str = String(num);
-
         while (str.length < 4) str = "0" + str;
-
         str = "H" + str;
-
         var date = new Date().toISOString().split('T')[0]
-
-
-        this.setState({
-            queue: {
-                QueueNumber: str,
-                AppointmentId: booking.Id!!.toString(),
-                QueueDate: date.toString(),
-                CurrentService: booking.BookingStatus,
-                MissedQueue: false
-            }
-        });
-
-
-
-
-        const queueObject = {
-            "_id": bookingId,
-            "nric": nric,
-            "citizenName": citizenName,
-            "citizenEmail": citizenEmail,
-            "citizenNumber": booking.CitizenNumber,
-            "citizenSalutation": booking.CitizenSalutation,
-            "generalType": booking.GeneralType,
-            "serviceName": booking.ServiceName,
-            "serviceProviderEmail": booking.ServiceProviderEmail,
-            "serviceProviderName": booking.ServiceProviderName,
-            "serviceStartDate": booking.ServiceStartDate,
-            "serviceProviderPhone": booking.ServiceProviderPhone,
-            "serviceStartTime": booking.ServiceStartTime,
-            "serviceProviderLocation": booking.ServiceProviderLocation,
-            "bookingStatus": booking.BookingStatus,
+        
+        if(booking.QueueNumber == ""){
+            booking.QueueNumber = str
+            this.setState({
+                generatedNumber: "Generated queue number is " + str
+            })
+        }
+        else{
+            booking.QueueNumber = booking.QueueNumber
+            this.setState({
+                generatedNumber: "Current queue number is " + booking.QueueNumber
+            })
         }
 
-        const myJSON = encodeURI(JSON.stringify(queueObject));
+        
+
+        const myJSON = encodeURI(JSON.stringify(booking));
 
         var updatedURL = "";
 
-        if (queueObject.generalType == "HPB Consultation - workplaceHealth") {
-            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.whq&bookingDetails=" + myJSON;
+        if ( (booking.GeneralType == "HPB Consultation - workplaceHealth" && booking.BookingStatus == "New") || booking.BookingStatus.includes( "workplaceHealth")) {
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=hpb.whq&bookingDetails=" + myJSON;
         }
-        else if (queueObject.generalType == "HPB Consultation - communityHealth") {
-            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=hpb.chq&bookingDetails=" + myJSON;
+        else if ( (booking.GeneralType == "HPB Consultation - communityHealth" && booking.BookingStatus =="New") || booking.BookingStatus.includes("communityHealth")) {
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=hpb.chq&bookingDetails=" + myJSON;
             console.log(updatedURL)
         }
-        else if (queueObject.generalType == "General Practionar") {
-            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+        else if ( (booking.GeneralType == "General Practionar" && booking.BookingStatus =="New") || (booking.GeneralType == "Specialist" && booking.BookingStatus =="New") || booking.BookingStatus.includes("Doctor")) {
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
         }
-        else if (queueObject.generalType == "Specialist") {
-            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+        else if (booking.BookingStatus == "Payment-Missed" || booking.BookingStatus.includes("Payment")) {
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.payment&bookingDetails=" + myJSON;
         }
-
+        else if (booking.BookingStatus == "Pharmcy-Missed" || booking.BookingStatus.includes("Pharmcy")) {
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.pharmcy&bookingDetails=" + myJSON;
+        }
 
 
         const xhr = new XMLHttpRequest(),
@@ -1148,56 +1118,170 @@ class Appointment extends React.Component<{}, MyState> {
 
             // call the callback with status
             if (xhr.status === 200) {
+
+
+                if ( (booking.GeneralType.toString().includes("workplaceHealth") && booking.BookingStatus == "New") || booking.BookingStatus == "workplaceHealth-Missed") {
+                    booking.BookingStatus = "workplaceHealth-Queued";
+                }
+                else if ( (booking.GeneralType.toString().includes("communityHealth") && booking.BookingStatus == "New") || booking.BookingStatus == "communityHealth-Missed") {
+                    booking.BookingStatus = "communityHealth-Queued";
+                }
+
+                else if ( (booking.GeneralType.toString().includes("General Practionar") && booking.BookingStatus == "New") || booking.BookingStatus == "Doctor-Missed") {
+                    booking.BookingStatus = "Doctor-Queued";
+                }
+                else if ( (booking.GeneralType.toString().includes("Specialist") && booking.BookingStatus == "New") || booking.BookingStatus == "Doctor-Missed") {
+                    booking.BookingStatus = "Doctor-Queued";
+                }
+                else if (  booking.BookingStatus == "Payment-Missed" ) {
+                    booking.BookingStatus = "Payment-Queued";
+                }
+                else if ( booking.BookingStatus == "Pharmacy-Missed"){
+                    booking.BookingStatus = "Pharmacy-Queued";
+                }
+
                 
 
-                BaseService.create<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/create", this.state.queue).then(
+
+
+          
+
+                BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", booking.Id, booking).then(
+
                     (rp) => {
                         if (rp.Status) {
-                          
-                            if(service != "individual"){
-                                booking.BookingStatus = service + "-Queued";
-                            }
-                            else{
-                                if(booking.GeneralType.includes("workplaceHealth")){
-                                    booking.BookingStatus = "workplaceHealth-Queued";
-                                }
-                                else if(booking.GeneralType.includes("workplaceHealth")){
-                                    booking.BookingStatus = "communityHealth-Queued";
-                                }
-                                else{
-                                    booking.BookingStatus = "Doctor-Queued";
 
-                                }
-                            }
-
-                            BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", booking.Id, booking).then(
-
-                                (rp) => {
-                                    if (rp.Status) {
-                                        console.log('Booking saved.');
-                                    } else {
-                                        console.log(rp.Messages);
-                                        console.log("Messages: " + rp.Messages);
-                                        console.log("Exception: " + rp.Exception);
-                                    }
-                                }
-                            );
-
-
-                        } else {
-                            toastr.error(rp.Messages);
+                        this.setState({
+                            showModal: true
+                        })
+                        this.loadData()
+                    
+                    } else {
+                            console.log(rp.Messages);
                             console.log("Messages: " + rp.Messages);
                             console.log("Exception: " + rp.Exception);
                         }
                     }
                 );
 
-                this.setState({
-                    showModal: true,
-                    queues: this.state.queues
-                });
+                //  console.log("debugging: ------------------")
+                //  console.log("current queue is: ")
+                //  console.log(this.state.queue)
 
-                this.loadData()
+                // if(this.state.queue.CurrentService.toString().includes("Missed")){
+
+                //     if(service != "individual"){
+                //         this.state.queue.CurrentService = service + "-Queued";
+                //     }
+                //     else{
+                //         if(this.state.queue.CurrentService.toString().includes("workplaceHealth")){
+                //             this.state.queue.CurrentService = "workplaceHealth-Queued";
+                //         }
+                //         else if(this.state.queue.CurrentService.toString().includes("workplaceHealth")){
+                //             this.state.queue.CurrentService = "communityHealth-Queued";
+                //         }
+                //         else{
+                //             this.state.queue.CurrentService = "Doctor-Queued";
+
+                //         }
+                //     }
+
+                //     BaseService.update<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/update/", this.state.queue.Id, this.state.queue).then(
+                //         (rp) => {
+                //             if (rp.Status) {
+                //                 console.log("Update successfully")
+                //             } else {
+                //                 console.log(rp.Messages);
+                //                 console.log("Messages: " + rp.Messages);
+                //                 console.log("Exception: " + rp.Exception);
+                //             }
+                //         }
+                //     );
+                // }
+
+                //     BaseService.create<Queue>(process.env.REACT_APP_QUEUE_API_ADDRESS + "api/queue/create",  this.state.queue).then(
+                //         (rp) => {
+                //             if (rp.Status) {
+
+
+
+                //                 if(service != "individual"){
+                //                     booking.BookingStatus = service + "-Queued";
+                //                 }
+                //                 else{
+                //                     if(booking.GeneralType.includes("workplaceHealth")){
+                //                         booking.BookingStatus = "workplaceHealth-Queued";
+                //                     }
+                //                     else if(booking.GeneralType.includes("workplaceHealth")){
+                //                         booking.BookingStatus = "communityHealth-Queued";
+                //                     }
+                //                     else{
+                //                         booking.BookingStatus = "Doctor-Queued";
+                //                     }
+                //                 }
+
+
+
+                //                 BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", booking.Id, booking).then(
+
+                //                     (rp) => {
+                //                         if (rp.Status) {
+                //                             console.log('Booking saved.');
+                //                         } else {
+                //                             console.log(rp.Messages);
+                //                             console.log("Messages: " + rp.Messages);
+                //                             console.log("Exception: " + rp.Exception);
+                //                         }
+                //                     }
+                //                 );
+
+
+                //             } else {
+                //                 console.log(rp.Messages);
+                //                 console.log("Messages: " + rp.Messages);
+                //                 console.log("Exception: " + rp.Exception);
+                //             }
+                //         }
+                //     );
+                // }
+
+                // if(service != "individual"){
+                //     booking.BookingStatus = service + "-Queued";
+                // }
+                // else{
+                //     if(booking.GeneralType.includes("workplaceHealth")){
+                //         booking.BookingStatus = "workplaceHealth-Queued";
+                //     }
+                //     else if(booking.GeneralType.includes("workplaceHealth")){
+                //         booking.BookingStatus = "communityHealth-Queued";
+                //     }
+                //     else{
+                //         booking.BookingStatus = "Doctor-Queued";
+                //     }
+                // }
+
+
+                // BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", booking.Id, booking).then(
+
+                //     (rp) => {
+                //         if (rp.Status) {
+                //             console.log('Booking saved.');
+                //         } else {
+                //             console.log(rp.Messages);
+                //             console.log("Messages: " + rp.Messages);
+                //             console.log("Exception: " + rp.Exception);
+                //         }
+                //     }
+                // );
+
+
+
+                // this.setState({
+                //     showModal: true,
+                //     queues: this.state.queues
+                // });
+
+                // this.loadData()
 
                 return callback(xhr.status);
             }
@@ -1222,48 +1306,51 @@ class Appointment extends React.Component<{}, MyState> {
 
     }
 
-    async loadQueues() {
-        try {
-            var apiURL: string
-            var date = new Date().toISOString().split('T')[0].toString()
+    // async loadQueues() {
+    //     try {
+    //         var apiURL: string
+    //         var date = new Date().toISOString().split('T')[0].toString()
 
-            apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/todayQueue/'+ date;
-            console.log(apiURL);
-            fetch(apiURL)
-                .then(function (response) {
+    //         apiURL = process.env.REACT_APP_QUEUE_API_ADDRESS + 'api/queue/todayQueue/'+ date;
+    //         console.log(apiURL);
+    //         fetch(apiURL)
+    //             .then(function (response) {
 
-                    return response.json();
-                })
-                .then((myJson) => {
-                    this.setState({
-                        queues: []
-                    })
-                    myJson.data.forEach(element => {
-                        var eachQueue = new Queue(
-                            element["_id"],
-                            element["queueNumber"],
-                            element["appointmentId"],
-                            element["currentService"],
-                            element["queueDate"],
-                            element["missedQueue"]
-                        
-                        );
+    //                 return response.json();
+    //             })
+    //             .then((myJson) => {
+    //                 this.setState({
+    //                     queues: []
+    //                 })
+    //                 myJson.data.forEach(element => {
+    //                     var eachQueue = new Queue(
+    //                         element["_id"],
+    //                         element["queueNumber"],
+    //                         element["appointmentId"],
+    //                         element["currentService"],
+    //                         element["queueDate"],
+    //                         element["missedQueue"]
 
-                        this.state.queues.push(eachQueue)
-                        this.setState({
-                            queues: this.state.queues,
-                            clicked: 'block'
-                        });
+    //                     );
 
-                    });
-                });
+    //                     this.state.queues.push(eachQueue)
+    //                     this.setState({
+    //                         queues: this.state.queues,
+    //                         clicked: 'block'
+    //                     });
 
-                console.log(this.state.queues)
+    //                 });
+    //             });
 
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    //             console.log(this.state.queues)
+
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
+
+
+
 
 
 }
