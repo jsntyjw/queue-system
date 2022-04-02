@@ -14,11 +14,15 @@ Files to run in terminal:
         npm start
     ```
 
+2. Backend folder: 
+    ```
+        cd backend
+        npm start
+    ```
 
-    b. backend folder: 
-        1. cd backend
-        2. npm start
-    c. QueueAPI folder:
-        1. cd QueueAPI
-        2. npm start
+3. QueueAPI folder:
+    ```
+        cd QueueAPI
+        npm start
+    ```
 
