@@ -7,9 +7,14 @@ To manage crowd control that allows walk-in customers or customers with prior-ap
 ## Installation
 
 Files to run in terminal:
-    a. frontend folder: 
-        1. cd frontend
-        2. npm start
+
+1. Frontend folder: 
+    ```
+        cd frontend
+        npm start
+    ```
+
+
     b. backend folder: 
         1. cd backend
         2. npm start
