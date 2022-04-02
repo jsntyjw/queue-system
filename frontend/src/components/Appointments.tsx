@@ -497,7 +497,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             <Accordion.Base className='base' >
                                                 {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - communityHealth')).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
+                                                    if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -564,7 +564,7 @@ class Appointment extends React.Component<{}, MyState> {
                                             <Accordion.Base className='base' >
                                                 {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - workplaceHealth')).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
+                                                    if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -635,7 +635,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
+                                                        if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
                                                             showButton = 'block';
                                                         }
 
@@ -810,9 +810,9 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                             <Accordion.Base className='base' >
-                                                {this.state.bookings.filter((element => element.GeneralType == 'General Practionar')).map((input, index) => {
+                                                {this.state.bookings.filter((element => element.GeneralType == 'General Practionar' || !element.BookingStatus.includes("HPB"))).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
+                                                    if ((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -882,7 +882,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if (input.BookingStatus == 'New' || input.BookingStatus.toString().includes("")) {
+                                                        if ((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
                                                             showButton = 'block';
                                                         }
 
@@ -954,7 +954,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                         (input, index) => {
 
                                                             var showButton = 'none';
-                                                            if (input.BookingStatus.toString().includes("Calling") || input.BookingStatus.toString().includes("Completed") ) {
+                                                            if ((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
                                                                 showButton = 'none';
                                                             }
                                                             else{
@@ -1102,6 +1102,7 @@ class Appointment extends React.Component<{}, MyState> {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.pharmcy&bookingDetails=" + myJSON;
         }
 
+        console.log("testing now " + updatedURL)
 
         const xhr = new XMLHttpRequest(),
             method = "GET",
