@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+import '../index.css';
 import {
     Text,
     Button,
@@ -23,6 +24,7 @@ const StyledSection = styled(Layout.Section)`
     margin-top: 8%;
     min-height: 600px;
 `;
+
 
 interface MyState {
     bookings: Booking[],
@@ -269,7 +271,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     <Breadcrumb links={[{ title: 'Home', url: 'http://localhost:3000/ServiceCounter' }, { title: 'Service Counter' }]} />
 
                     Agency:
-                    <div id='divAgency' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px' }}>
+                    <div id='divAgency' className="inlinecontent" style={{ justifyItems: "start" }}>
                         <InputSelect
                             options={[
                                 { value: "HPB", label: "HPB" },
@@ -297,7 +299,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     Service:
 
-                    <div id='divHPBService' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showDivHPBService }}>
+                    <div id='divHPBService' className="inlinecontent" style={{ justifyItems: "start", display: this.state.showDivHPBService }}>
                         <InputSelect
                             options={[
                                 { value: "communityHealth", label: "communityHealth" },
@@ -319,7 +321,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     </div>
 
-                    <div id='divHospitalService' className="inlinecontent" style={{ justifyItems: "start", maxWidth: '400px', display: this.state.showDIVHospitalservice }}>
+                    <div id='divHospitalService' className="inlinecontent" style={{ justifyItems: "start", display: this.state.showDIVHospitalservice }}>
                         <InputSelect
                             options={[
                                 { value: "Doctor", label: "Doctor" },
@@ -367,7 +369,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 <div className='spacer1'></div>
 
                                 <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
-                                    <div style={{ padding: "2rem", minWidth: "1080px" }}>
+                                    <div style={{ padding: "2rem", maxWidth: "1080px" }}>
                                         <Layout.GridContainer className="column4">
                                             <Text.Body weight="semibold">NRIC</Text.Body>
                                             <Text.Body weight="semibold">Name</Text.Body>
@@ -390,7 +392,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         </Layout.GridContainer>
 
                         <div style={{ display: this.state.showNextServiceHPB }}>
-                            <Layout.GridContainer className="column4">
 
                                 <InputSelect
                                     placeholder="Select"
@@ -417,12 +418,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                                     }}
                                 />
-                            </Layout.GridContainer>
 
                         </div>
 
                         <div style={{ display: this.state.showNextServiceHospitalDoctor }}>
-                            <Layout.GridContainer className="column4">
 
                                 <InputSelect
                                     placeholder="Select"
@@ -453,14 +452,11 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                         })
                                     }}
                                 />
-                            </Layout.GridContainer>
 
                         </div>
 
 
                         <div style={{ display: this.state.showNextServiceHospitalPayment }}>
-                            <Layout.GridContainer className="column4">
-
                                 <InputSelect
                                     placeholder="Select"
                                     options={[
@@ -484,13 +480,11 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                         })
                                     }}
                                 />
-                            </Layout.GridContainer>
 
                         </div>
 
 
                         <div style={{ display: this.state.showNextServiceHospitalPharmacy }}>
-                            <Layout.GridContainer className="column4">
 
                                 <InputSelect
                                     placeholder="Select"
@@ -513,7 +507,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                         })
                                     }}
                                 />
-                            </Layout.GridContainer>
 
                         </div>
 
@@ -540,7 +533,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 this.state.queueNumber
 
 
-                            )}
+                            )} 
+
+                            style={{marginBottom: "50px"}}
 
                         >Send to next service</Button.Default>
 
