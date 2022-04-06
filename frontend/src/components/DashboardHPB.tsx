@@ -208,7 +208,7 @@ class Dashboard extends React.Component<{}, MyState> {
 
                         <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberCommunityHealth}</b>
                     </div>
-                    <div className="columnHalf rcorner"><Banner aria-label="career-advice" imgset={{
+                    <div className="columnHalf rcorner" style={{ 'zIndex': '-1' }}><Banner aria-label="career-advice" imgset={{
                         desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
                         mobile: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg'
                     }}>
