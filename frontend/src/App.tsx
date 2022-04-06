@@ -50,7 +50,7 @@ const App = () => {
             },
             {
                 id: "servicecounter",
-                children: "ServiceCounter",
+                children: "Service Counter",
                 href: process.env.REACT_APP_MY_EC2_ADDRESS + "ServiceCounter"
             },
 

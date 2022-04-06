@@ -365,11 +365,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                                 <Text.H3>Currently Serving</Text.H3>
 
-                                <div className='spacer1'></div>
-                                <div className='spacer1'></div>
-
                                 <BoxContainer title="Citizen Information" collapsible={false} className="textleft" >
-                                    <div style={{ padding: "2rem", maxWidth: "1080px" }}>
+                                    <div className="servicecountergrid">
                                         <Layout.GridContainer className="column4">
                                             <Text.Body weight="semibold">NRIC</Text.Body>
                                             <Text.Body weight="semibold">Name</Text.Body>

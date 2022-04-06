@@ -31,7 +31,7 @@ class Dashboard extends React.Component<{}, MyState> {
             <div>
                
                <span style={{ fontSize: '20px' }}>Current View: <b>{this.state.currentView}</b></span>
-                <div id='divHospitalService' className="inlinecontent" style={{  maxWidth: '400px', margin: '40px 0', 'zIndex': '1' }}>
+                <div id='divHospitalService' className="inlinecontent">
                 
                     <InputSelect
                         options={[
@@ -63,12 +63,15 @@ class Dashboard extends React.Component<{}, MyState> {
 
                 </div>
 
-                <div style={{display: this.state.showDashboardHospital}}>
+                <div className='spacer1'></div>
+                <div className='spacer1'></div>
+
+                <div className="dashboard" style={{display: this.state.showDashboardHospital}}>
                 <DashboardHospital />
 
                 </div>
 
-                <div style={{display: this.state.showDashboardHPB}}>
+                <div className="dashboard" style={{display: this.state.showDashboardHPB}}>
                 <DashboardHPB />
 
                 </div>
