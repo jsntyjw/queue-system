@@ -54,7 +54,6 @@ interface MyState {
     agencySelection: string,
     serviceSelection: string,
     routingKey: string,
-    showButtonNextNumber: string,
     showNextServiceHospitalDoctor: string,
     showNextServiceHospitalPharmacy: string,
     showNextServiceHospitalPayment: string,
@@ -96,7 +95,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
             agencySelection: "HPB",
             serviceSelection: "communityHealth",
             routingKey: "sgh.doctor",
-            showButtonNextNumber: "block",
             showNextServiceHospitalDoctor: "block",
             showNextServiceHospitalPharmacy: "block",
             showNextServiceHospitalPayment: "block",
@@ -115,7 +113,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
     async loadData() {
         try {
-
+            this.setState({
+                elementNobodyInQueue : "none"
+            })
             var apiURL: string
             apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/location/Tampines';
 
@@ -165,7 +165,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             console.log("hello testing here")
                             this.setState({
                                 showCurrentCitizen: "block",
-                                showButtonNextNumber: "none",
 
                                 nric: this.state.bookings[0].Nric,
                                 citizenName: this.state.bookings[0].CitizenName,
@@ -193,7 +192,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                     showNextServiceHospitalDoctor: "none",
                                     showNextServiceHospitalPharmacy: "none",
                                     showNextServiceHospitalPayment: "none",
-                                    showNextServiceHPB: "block"
+                                    showNextServiceHPB: "block",
                                 })
                             }
                             else {
@@ -201,8 +200,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                     showNextServiceHospitalDoctor: "none",
                                     showNextServiceHospitalPharmacy: "none",
                                     showNextServiceHospitalPayment: "none",
-                                    showNextServiceHPB: "none"
+                                    showNextServiceHPB: "none",
                                 })
+                                console.log(this.state.queueName)
+
 
                                 if(this.state.serviceSelection == "Doctor"){
                                     this.setState({
@@ -235,7 +236,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         else {
                             this.setState({
                                 showCurrentCitizen: "none",
-                                showButtonNextNumber: "block",
                             })
                         }
                     });
@@ -344,12 +344,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     </div>
 
-                    <br></br>
 
-                    Your are selecting agency: <b>{this.state.agencySelection},</b> and service as <b>{this.state.serviceSelection}</b>
 
                     <br /><br />
-                    <div id='divButtonNextPatient' style={{ display: this.state.showButtonNextNumber }}>
+                    <div id='divButtonNextPatient' >
 
 
                         <Button.Default className='buttonsuccess'
@@ -543,15 +541,18 @@ class ServiceCounter extends React.Component<{}, MyState> {
         )
     }
     ddlAgency(selectedValue: any) {
+
+   
         if (selectedValue == "HPB") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "block",
                 showDIVHospitalservice: "none",
                 agencySelection: "HPB",
-                serviceSelection: "communityHealth"
+                serviceSelection: "communityHealth",
+                queueName: "communityHealthQueue",
             })
-
+            
             this.loadData();
 
         }
@@ -561,7 +562,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDivHPBService: "none",
                 showDIVHospitalservice: "block",
                 agencySelection: "Hospital",
-                serviceSelection: "Doctor"
+                serviceSelection: "Doctor",
+                queueName: "doctorQueue",
 
             })
             this.loadData();
@@ -661,6 +663,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.queueName
             console.log(respectiveURL)
+            console.log("---------------")
         }
         if (buttonSelected == "sendtoNextService") {
 
@@ -669,23 +672,23 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
             const queueObject = {
-                "_id": bookingId,
-                "nric": nric,
-                "citizenName": citizenName,
-                "citizenSalutation": citizenSalutation,
-                "citizenEmail": citizenEmail,
-                "citizenNumber": citizenNumber,
+                "Id": bookingId,
+                "Nric": nric,
+                "CitizenName": citizenName,
+                "CitizenSalutation": citizenSalutation,
+                "CitizenEmail": citizenEmail,
+                "CitizenNumber": citizenNumber,
 
-                "generalType": generalType,
-                "serviceName": serviceName,
-                "serviceProviderName": serviceProviderName,
-                "serviceProviderEmail": serviceProviderEmail,
-                "serviceProviderPhone": serviceProviderPhone,
-                "serviceStartDate": serviceStartDate,
-                "serviceStartTime": serviceStartTime,
-                "serviceProviderLocation": serviceProviderLocation,
-                "bookingStatus": bookingStatus,
-                "queueNumber": queueNumber
+                "GeneralType": generalType,
+                "ServiceName": serviceName,
+                "ServiceProviderName": serviceProviderName,
+                "ServiceProviderEmail": serviceProviderEmail,
+                "ServiceProviderPhone": serviceProviderPhone,
+                "ServiceStartDate": serviceStartDate,
+                "ServiceStartTime": serviceStartTime,
+                "ServiceProviderLocation": serviceProviderLocation,
+                "BookingStatus": bookingStatus,
+                "QueueNumber": queueNumber
             }
 
             console.log(queueObject)
@@ -703,7 +706,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             url = respectiveURL;
         // initialize a new GET request
         xhr.open(method, url, true);
-
+        // xhr.onload = function (e) {
         // respond to every readyState change
         xhr.onreadystatechange = () => {
             // ignore all readyStates other than "DONE"
@@ -713,8 +716,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             // call the callback with status
             if (xhr.status === 200) {
-                console.log(xhr.responseText)
-                if(xhr.responseText == "there is no one in the queue"){
+                // console.log(typeof(xhr.responseText))
+                if(xhr.responseText == "no messages"){
                     this.setState({
                         elementNobodyInQueue: "block"
                     })
@@ -722,6 +725,16 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 }
                 var calledBooking: Booking;
                 if (buttonSelected == "nextPatient") {
+
+                    // if(xhr.responseText == "no messages"){
+                    //     this.setState({
+                    //         elementNobodyInQueue : "block"
+                    //     })
+
+                    //     return;
+                    // }
+                    console.log("testing todayyyyyyyyy")
+                    console.log(xhr.responseText)
                     this.setState({
                         _bookingId: JSON.parse(xhr.responseText).Id,
                         nric: JSON.parse(xhr.responseText).Nric,
@@ -744,21 +757,25 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         elementNobodyInQueue: "none",
                         showCurrentCitizen: "block"
                     })
-
+                
                     if (this.state.agencySelection == "HPB") {
                         this.setState({
                             showNextServiceHospitalDoctor: "none",
                             showNextServiceHospitalPharmacy: "none",
                             showNextServiceHospitalPayment: "none",
-                            showNextServiceHPB: "block"
+                            showNextServiceHPB: "block",
+                            serviceSelection :"communityHealth"
                         })
                     }
                     else {
+
+                        
                         this.setState({
                             showNextServiceHospitalDoctor: "none",
                             showNextServiceHospitalPharmacy: "none",
                             showNextServiceHospitalPayment: "none",
-                            showNextServiceHPB: "none"
+                            showNextServiceHPB: "none",
+                            serviceSelection :"Doctor"
                         })
 
                         if(this.state.serviceSelection == "Doctor"){
@@ -881,12 +898,18 @@ class ServiceCounter extends React.Component<{}, MyState> {
             xhr.open(method, url, true);
             xhr.send();
         }
-
+        
         // send the initial GET request
         xhr.send();
+
+    
     }
 
 
 }
 
 export default ServiceCounter;
+function typeOf(responseText: string): any {
+    throw new Error('Function not implemented.');
+}
+
