@@ -59,7 +59,7 @@ interface MyState {
     showNextServiceHospitalPayment: string,
     showNextServiceHPB: string,
     nextServiceSelection: string,
-
+    displayNextPatient: string
 }
 
 
@@ -100,6 +100,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             showNextServiceHospitalPayment: "block",
             showNextServiceHPB: "none",
             nextServiceSelection: "",
+            displayNextPatient: "block"
         };
 
         this.consumeQueue = this.consumeQueue.bind(this)
@@ -108,7 +109,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
     componentDidMount() {
         this.loadData();
-
+        console.log("current service selection:"  + this.state.serviceSelection)
     }
 
     async loadData() {
@@ -153,6 +154,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             );
 
                             this.state.bookings.push(eachBooking)
+
+                            if(this.state.bookings.length > 0){
+                                this.setState({displayNextPatient: "none"})
+                            }
 
                         }
 
@@ -350,7 +355,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     <div id='divButtonNextPatient' >
 
 
-                        <Button.Default className='buttonsuccess'
+                        <Button.Default className='buttonsuccess' style={{'display' : this.state.displayNextPatient}}
                             onClick={() => this.consumeQueue(this.handle200, "nextPatient")}
                         >Next Number</Button.Default>
                         <p style={{ 'color': "green", 'fontSize': 30, 'display': this.state.elementNobodyInQueue }}>There is no one in the queue😄</p>
@@ -551,6 +556,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 agencySelection: "HPB",
                 serviceSelection: "communityHealth",
                 queueName: "communityHealthQueue",
+                displayNextPatient: "block"
             })
             
             this.loadData();
@@ -564,6 +570,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 agencySelection: "Hospital",
                 serviceSelection: "Doctor",
                 queueName: "doctorQueue",
+                displayNextPatient: "block"
 
             })
             this.loadData();
@@ -579,6 +586,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "none",
                 serviceSelection: "communityHealth",
                 queueName: "communityHealthQueue",
+                displayNextPatient: "block"
+
             })
 
             this.loadData()
@@ -590,6 +599,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "none",
                 serviceSelection: "workplaceHealth",
                 queueName: "workplaceHealthQueue",
+                displayNextPatient: "block"
 
             })
             this.loadData()
@@ -602,6 +612,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "block",
                 serviceSelection: "Doctor",
                 queueName: "doctorQueue",
+                displayNextPatient: "block"
+
             })
             this.loadData()
 
@@ -613,6 +625,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "block",
                 serviceSelection: "Payment",
                 queueName: "paymentQueue",
+                displayNextPatient: "block"
 
             })
             this.loadData()
@@ -625,6 +638,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 showDIVHospitalservice: "block",
                 serviceSelection: "Pharmacy",
                 queueName: "pharmacyQueue",
+                displayNextPatient: "block"
 
             })
             this.loadData()
