@@ -50,7 +50,7 @@ class Dashboard extends React.Component<{}, MyState> {
     }
     componentDidMount() {
         this.loadData();
-        setInterval(this.loadData, 3000);
+        setInterval(this.loadData, 1000);
     }
 
     async loadData() {
