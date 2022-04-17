@@ -496,7 +496,13 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                             <Accordion.Base className='base' >
-                                                {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - communityHealth')).map((input, index) => {
+                                                {this.state.bookings.filter((element => 
+                                                
+                                                (
+                                                    (element.GeneralType == 'HPB Consultation - communityHealth' && element.BookingStatus.includes('New')) 
+                                                    || element.BookingStatus.includes("communityHealth")
+                                                    
+                                                    ))).map((input, index) => {
                                                     var showButton = 'none';
                                                     if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
                                                         showButton = 'block';
@@ -563,7 +569,15 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                             <Accordion.Base className='base' >
-                                                {this.state.bookings.filter((element => element.GeneralType == 'HPB Consultation - workplaceHealth')).map((input, index) => {
+                                                {this.state.bookings.filter(
+                                                    
+                                                    (
+                                                        
+                                                        element => (element.GeneralType == 'HPB Consultation - workplaceHealth' && element.BookingStatus.includes('New')) 
+                                                        || element.BookingStatus.includes("workplaceHealth"))
+    
+                                                    
+                                                    ).map((input, index) => {
                                                     var showButton = 'none';
                                                     if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
                                                         showButton = 'block';
@@ -811,7 +825,15 @@ class Appointment extends React.Component<{}, MyState> {
 
 
                                             <Accordion.Base className='base' >
-                                                {this.state.bookings.filter((element => element.GeneralType == 'General Practionar' || !element.BookingStatus.includes("HPB"))).map((input, index) => {
+                                                {this.state.bookings.filter((element => 
+                                                
+                                                (element.GeneralType == 'General Practioner' && element.BookingStatus.includes('New')) 
+                                                    || element.BookingStatus.includes("Doctor") || element.BookingStatus.includes("Payment") || element.BookingStatus.includes("Pharmacy") )
+
+
+                                                // element.GeneralType == 'General Practionar' || !element.BookingStatus.includes("HPB")
+                                                
+                                                ).map((input, index) => {
                                                     var showButton = 'none';
                                                     if ((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
                                                         showButton = 'block';
