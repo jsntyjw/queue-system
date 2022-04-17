@@ -240,7 +240,7 @@ class Appointment extends React.Component<{}, MyState> {
 
 
         if (val == "NRIC") {
-            this.loadData();
+            // this.loadData();
 
             this.setState({
                 showGeneralServiceDropDownHospital: 'none'
@@ -252,6 +252,7 @@ class Appointment extends React.Component<{}, MyState> {
 
             var apiURL: string
             apiURL = process.env.REACT_APP_APPOINTMENT_API_ADDRESS + 'api/booking/citizen/' + this.state.inputValue;
+            console.log("testing::: " + apiURL)
             fetch(apiURL)
                 .then(function (response) {
 
