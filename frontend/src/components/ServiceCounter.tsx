@@ -113,6 +113,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
     }
 
     async loadData() {
+
         try {
             this.setState({
                 elementNobodyInQueue : "none"
@@ -245,6 +246,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         }
                     });
                 });
+
+            console.log("===" + this.state.serviceSelection)
 
         } catch (e) {
             console.log(e);
@@ -546,7 +549,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
         )
     }
     ddlAgency(selectedValue: any) {
-
+        // this.setState({
+        //     agencySelection: "",
+        //     serviceSelection: ""
+        // })
    
         if (selectedValue == "HPB") {
             this.setState({
@@ -557,9 +563,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 serviceSelection: "communityHealth",
                 queueName: "communityHealthQueue",
                 displayNextPatient: "block"
-            })
-            
-            this.loadData();
+            }, () => {
+                this.loadData();
+            }) 
 
         }
         else {
@@ -572,13 +578,18 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "doctorQueue",
                 displayNextPatient: "block"
 
-            })
-            this.loadData();
+            }, () => {
+                this.loadData();
+            }) 
 
         }
     }
 
     ddlService(selectedValue: any) {
+        // console.log("selected value: " + selectedValue)
+        // this.setState({
+        //     serviceSelection: ""
+        // })
         if (selectedValue == "communityHealth") {
             this.setState({
                 showCurrentCitizen: "none",
@@ -588,11 +599,13 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "communityHealthQueue",
                 displayNextPatient: "block"
 
-            })
+            }, () => {
+                this.loadData();
+            }) 
 
-            this.loadData()
+            // this.loadData()
         }
-        else if (selectedValue == "workplaceHealth") {
+        if (selectedValue == "workplaceHealth") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "block",
@@ -601,11 +614,12 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "workplaceHealthQueue",
                 displayNextPatient: "block"
 
-            })
-            this.loadData()
+            }, () => {
+                this.loadData();
+            }) 
 
         }
-        else if (selectedValue == "Doctor") {
+        if (selectedValue == "Doctor") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -614,11 +628,12 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "doctorQueue",
                 displayNextPatient: "block"
 
-            })
-            this.loadData()
+            }, () => {
+                this.loadData();
+            }) 
 
         }
-        else if (selectedValue == "Payment") {
+        if (selectedValue == "Payment") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -627,11 +642,12 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "paymentQueue",
                 displayNextPatient: "block"
 
-            })
-            this.loadData()
+            }, () => {
+                this.loadData();
+            }) 
 
         }
-        else if (selectedValue == "Pharmacy") {
+        if (selectedValue == "Pharmacy") {
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -640,8 +656,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 queueName: "pharmacyQueue",
                 displayNextPatient: "block"
 
-            })
-            this.loadData()
+            }, () => {
+                this.loadData();
+            }) 
 
         }
     }
@@ -747,7 +764,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     //     return;
                     // }
-                    console.log("testing todayyyyyyyyy")
                     console.log(xhr.responseText)
                     this.setState({
                         _bookingId: JSON.parse(xhr.responseText).Id,
@@ -778,7 +794,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             showNextServiceHospitalPharmacy: "none",
                             showNextServiceHospitalPayment: "none",
                             showNextServiceHPB: "block",
-                            serviceSelection :"communityHealth"
                         })
                     }
                     else {
@@ -789,7 +804,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                             showNextServiceHospitalPharmacy: "none",
                             showNextServiceHospitalPayment: "none",
                             showNextServiceHPB: "none",
-                            serviceSelection :"Doctor"
                         })
 
                         if(this.state.serviceSelection == "Doctor"){
@@ -824,9 +838,10 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
+                    console.log("testing... " + this.state.serviceSelection)
                     calledBooking.BookingStatus = this.state.serviceSelection + "-Calling"
 
-                    console.log("called booking: " + calledBooking)
+                    // console.log("called service selection: " + this.state.serviceSelection)
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
