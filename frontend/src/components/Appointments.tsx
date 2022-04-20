@@ -905,7 +905,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if ((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
+                                                        if (((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB")) || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
                                                             showButton = 'block';
                                                         }
 
