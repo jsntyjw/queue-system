@@ -620,6 +620,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
         }
         if (selectedValue == "Doctor") {
+            console.log("go through")
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -696,7 +697,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             console.log(respectiveURL)
             console.log("---------------")
         }
-        if (buttonSelected == "sendtoNextService") {
+        if (buttonSelected == "sendtoNextService" && this.state.nextServiceSelection != "Completed") {
 
  
 

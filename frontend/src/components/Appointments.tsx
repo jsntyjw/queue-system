@@ -504,7 +504,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     
                                                     ))).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB")  ) ){
+                                                    if (((input.BookingStatus == 'New' || input.BookingStatus.includes("Missed")) && input.ServiceProviderName.includes("HPB")  ) ){
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -579,7 +579,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     
                                                     ).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB")  ) ){
+                                                    if (((input.BookingStatus == 'New' || input.BookingStatus.includes("Missed")) && input.ServiceProviderName.includes("HPB")  ) ){
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -650,7 +650,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if ((input.BookingStatus == 'New' && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
+                                                        if (((input.BookingStatus == 'New' || input.BookingStatus.includes("Missed")) && input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes ('workplaceHealth') || input.BookingStatus.includes ('communityHealth') ) ){
                                                             showButton = 'block';
                                                         }
 
@@ -835,7 +835,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                 
                                                 ).map((input, index) => {
                                                     var showButton = 'none';
-                                                    if (input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB")  ){
+                                                    if ((input.BookingStatus == 'New' || input.BookingStatus.includes("Missed")) && !input.ServiceProviderName.includes("HPB")  || input.BookingStatus.includes("Missed") ){
                                                         showButton = 'block';
                                                     }
                                                     console.log(this.state.bookings)
@@ -905,7 +905,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                     (input, index) => {
 
                                                         var showButton = 'none';
-                                                        if (((input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB")) || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
+                                                        if ((( (input.BookingStatus == 'New' || input.BookingStatus.includes("Missed")) && !input.ServiceProviderName.includes("HPB")) || input.BookingStatus.includes ('Payment') || input.BookingStatus.includes ('Missed') || input.BookingStatus.includes ('Pharmacy') || input.BookingStatus.includes ('Doctor')) ){
                                                             showButton = 'block';
                                                         }
 
@@ -977,7 +977,7 @@ class Appointment extends React.Component<{}, MyState> {
                                                         (input, index) => {
 
                                                             var showButton = 'none';
-                                                            if (input.BookingStatus == 'New' && !input.ServiceProviderName.includes("HPB")  ){
+                                                            if ((input.BookingStatus == 'New' || input.BookingStatus.includes("Missed")) && !input.ServiceProviderName.includes("HPB") || input.BookingStatus.includes("Missed")  ){
                                                                 showButton = 'none';
                                                             }
                                                             else{
