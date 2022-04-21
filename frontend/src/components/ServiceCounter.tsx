@@ -697,7 +697,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
             console.log(respectiveURL)
             console.log("---------------")
         }
-        if (buttonSelected == "sendtoNextService" && this.state.nextServiceSelection != "Completed") {
+        if (buttonSelected == "sendtoNextService" && this.state.nextServiceSelection != "Completed" && this.state.nextServiceSelection != "Missed Queue") {
 
  
 

@@ -1118,10 +1118,13 @@ class Appointment extends React.Component<{}, MyState> {
         else if ( (booking.GeneralType == "General Practionar" && booking.BookingStatus =="New") || (booking.GeneralType == "Specialist" && booking.BookingStatus =="New") || booking.BookingStatus.includes("Doctor")) {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
         }
+        else if (booking.BookingStatus == "Doctor-Missed" || booking.BookingStatus.includes("Doctor")) {
+            updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.doctor&bookingDetails=" + myJSON;
+        }
         else if (booking.BookingStatus == "Payment-Missed" || booking.BookingStatus.includes("Payment")) {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.payment&bookingDetails=" + myJSON;
         }
-        else if (booking.BookingStatus == "Pharmcy-Missed" || booking.BookingStatus.includes("Pharmcy")) {
+        else if (booking.BookingStatus == "Pharmacy-Missed" || booking.BookingStatus.includes("Pharmcy")) {
             updatedURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + booking.Id + "&exchangeID=master&bindingKey=sgh.pharmcy&bookingDetails=" + myJSON;
         }
 
