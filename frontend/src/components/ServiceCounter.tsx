@@ -109,7 +109,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
     componentDidMount() {
         this.loadData();
-        console.log("current service selection:"  + this.state.serviceSelection)
     }
 
     async loadData() {
@@ -130,11 +129,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                     this.setState({
                         bookings: []
                     })
-                    console.log(myJson)
                     myJson.data.forEach(element => {
 
                         if (element["bookingStatus"] == this.state.serviceSelection + "-Calling") {
-                            console.log("have")
                             var eachBooking = new Booking(
                                 element["_id"],
                                 element["nric"],
@@ -168,7 +165,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                         if (this.state.bookings.length > 0) {
 
-                            console.log("hello testing here")
                             this.setState({
                                 showCurrentCitizen: "block",
 
@@ -190,7 +186,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                 queueNumber: this.state.bookings[0].QueueNumber
                             })
 
-                            console.log("testing here!!! : " + this.state.bookings[0].Id)
 
 
                             if (this.state.agencySelection == "HPB") {
@@ -208,8 +203,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                                     showNextServiceHospitalPayment: "none",
                                     showNextServiceHPB: "none",
                                 })
-                                console.log(this.state.queueName)
-
 
                                 if(this.state.serviceSelection == "Doctor"){
                                     this.setState({
@@ -246,8 +239,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                         }
                     });
                 });
-
-            console.log("===" + this.state.serviceSelection)
 
         } catch (e) {
             console.log(e);
@@ -586,10 +577,7 @@ class ServiceCounter extends React.Component<{}, MyState> {
     }
 
     ddlService(selectedValue: any) {
-        // console.log("selected value: " + selectedValue)
-        // this.setState({
-        //     serviceSelection: ""
-        // })
+
         if (selectedValue == "communityHealth") {
             this.setState({
                 showCurrentCitizen: "none",
@@ -620,7 +608,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
         }
         if (selectedValue == "Doctor") {
-            console.log("go through")
             this.setState({
                 showCurrentCitizen: "none",
                 showDivHPBService: "none",
@@ -692,15 +679,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
         var respectiveURL = ""
         if (buttonSelected == "nextPatient") {
-
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/receiver?queueName=" + this.state.queueName
-            console.log(respectiveURL)
-            console.log("---------------")
         }
         if (buttonSelected == "sendtoNextService" && this.state.nextServiceSelection != "Completed" && this.state.nextServiceSelection != "Missed Queue") {
-
- 
-
 
 
             const queueObject = {
@@ -723,11 +704,9 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 "QueueNumber": queueNumber
             }
 
-            console.log(queueObject)
 
             var myJSON = encodeURI(JSON.stringify(queueObject));
             respectiveURL = "https://hyxfimzf9g.execute-api.us-east-1.amazonaws.com/default/sender?bookingID=" + bookingId!!.toString() + "&exchangeID=master&bindingKey=" + this.state.routingKey + "&bookingDetails=" + myJSON;
-            console.log("testing payment: " + respectiveURL)
         }
 
 
@@ -748,7 +727,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
             // call the callback with status
             if (xhr.status === 200) {
-                // console.log(typeof(xhr.responseText))
                 if(xhr.responseText == "no messages"){
                     this.setState({
                         elementNobodyInQueue: "block"
@@ -757,15 +735,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
                 }
                 var calledBooking: Booking;
                 if (buttonSelected == "nextPatient") {
-
-                    // if(xhr.responseText == "no messages"){
-                    //     this.setState({
-                    //         elementNobodyInQueue : "block"
-                    //     })
-
-                    //     return;
-                    // }
-                    console.log(xhr.responseText)
                     this.setState({
                         _bookingId: JSON.parse(xhr.responseText).Id,
                         nric: JSON.parse(xhr.responseText).Nric,
@@ -839,10 +808,8 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
                     document.getElementById("divCurrentCitizen")!!.style.display = "block";
                     document.getElementById("divButtonNextPatient")!!.style.display = "none";
-                    console.log("testing... " + this.state.serviceSelection)
                     calledBooking.BookingStatus = this.state.serviceSelection + "-Calling"
 
-                    // console.log("called service selection: " + this.state.serviceSelection)
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
@@ -874,32 +841,21 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
 
-                    // console.log(this.state)
 
                     if (this.state.nextServiceSelection == "Missed Queue") {
-                    //     this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Missed", true);
                         calledBooking.BookingStatus = this.state.serviceSelection + "-Missed"
-
                     }
 
                     else if (this.state.nextServiceSelection == "Completed") {
                         calledBooking.BookingStatus = "Completed"
-
                     }
                     else if (this.state.nextServiceSelection != this.state.serviceSelection && this.state.nextServiceSelection != "Missed Queue" && this.state.nextServiceSelection != "Completed") {
-                    //     this.getQueue(calledBooking.Id!!, this.state.serviceSelection + "-Queued", false);
                         calledBooking.BookingStatus = this.state.nextServiceSelection + "-Queued"
 
                     }
                     else{
                         calledBooking.BookingStatus = this.state.serviceSelection + "-Calling"
-
                     }
-
-                    
-
-                    console.log(calledBooking)
-
 
                     BaseService.update<Booking>(process.env.REACT_APP_APPOINTMENT_API_ADDRESS + "api/booking/update/", this.state._bookingId, calledBooking).then(
 
@@ -918,7 +874,6 @@ class ServiceCounter extends React.Component<{}, MyState> {
 
 
 
-                // console.log(JSON.parse(xhr.responseText));
 
                 return callback(xhr.status);
             }

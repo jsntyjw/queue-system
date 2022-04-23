@@ -61,54 +61,54 @@ class Dashboard extends React.Component<{}, MyState> {
             var communityHealthQueueingDisplay = false;
             var workplaceHealthQueueingDisplay = false;
 
-            if(communityHealthIsCalling== false){
+            if (communityHealthIsCalling == false) {
                 this.setState({
                     callingQueueNumberCommunityHealth: '-'
                 })
             }
 
-            if(workplaceHealthIsCalling== false){
+            if (workplaceHealthIsCalling == false) {
                 this.setState({
                     callingQueueNumberWorkplaceHealth: '-'
                 })
             }
-            if(communityHealthMissingDisplay== false){
+            if (communityHealthMissingDisplay == false) {
                 this.setState({
                     MissedNumberCommunityHealth: '-'
                 })
             }
 
-            if(workplaceHealthMissingDisplay== false){
+            if (workplaceHealthMissingDisplay == false) {
                 this.setState({
                     MissedNumberWorkplaceHealth: '-'
                 })
             }
-            if(communityHealthQueueingDisplay== false){
+            if (communityHealthQueueingDisplay == false) {
                 this.setState({
                     upcomingQueueNumberCommunityHealth: '-'
                 })
             }
 
-            if(workplaceHealthQueueingDisplay== false){
+            if (workplaceHealthQueueingDisplay == false) {
                 this.setState({
                     upcomingQueuenumberWorkplaceHealth: '-'
                 })
             }
 
-        numberInQueueArrayCommunityHealth.length = 0
-        numberInQueueArrayWorkplaceHealth.length = 0
+            numberInQueueArrayCommunityHealth.length = 0
+            numberInQueueArrayWorkplaceHealth.length = 0
 
-        numberMissedArrayCommunityHealth.length = 0
-        numberMissedArrayWorkplaceHealth.length = 0
+            numberMissedArrayCommunityHealth.length = 0
+            numberMissedArrayWorkplaceHealth.length = 0
 
             data.forEach(element => {
                 console.log(element)
-                if (element.bookingStatus == 'communityHealth-Calling' ) {
+                if (element.bookingStatus == 'communityHealth-Calling') {
                     this.setState({
                         callingQueueNumberCommunityHealth: element.queueNumber.toString()
                     })
                 }
-                if (element.bookingStatus == 'workplaceHealth-Calling' ) {
+                if (element.bookingStatus == 'workplaceHealth-Calling') {
                     this.setState({
                         callingQueueNumberWorkplaceHealth: element.queueNumber.toString()
                     })
@@ -116,60 +116,46 @@ class Dashboard extends React.Component<{}, MyState> {
 
 
 
-                if (element.bookingStatus == 'communityHealth-Queued' ) {
+                if (element.bookingStatus == 'communityHealth-Queued') {
                     communityHealthQueueingDisplay = true;
                     numberInQueueArrayCommunityHealth.push(element.queueNumber.toString())
                 }
-                if (element.bookingStatus == 'workplaceHealth-Queued' ) {
+                if (element.bookingStatus == 'workplaceHealth-Queued') {
                     workplaceHealthQueueingDisplay = true;
                     numberInQueueArrayWorkplaceHealth.push(element.queueNumber.toString())
                 }
-               
-                
-                if (element.bookingStatus == 'communityHealth-Missed' ) {
+
+
+                if (element.bookingStatus == 'communityHealth-Missed') {
                     console.log(element.queueNumber.toString())
                     communityHealthMissingDisplay = true;
                     numberMissedArrayCommunityHealth.push(element.queueNumber.toString())
                 }
-                if (element.bookingStatus == 'workplaceHealth-Missed' ) {
+                if (element.bookingStatus == 'workplaceHealth-Missed') {
                     workplaceHealthMissingDisplay = true;
                     numberMissedArrayWorkplaceHealth.push(element.queueNumber.toString())
                 }
-       
 
-
-           
-  
-
-
-                if(numberInQueueArrayCommunityHealth.length != 0 && communityHealthQueueingDisplay == true){
+                if (numberInQueueArrayCommunityHealth.length != 0 && communityHealthQueueingDisplay == true) {
                     this.setState({
                         upcomingQueueNumberCommunityHealth: numberInQueueArrayCommunityHealth[0]
                     })
                 }
-                if(numberInQueueArrayWorkplaceHealth.length != 0 && workplaceHealthQueueingDisplay == true ){
+                if (numberInQueueArrayWorkplaceHealth.length != 0 && workplaceHealthQueueingDisplay == true) {
                     this.setState({
                         upcomingQueuenumberWorkplaceHealth: numberInQueueArrayWorkplaceHealth[0]
                     })
                 }
-                if(numberMissedArrayCommunityHealth.length != 0 && communityHealthMissingDisplay == true){
+                if (numberMissedArrayCommunityHealth.length != 0 && communityHealthMissingDisplay == true) {
                     this.setState({
                         MissedNumberCommunityHealth: numberMissedArrayCommunityHealth[0]
                     })
                 }
-                if(numberMissedArrayWorkplaceHealth.length != 0 && workplaceHealthMissingDisplay == true){
+                if (numberMissedArrayWorkplaceHealth.length != 0 && workplaceHealthMissingDisplay == true) {
                     this.setState({
                         MissedNumberWorkplaceHealth: numberMissedArrayWorkplaceHealth[0]
                     })
                 }
-
-
-
-
-
-
-
-
 
 
             });
@@ -183,57 +169,57 @@ class Dashboard extends React.Component<{}, MyState> {
     render() {
         return (
             <StyledSection>
-            <div>
+                <div>
 
-                <div className="row">
-                    <div className="columnHalf rcorner" style={{ 'zIndex': '-1' }}><Banner aria-label="career-advice" imgset={{
-                        desktop: 'https://media.istockphoto.com/vectors/abstract-wavy-halftone-dots-background-vector-id1225681170?k=20&m=1225681170&s=612x612&w=0&h=qFzphEqIRbzXBdzL3kqcfwS2ULgmOpIRFYi_2WSgCto=',
-                        mobile: 'https://media.istockphoto.com/vectors/abstract-wavy-halftone-dots-background-vector-id1225681170?k=20&m=1225681170&s=612x612&w=0&h=qFzphEqIRbzXBdzL3kqcfwS2ULgmOpIRFYi_2WSgCto='
-                    }}>
-                        <span style={{ 'margin': 'auto' }}>CommunityHealth</span>
-                    </Banner>
-                        <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
+                    <div className="row">
+                        <div className="columnHalf rcorner" style={{ 'zIndex': '-1' }}><Banner aria-label="career-advice" imgset={{
+                            desktop: 'https://media.istockphoto.com/vectors/abstract-wavy-halftone-dots-background-vector-id1225681170?k=20&m=1225681170&s=612x612&w=0&h=qFzphEqIRbzXBdzL3kqcfwS2ULgmOpIRFYi_2WSgCto=',
+                            mobile: 'https://media.istockphoto.com/vectors/abstract-wavy-halftone-dots-background-vector-id1225681170?k=20&m=1225681170&s=612x612&w=0&h=qFzphEqIRbzXBdzL3kqcfwS2ULgmOpIRFYi_2WSgCto='
+                        }}>
+                            <span style={{ 'margin': 'auto' }}>CommunityHealth</span>
+                        </Banner>
+                            <div>
+                                <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
+                            </div>
+                            <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingQueueNumberCommunityHealth}</b>
+                            <div>
+                                <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
+                            </div>
+
+                            <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
+
+                            <div>
+                                <a style={{ 'color': 'grey', 'fontSize': 18 }}>Missed Queue:</a>
+                            </div>
+
+                            <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberCommunityHealth}</b>
                         </div>
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingQueueNumberCommunityHealth}</b>
-                        <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
+                        <div className="columnHalf rcorner" style={{ 'zIndex': '-1' }}><Banner aria-label="career-advice" imgset={{
+                            desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
+                            mobile: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg'
+                        }}>
+                            <span style={{ 'margin': 'auto' }}>WorkplaceHealth</span>
+                        </Banner>
+                            <div>
+                                <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
+                            </div>
+                            <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
+
+                            <div>
+                                <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
+                            </div>
+
+                            <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
+
+                            <div>
+                                <a style={{ 'color': 'grey', 'fontSize': 18 }}>Missed Queue:</a>
+                            </div>
+
+                            <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberWorkplaceHealth}</b>
                         </div>
 
-                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueueNumberCommunityHealth}</b>
-
-                        <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Missed Queue:</a>
-                        </div>
-
-                        <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberCommunityHealth}</b>
                     </div>
-                    <div className="columnHalf rcorner" style={{ 'zIndex': '-1' }}><Banner aria-label="career-advice" imgset={{
-                        desktop: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg',
-                        mobile: 'https://t3.ftcdn.net/jpg/01/98/05/16/360_F_198051606_qB9GmDGg79tCtoiHkuTtYAQlqpN6feyL.jpg'
-                    }}>
-                        <span style={{ 'margin': 'auto' }}>WorkplaceHealth</span>
-                    </Banner>
-                        <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Current Serving:</a>
-                        </div>
-                        <b style={{ 'color': 'lightgreen', 'margin': 0, 'fontSize': 80 }}>{this.state.callingQueueNumberWorkplaceHealth}</b>
-
-                        <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Upcoming Number:</a>
-                        </div>
-
-                        <b style={{ 'color': 'orange', 'fontSize': 80 }}>{this.state.upcomingQueuenumberWorkplaceHealth}</b>
-
-                        <div>
-                            <a style={{ 'color': 'grey', 'fontSize': 18 }}>Missed Queue:</a>
-                        </div>
-
-                        <b style={{ 'color': 'red', 'fontSize': 80 }}>{this.state.MissedNumberWorkplaceHealth}</b>
-                    </div>
-
                 </div>
-            </div>
             </StyledSection>
         )
     }

@@ -15,13 +15,3 @@ exports.MONGODB = {
     }
 };
 
-
-// exports.AREA = {
-//     MALE: 1,
-//     FEMALE: 0
-// };
-
-// exports.MODE = {
-//     DEFAULT: 1,
-//     HAS_DATA: 2
-// };

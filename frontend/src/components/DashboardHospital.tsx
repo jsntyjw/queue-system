@@ -136,11 +136,9 @@ class Dashboard extends React.Component<{}, MyState> {
 
             data.forEach(element => {
                 if (element.bookingStatus == 'Doctor-Calling' ) {
-                    console.log("testing here! success")
                     this.setState({
                         callingNumberDoctorQueue:element.queueNumber.toString()
                     })
-                    console.log("hi" + this.state.callingNumberDoctorQueue)
                     doctorIsCalling = true;
                 }
                 if (element.bookingStatus == 'Payment-Calling' ) {
