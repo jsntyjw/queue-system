@@ -4,7 +4,6 @@ import { Route, Switch,withRouter } from "react-router-dom";
 import './App.css';
 import './index.css';
 import 'toastr/build/toastr.min.css';
-import Create from './components/CreateNewBooking';
 import Home from './components/Home'
 import Appointments from './components/Appointments'
 import ServiceCounter from './components/ServiceCounter'
@@ -76,7 +75,6 @@ const App = () => {
                         <Switch>
                             <Route exact path='/' component={Home} />
                             <Route path='/Home' component={Home} />
-                            <Route path='/Create' component={Create} />
                             <Route path='/Appointments' component={Appointments} />
                             <Route path='/Dashboard' component={Dashboard} />
                             <Route path='/ServiceCounter' component={ServiceCounter} />
